@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WINK Tutorial - WINK BY RIYUU</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* === RESET & BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0f0f11; /* Dark Background */
+            color: #e0e0e0; /* Light Text */
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px; /* Mobile Friendly Restraint */
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px #00ff88; }
+            50% { box-shadow: 0 0 20px #00ff88; }
+            100% { box-shadow: 0 0 5px #00ff88; }
+        }
+
+        /* === HEADER === */
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        /* === THUMBNAIL === */
+        .thumbnail-container {
+            width: 100%;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+            background-color: #2a2a2a;
+        }
+
+        /* === CONTENT STYLES === */
+        h2 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: #00ff88; /* Accent Color */
+            margin-bottom: 10px;
+            margin-top: 30px;
+        }
+
+        .content-box {
+            text-align: left;
+            background: #1a1a1c;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+
+        ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #ccc;
+        }
+
+        .highlight-text {
+            font-weight: 700;
+            color: #fff;
+            margin: 20px 0 10px 0;
+            display: block;
+            text-align: center;
+        }
+
+        .account-card {
+            background: #252528;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #00ff88;
+            font-family: monospace;
+            font-size: 0.95rem;
+        }
+
+        .account-card div {
+            margin: 2px 0;
+        }
+
+        .label {
+            color: #888;
+        }
+
+        .val {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .warning-box {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #ff4444;
+            color: #ffcccc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.9rem;
+        }
+
+        /* === BUTTON === */
+        .btn-download {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: #00cc6a;
+            color: #000;
+            font-weight: 800;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 0 15px rgba(0, 204, 106, 0.4);
+        }
+
+        .btn-download:hover {
+            transform: scale(1.05);
+            background-color: #00ff88;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+        }
+
+        /* === MODAL POPUP === */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #1e1e20;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #444;
+            animation: fadeInDown 0.3s ease-out;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .btn-join {
+            background-color: #25D366; /* WA Color */
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-join:hover {
+            background-color: #20bd5a;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>WINK BY RIYUU</h1>
+
+        <div class="thumbnail-container">
+            <img src="https://i.ibb.co.com/F2Zssgh/Proyek-Baru-39-4-A42-A67.png" alt="Wink Tutorial Thumbnail" class="thumbnail">
+        </div>
+
+        <h2>CARA LOGIN WINK TERBARU!</h2>
+
+        <div class="content-box">
+            <h3>Cara login wink agar work!</h3>
+            <ol>
+                <li>Kalian wajib pake <strong>VPN 1.1.1.1</strong> jika sudah aktif. Kalian daftar menggunakan email (bukan Google) di aplikasi Wink original yang dari Playstore.</li>
+                <li>Jika kalian sudah daftar, kalian hapus Wink original-nya terus instal yang mod-nya.</li>
+                <li>Terus kalian login menggunakan email yang udah kalian daftarkan tadi di aplikasi Wink original-nya ya.</li>
+            </ol>
+
+            <span class="highlight-text">ATAU KALIAN BISA PAKE AKUN INI UNTUK LOGIN‼️<br>JADI KALIAN TINGGAL AKTIFKAN VPN NYA AJA</span>
+
+            <div class="account-card">
+                <div><span class="label">Email:</span> <span class="val">sababe7593@rewtaxi.com</span></div>
+                <div><span class="label">Pass:</span> <span class="val">Riyuu123.</span></div>
+            </div>
+
+            <div class="account-card">
+                <div><span class="label">Email:</span> <span class="val">moxaf99166@kurstore.com</span></div>
+                <div><span class="label">Pass:</span> <span class="val">Riyuu123.</span></div>
+            </div>
+
+            <div class="account-card">
+                <div><span class="label">Email:</span> <span class="val">virejix458@rewtaxi.com</span></div>
+                <div><span class="label">Pass:</span> <span class="val">Riyuu123.</span></div>
+            </div>
+
+            <div class="warning-box">
+                <strong>PENTING‼️</strong><br>
+                Sebelum kalian daftar atau pake wink-nya, diwajibkan aktifkan VPN 1.1.1.1
+            </div>
+        </div>
+
+        <button id="downloadBtn" class="btn-download">
+            Download VPN Premium
+        </button>
+
+        <footer>
+            &copy; 2024 Riyuu Mods. All rights reserved.
+        </footer>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">JOIN SALURAN TERLEBIH DAHULU!</div>
+            <p style="margin-bottom: 20px; font-size: 0.9rem; color: #ccc;">Dukungan Anda membantu kami terus update.</p>
+            <button id="joinBtn" class="btn-join">Join Saluran WhatsApp</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Konfigurasi Link
+            const whatsappLink = "https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j";
+            const destinationLink = "https://sfl.gl/OKVKI8";
+            
+            // Elemen DOM
+            const downloadBtn = document.getElementById('downloadBtn');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const joinBtn = document.getElementById('joinBtn');
+
+            // Kunci LocalStorage
+            const LS_KEY = 'riyuu_wink_joined';
+
+            // Fungsi saat tombol download diklik
+            downloadBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Mencegah aksi default
+
+                // Cek apakah user sudah pernah join
+                const hasJoined = localStorage.getItem(LS_KEY);
+
+                if (hasJoined === 'true') {
+                    // Jika sudah join, langsung ke link download
+                    window.location.href = destinationLink;
+                } else {
+                    // Jika belum, munculkan pop-up
+                    modalOverlay.style.display = 'flex';
+                }
+            });
+
+            // Fungsi saat tombol Join di dalam modal diklik
+            joinBtn.addEventListener('click', () => {
+                // 1. Simpan status bahwa user sudah klik join
+                localStorage.setItem(LS_KEY, 'true');
+
+                // 2. Buka link WhatsApp di tab baru
+                window.open(whatsappLink, '_blank');
+
+                // 3. Tutup modal
+                modalOverlay.style.display = 'none';
+
+                // Opsional: Langsung arahkan ke download setelah join, 
+                // atau biarkan user klik tombol download lagi (sesuai instruksi: 'pop-up tidak muncul lagi').
+                // Di sini kita biarkan user klik tombol download lagi agar UX lebih natural,
+                // tapi pop-up sudah tidak akan muncul.
+            });
+
+            // (Opsional) Tutup modal jika klik di luar area box
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

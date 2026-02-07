@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DATZON X-DESIGN - Download</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* --- PALET WARNA MODERN --- */
+      --primary: #3b82f6; /* Biru yang lebih fresh */
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --success: #10b981;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning: #f59e0b;
+      
+      /* Mode Gelap (Default) - Deep Space Blue */
+      --bg-dark: #0f172a;
+      --bg-gradient-dark: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+      --card-bg-dark: rgba(30, 41, 59, 0.7);
+      --card-border-dark: rgba(255, 255, 255, 0.08);
+      --text-primary-dark: #f1f5f9;
+      --text-secondary-dark: #94a3b8;
+      --btn-text-dark: #ffffff;
+      --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+      /* Mode Terang - Clean White/Gray */
+      --bg-light: #f8fafc;
+      --bg-gradient-light: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+      --card-bg-light: rgba(255, 255, 255, 0.85);
+      --card-border-light: rgba(0, 0, 0, 0.05);
+      --text-primary-light: #1e293b;
+      --text-secondary-light: #64748b;
+      --btn-text-light: #ffffff;
+      --shadow-light: 0 10px 25px rgba(148, 163, 184, 0.15);
+
+      /* Inisialisasi Variable */
+      --bg: var(--bg-dark);
+      --bg-gradient: var(--bg-gradient-dark);
+      --card-bg: var(--card-bg-dark);
+      --card-border: var(--card-border-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --shadow: var(--shadow-dark);
+    }
+    
+    body.light-mode {
+      --bg: var(--bg-light);
+      --bg-gradient: var(--bg-gradient-light);
+      --card-bg: var(--card-bg-light);
+      --card-border: var(--card-border-light);
+      --text-primary: var(--text-primary-light);
+      --text-secondary: var(--text-secondary-light);
+      --shadow: var(--shadow-light);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding-bottom: 60px;
+    }
+    
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding: 10px 5px;
+    }
+    
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    
+    .logo { 
+      width: 56px; 
+      height: 56px; 
+      background: var(--primary-gradient); 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff; 
+      font-size: 22px; 
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    h1 a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+    h1 a:hover { color: var(--primary); }
+    
+    .subtitle { font-size: 13px; color: var(--text-secondary); display: block; margin-top: 4px; }
+
+    /* NOTICE BOX */
+    .notice {
+      background: rgba(245, 158, 11, 0.1);
+      padding: 16px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--text-primary);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      backdrop-filter: blur(5px);
+    }
+    .notice strong { color: var(--warning); display: block; margin-bottom: 4px; }
+
+    /* GRID VERSI */
+    .versions { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+      gap: 32px; 
+      margin-top: 20px; 
+      margin-bottom: 32px;
+    }
+    
+    .version { 
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 24px; 
+      border-radius: 20px; 
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .version:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15); /* Bayangan lebih dalam saat hover */
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .version h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .version p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* TOMBOL DOWNLOAD */
+    .downloads { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-top: auto; 
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 50px; /* Pill Shape */
+      background: var(--primary-gradient);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      outline: none;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      filter: brightness(1.1);
+    }
+    
+    .btn:active { transform: scale(0.98); }
+    .btn[disabled] { opacity: 0.7; cursor: wait; background: var(--text-secondary); box-shadow: none; pointer-events: none; }
+
+    /* FOOTER */
+    footer { 
+      margin-top: 40px; 
+      text-align: center;
+      color: var(--text-secondary); 
+      font-size: 13px; 
+      padding: 20px;
+      border-top: 1px solid var(--card-border);
+    }
+    footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    
+    /* SWITCH TOGGLE MODERN */
+    .switch { position: relative; display: inline-block; width: 54px; height: 30px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: .4s;
+      border-radius: 34px;
+    }
+    body.light-mode .slider { background-color: #cbd5e1; border-color: #cbd5e1; }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 4px; bottom: 3px;
+      background-color: #fff;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider { background-color: var(--primary); border-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* FAB (Floating Button) */
+    .fab {
+      position: fixed;
+      bottom: 25px; right: 25px;
+      width: 60px; height: 60px;
+      background: var(--primary-gradient);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .fab:hover { transform: scale(1.1) rotate(5deg); }
+
+    /* NOTIFIKASI PROMO */
+    .promo-notification {
+      position: fixed;
+      bottom: 30px; right: 100px; /* Sebelah FAB */
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    body.light-mode .promo-notification { background: rgba(255,255,255,0.95); color: #0f172a; border-color: rgba(0,0,0,0.05); }
+    
+    .promo-notification.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .promo-notification.hide { opacity: 0; transform: translateY(10px); }
+
+    /* ANIMASI MASUK */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-on-load { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
+
+    /* === QUEST MODAL STYLES === */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .modal-content {
+      background: var(--bg);
+      border: 1px solid var(--card-border);
+      width: 90%;
+      max-width: 400px;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      transform: scale(0.9);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+      position: relative;
+    }
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+    
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    
+    .quest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .quest-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    body.light-mode .quest-btn { background: rgba(0,0,0,0.03); }
+    
+    .quest-btn:hover { background: rgba(59, 130, 246, 0.1); border-color: var(--primary); }
+    
+    .quest-btn.completed {
+      background: var(--success-gradient);
+      color: white;
+      border: none;
+      cursor: default;
+    }
+    
+    .status-icon { font-size: 16px; }
+    
+    .modal-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .btn-cancel {
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 10px;
+    }
+    .btn-cancel:hover { color: var(--text-primary); text-decoration: underline; }
+
+    /* Loader for Verification */
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top: 3px solid #fff;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      .header-left h1 { font-size: 18px; }
+      .promo-notification {
+        right: 20px; left: 20px; bottom: 100px; width: auto; text-align: center;
+      }
+    }
+  </style>
+  
+  <script>
+    (function() {
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') { document.documentElement.classList.add('light-mode'); }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="">
+
+  <div class="container">
+    <header class="animate-on-load" style="animation-delay: 0.1s;">
+      <div class="header-left">
+        <div class="logo">DZ</div>
+        <div>
+          <h1><a id="yt-link" href="https://youtube.com/@dtzns?si=ZP7VCNBUlq16vkhi" target="_blank">DATZON X-DESIGN</a></h1>
+          <span class="subtitle">Official Download Page</span>
+        </div>
+      </div>
+      
+      <label class="switch" title="Ganti tema">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider round"></span>
+      </label>
+    </header>
+    
+    <div class="card-container animate-on-load" style="animation-delay: 0.2s;">
+      <div class="notice">
+        <strong>⚠️ IMPORTANT</strong>
+        Disarankan menggunakan versi terbaru karena sudah stabil, lebih optimal, dan performanya lebih baik. Kedua versi sudah Premium Lifetime Unlocked serta mendukung Unlimited UHD AI.
+Catatan: Jika muncul iklan saat proses download, silakan tekan Back / Kembali saja. Thanks.
+      </div>
+
+      <div style="text-align: center; margin: 30px 0;">
+        <p style="color: var(--text-secondary); font-size: 14px; max-width: 600px; margin: 0 auto;">
+          X-DESIGN is an AI video enhancer application, optimized and more efficient than regular WINK.
+        </p>
+      </div>
+
+      <div class="versions">
+        <!-- Version A -->
+        <div class="version">
+            <div>
+              <h3>🇨🇳 X-DESIGN v1.10.0 (OLD)</h3>
+              <p>Stable version, recommended for most devices, Premium Lifetime Unlocked, Unlimited UHD AI Enhancement, Stable Performance, All Features Unlocked, No Watermark.</p>
+            </div>
+            <div class="downloads">
+              <button class="btn" onclick="openQuestModal('https://sfl.gl/9UEYtw')">DOWNLOAD</button>
+            </div>
+        </div>
+      
+        <!-- Version B -->
+        <div class="version">
+            <div>
+              <h3>🔥 X-DESIGN v2.0.0 (TERBARU)</h3>
+              <p>Newer version with better performance, Premium Lifetime Unlocked, Unlimited UHD AI Processing, Faster Rendering, Improved Engine, All Features Unlocked, No Watermark.</p>
+            </div>
+            <div class="downloads">
+              <button class="btn" onclick="openQuestModal('https://sfl.gl/eyVYpBrB')">DOWNLOAD</button>
+            </div>
+        </div>
+      </div> 
+      
+      <footer class="animate-on-load" style="animation-delay: 0.3s;">
+        <p>Kesulitan melewati link SafeLinku/SafeFileku? <br>
+          <a href="https://youtu.be/gTUJfiU3pb0?si=Kp79XF6D36Yy06xV" target="_blank" rel="noopener noreferrer">
+            Tonton Tutorial Cara Download
+          </a>
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
+    🛒
+  </a>
+
+  <div class="promo-notification" id="promo-notif">
+    🔥 Alight Motion Premium Rp. 2K di sini!
+  </div>
+
+  <!-- QUEST MODAL -->
+  <div class="modal-overlay" id="quest-modal">
+    <div class="modal-content">
+      <div class="modal-title">Complete Tasks to Unlock Download</div>
+      
+      <div class="quest-list">
+        <!-- Quest 1 -->
+        <button class="quest-btn" id="quest1" onclick="handleQuest(this, 'https://youtu.be/XkLHiZnk5dA?si=UN95dW6mKt-BUkG4', 1)">
+          <span>▶️ Watch YouTube Video</span>
+          <span class="status-icon">⭕</span>
+        </button>
+        
+        <!-- Quest 2 -->
+        <button class="quest-btn" id="quest2" onclick="handleQuest(this, 'https://youtube.com/@dtzns?si=ZP7VCNBUlq16vkhi', 2)">
+          <span>🔔 Subscribe Channel</span>
+          <span class="status-icon">⭕</span>
+        </button>
+        
+        <!-- Quest 3 -->
+        <button class="quest-btn" id="quest3" onclick="handleQuest(this, 'https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j', 3)">
+          <span>💬 Join WhatsApp</span>
+          <span class="status-icon">⭕</span>
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn" id="btn-verify" style="display: none;" onclick="handleVerify()">VERIFY</button>
+        <button class="btn-cancel" onclick="closeQuestModal()">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Variables
+    let currentDownloadUrl = '';
+    let questStatus = { 1: false, 2: false, 3: false };
+
+    // --- Modal Logic ---
+    function openQuestModal(url) {
+      currentDownloadUrl = url;
+      // Reset Quests UI
+      questStatus = { 1: false, 2: false, 3: false };
+      resetQuestButton(document.getElementById('quest1'), '▶️ Watch YouTube Video');
+      resetQuestButton(document.getElementById('quest2'), '🔔 Subscribe Channel');
+      resetQuestButton(document.getElementById('quest3'), '💬 Join WhatsApp');
+      
+      document.getElementById('btn-verify').style.display = 'none';
+      document.getElementById('btn-verify').innerHTML = 'VERIFY';
+      document.getElementById('btn-verify').classList.remove('complete');
+      document.getElementById('btn-verify').disabled = false;
+      document.getElementById('btn-verify').onclick = handleVerify;
+
+      // Show Modal
+      document.getElementById('quest-modal').classList.add('active');
+    }
+
+    function closeQuestModal() {
+      document.getElementById('quest-modal').classList.remove('active');
+    }
+
+    function resetQuestButton(btn, text) {
+      btn.classList.remove('completed');
+      btn.disabled = false;
+      btn.innerHTML = `<span>${text}</span><span class="status-icon">⭕</span>`;
+    }
+
+    function handleQuest(btn, link, id) {
+      if (questStatus[id]) return;
+
+      // Open Link
+      window.open(link, '_blank');
+
+      // Start Countdown
+      btn.disabled = true;
+      let countdown = 5;
+      const originalText = btn.querySelector('span').innerText;
+      
+      const timer = setInterval(() => {
+        btn.querySelector('span').innerText = `Completing in ${countdown}s...`;
+        countdown--;
+
+        if (countdown < 0) {
+          clearInterval(timer);
+          markQuestComplete(btn, originalText);
+          questStatus[id] = true;
+          checkAllQuests();
+        }
+      }, 1000);
+    }
+
+    function markQuestComplete(btn, originalText) {
+      btn.classList.add('completed');
+      btn.innerHTML = `<span>${originalText}</span><span class="status-icon">✅</span>`;
+    }
+
+    function checkAllQuests() {
+      if (questStatus[1] && questStatus[2] && questStatus[3]) {
+        // Show Verify Button with animation
+        const verifyBtn = document.getElementById('btn-verify');
+        verifyBtn.style.display = 'flex';
+        verifyBtn.classList.add('animate-on-load');
+      }
+    }
+
+    // --- Verify & Download Logic ---
+    function handleVerify() {
+      const btn = document.getElementById('btn-verify');
+      const verifyUrl = 'https://vt.tokopedia.com/t/ZS91HvcY1TUsh-AEdDE/';
+      
+      // Open Tokopedia
+      window.open(verifyUrl, '_blank');
+
+      // Start Verification Spinner
+      btn.disabled = true;
+      let countdown = 5;
+      
+      const timer = setInterval(() => {
+        btn.innerHTML = `<div class="spinner"></div> Verifying... ${countdown}s`;
+        countdown--;
+
+        if (countdown < 0) {
+          clearInterval(timer);
+          enableFinalDownload(btn);
+        }
+      }, 1000);
+    }
+
+    function enableFinalDownload(btn) {
+      btn.disabled = false;
+      btn.classList.add('complete'); // Uses green style
+      btn.innerHTML = '⬇️ UNDUH SEKARANG';
+      
+      // Change onclick to redirect to final link
+      btn.onclick = function() {
+        window.location.href = currentDownloadUrl;
+      };
+    }
+
+    // --- Existing Theme & Promo Logic ---
+    document.addEventListener('DOMContentLoaded', function() {
+      // Logic Tema
+      const themeToggle = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        if(themeToggle) themeToggle.checked = true;
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+      }
+      
+      // Logic Promo
+      const promoNotif = document.getElementById('promo-notif');
+      if (promoNotif) {
+        function cyclePromo() {
+          promoNotif.classList.remove('hide');
+          promoNotif.classList.add('show');
+          
+          setTimeout(() => {
+            promoNotif.classList.remove('show');
+            promoNotif.classList.add('hide');
+          }, 5000);
+        }
+        setTimeout(cyclePromo, 2000);
+        setInterval(cyclePromo, 20000); 
+      }
+    });
+  </script>
+</body>
+</html>
+

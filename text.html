@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Login WINK Premium Original</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- RESET & VARIABLES --- */
+        :root {
+            --primary-color: #6c5ce7; /* Tetap ungu modern */
+            --success-color: #00b894;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-secondary: #636e72;
+            --border-radius: 20px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* REVISI: Font diubah ke Quicksand */
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 500; /* Quicksand sedikit lebih tipis, jadi kita tebalkan sedikit defaultnya */
+        }
+
+        /* --- LAYOUT CONTAINER --- */
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* --- HEADER --- */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 20px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* --- CARD STYLE --- */
+        .step-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            
+            /* Animasi Awal */
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .step-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- STEP NUMBER --- */
+        .step-badge {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 50px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step-badge.final {
+            background-color: var(--success-color);
+        }
+        
+        .step-badge.help {
+            background-color: #0984e3; /* Warna biru untuk info */
+        }
+
+        /* --- TYPOGRAPHY IN CARD --- */
+        .step-title {
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .step-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        .step-desc strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .help-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #0984e3;
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 2px solid #0984e3;
+            padding-bottom: 2px;
+            transition: opacity 0.3s;
+        }
+
+        .help-link:hover {
+            opacity: 0.7;
+        }
+
+        /* --- IMAGE STYLE --- */
+        .image-container {
+            width: 100%;
+            position: relative;
+            padding-top: 177.77%; /* Rasio 9:16 */
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #eee;
+            margin: 0 auto;
+        }
+
+        .step-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .step-card:hover .step-img {
+            transform: scale(1.02);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            font-size: 13px;
+            color: #b2bec3;
+            font-weight: 600;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 400px) {
+            h1 { font-size: 20px; }
+            .container { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>TUTORIAL LOGIN WINK<br>PREMIUM ORIGINAL</h1>
+            <p class="subtitle">Panduan Lengkap Aktivasi Premium</p>
+        </header>
+
+        <main id="tutorial-feed">
+            
+            <div class="step-card">
+                <span class="step-badge">Langkah 1</span>
+                <h2 class="step-title">Hapus Aplikasi Lama</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/4g5ckcQJ/Proyek-Baru-14-FC74943.png" alt="Hapus Aplikasi" class="step-img">
+                </div>
+                <p class="step-desc">Hapus aplikasi WINK terlebih dahulu jika sudah terpasang di perangkat Anda.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 2</span>
+                <h2 class="step-title">Ganti Akun Play Store</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/bg3nHbff/Proyek-Baru-14-1-F0911-A.png" alt="Ganti Akun Play Store" class="step-img">
+                </div>
+                <p class="step-desc">Sebelum mendownload WINK, wajib mengganti akun Google Play Store ke akun yang sudah dipremiumkan.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 3</span>
+                <h2 class="step-title">Download Aplikasi WINK</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/RGTX1QYV/Proyek-Baru-14-74-F6200.png" alt="Download Wink" class="step-img">
+                </div>
+                <p class="step-desc">Jika akun Play Store sudah diganti, silakan langsung download aplikasi WINK.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 4</span>
+                <h2 class="step-title">Buka Menu Saya</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/wFcJTz7K/Proyek-Baru-14-17-A241-F.png" alt="Menu Saya" class="step-img">
+                </div>
+                <p class="step-desc">Buka aplikasi WINK, lalu klik menu <strong>‘Saya’</strong> di bagian bawah. Setelah itu, masuk menggunakan akun Google.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 5</span>
+                <h2 class="step-title">Login Akun Google</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/bM9LRtVS/Proyek-Baru-14-431981-B.png" alt="Login Akun" class="step-img">
+                </div>
+                <p class="step-desc">Login menggunakan akun Google yang sudah dipremiumkan.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge final">SELESAI</span>
+                <h2 class="step-title">✅ Done Premium</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/j2kB0NC/Proyek-Baru-14-ABEA3-A8.png" alt="Done Premium" class="step-img">
+                </div>
+                <p class="step-desc">Done WINK Anda sudah premium dan siap digunakan. Silahkan kirim bukti dengan screenshot seperti di foto, ke admin ya.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge final">ADA PROBLEM?</span>
+                <h2 class="step-title"></h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/N6fW4hsf/Proyek-Baru-08-FE91-C.png" alt="Problem" class="step-img">
+                </div>
+                <p class="step-desc">Belum Langganan? Scrol ke bawah lagi ya</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 1</span>
+                <h2 class="step-title">Klik Langganan Sekarang</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/wh1CdH0B/Proyek-Baru-0-D8-F282.png" alt="Langganan Sekarang" class="step-img">
+                </div>
+                <p class="step-desc">Kalian Klik Langganan Sekarang ya</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 2</span>
+                <h2 class="step-title">Klik Pulihkan Pembelian</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/cPqSQX5/Proyek-Baru-D817066.png" alt="Pulihkan Pembelian" class="step-img">
+                </div>
+                <p class="step-desc">Nah Kalau kalian dah klik Langganan Sekarang, Bakalan muncul seperti di foto lalu kalian klik Pulihkan Pembelian ya.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge">Langkah 3</span>
+                <h2 class="step-title">Cek Premium</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/WvHqjVJ6/Proyek-Baru-D596-B6-A.png" alt="Cek Premium" class="step-img">
+                </div>
+                <p class="step-desc">Kalau sudah Pulihkan Pembelian, Kalian cek lagi seperti di foto apakah sudah muncul Tulisan Please add Manfaat nya ya, Jika sudah muncul tandanya sudah Premium.</p>
+            </div>
+
+            <div class="step-card">
+                <span class="step-badge final">PROBLEM LAGI?</span>
+                <h2 class="step-title">Durasi Tidak Sesuai Min</h2>
+                <div class="image-container">
+                    <img src="https://i.ibb.co.com/ymjg2bHR/Proyek-Baru-6-AC67-E6.png" alt="Done Premium" class="step-img">
+                </div>
+                <p class="step-desc">IYA, KARENA SISTEM RENEW, JADI SETELAH DURASI PREMIUM 7 HARI HABIS SILAKAN CHAT MIMIN UNTUK PERPANJANG, LALU BUAT AKUN WINK FRESH/BARU DAN KIRIM EMAIL + PASSWORD KE MIMIN YA, PROSES INI DIULANG SAMPAI 1 BULAN TANPA BIAYA TAMBAHAN KARENA SUDAH TERMASUK HARGA AWAL.</p>
+            </div>
+
+            
+            
+
+        </main>
+
+        <footer>
+            &copy; 2024 Tutorial Wink Premium
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cards = document.querySelectorAll('.step-card');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 50); 
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Login Alight Motion - DATZON</title>
+    <style>
+        /* =========================================
+           GLOBAL VARIABLES & THEME
+           ========================================= */
+        :root {
+            /* Colors */
+            --bg-body-light: #f8f9fa;
+            --bg-body-dark: #121212;
+            
+            --step-bg-light: #ffffff;
+            --step-bg-dark: #1e1e1e;
+            
+            --text-main-light: #333333;
+            --text-main-dark: #f0f0f0;
+            
+            --text-desc-light: #666666;
+            --text-desc-dark: #cccccc;
+            
+            --header-bg-light: rgba(255, 255, 255, 0.95);
+            --header-bg-dark: rgba(30, 30, 30, 0.95);
+            
+            --accent-color: #00d2ff;
+            --border-light: #e0e0e0;
+            --border-dark: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body-light);
+            color: var(--text-main-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.dark {
+            background-color: var(--bg-body-dark);
+            color: var(--text-main-dark);
+        }
+
+        /* =========================================
+           HEADER SECTION (NEW)
+           ========================================= */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--header-bg-light);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        body.dark header {
+            background-color: var(--header-bg-dark);
+            border-bottom: 1px solid var(--border-dark);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* BRAND LOGO */
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-main-light);
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #00d2ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* CONTROLS (RIGHT SIDE) */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* DARK MODE TOGGLE (SWITCH STYLE) */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            width: 46px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 3px;
+            content: "";
+            height: 18px;
+            left: 3px;
+            position: absolute;
+            transition: .4s;
+            width: 18px;
+            border-radius: 50%;
+        }
+
+        /* Checked State (Dark Mode) */
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Icon inside toggle (optional visual cue) */
+        .mode-icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* LANGUAGE TOGGLE BUTTON */
+        .lang-btn {
+            background: none;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main-light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .lang-btn {
+            border-color: var(--border-dark);
+            color: var(--text-main-dark);
+        }
+
+        .lang-btn:hover {
+            background-color: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        /* =========================================
+           TUTORIAL SECTION STYLES (EXISTING)
+           ========================================= */
+        .tutorial-section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .step-card {
+            background: var(--step-bg-light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            opacity: 0; /* Awal hidden untuk animasi */
+            transform: translateY(30px);
+            animation: none; 
+        }
+
+        body.dark .step-card {
+            background: var(--step-bg-dark);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .step-image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 177.77%; /* 9:16 Ratio */
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #eee;
+            margin-bottom: 20px;
+        }
+
+        .step-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .step-card:hover .step-image {
+            transform: scale(1.05);
+        }
+
+        .step-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main-light);
+        }
+        
+        body.dark .step-content h3 {
+            color: var(--text-main-dark);
+        }
+
+        .step-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-desc-light);
+        }
+
+        body.dark .step-content p {
+            color: var(--text-desc-dark);
+        }
+
+        /* Language Logic (CSS Only) */
+        .lang-en {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .lang-id {
+            display: block;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        /* If body has 'lang-english' */
+        body.lang-english .lang-id {
+            display: none;
+            opacity: 0;
+        }
+
+        body.lang-english .lang-en {
+            display: block;
+            animation: fadeInText 0.5s forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scroll Animation */
+        .step-card.visible {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         HEADER (BARU)
+         ========================================= -->
+    <header>
+        <!-- 1. BRAND -->
+        <a href="https://youtube.com/@informatifdata" target="_blank" class="brand-logo" title="Kunjungi Youtube">
+            DATZON
+        </a>
+
+        <div class="header-controls">
+            <!-- 2. DARK MODE TOGGLE -->
+            <div class="theme-switch-wrapper">
+                <!-- Icon Matahari/Bulan sebagai petunjuk visual (opsional) -->
+                <span id="mode-label" style="font-size: 1.2rem; margin-right: 8px;">☀️</span>
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider"></div>
+                </label>
+            </div>
+
+            <!-- 3. LANGUAGE TOGGLE -->
+            <button id="lang-toggle-btn" class="lang-btn">
+                <span class="flag">🇮🇩</span>
+                <span class="lang-text">ID</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================
+         TUTORIAL CONTENT (EXISTING)
+         ========================================= -->
+    <main class="tutorial-section">
+        <div class="steps-grid">
+
+            <!-- LANGKAH 1 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/Sw6sqkt0/Screenshot-20260109-151154.jpg" alt="Buka Profil" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 1: Buka Profil Alight Motion</h3>
+                        <p>Buka aplikasi Alight Motion, lalu masuk ke menu Profil yang berada di pojok kanan atas layar.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 1: Open Alight Motion Profile</h3>
+                        <p>Open the Alight Motion application, then go to the Profile menu located at the top right corner of the screen.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LANGKAH 2 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/pvrPtS3N/Screenshot-20260109-151158.jpg" alt="Connect Main Server" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 2: Hubungkan ke Main Server</h3>
+                        <p>Jika muncul notifikasi Alight Motion Container, pilih opsi Main Server lalu klik tombol Connect untuk menghubungkan ke server.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 2: Connect to Main Server</h3>
+                        <p>If the Alight Motion Container notification appears, select Main Server and tap the Connect button.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LANGKAH 3 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/gFbSjRcH/Screenshot-20260109-151208.jpg" alt="Tunggu Koneksi" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 3: Tunggu Proses Koneksi</h3>
+                        <p>Tunggu beberapa saat hingga proses penghubungan ke server selesai. Pastikan koneksi berjalan dengan normal.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 3: Wait for Server Connection</h3>
+                        <p>Please wait a few moments while the app connects to the server. Make sure the connection is successful.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LANGKAH 4 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/SwvNgN4d/Screenshot-20260109-151223.jpg" alt="Restart Aplikasi" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 4: Restart Aplikasi</h3>
+                        <p>Jika muncul notifikasi seperti pada gambar, klik Restart Sekarang untuk memulai ulang aplikasi Alight Motion.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 4: Restart the Application</h3>
+                        <p>When a notification like the one shown in the image appears, tap Restart Now to restart the application.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LANGKAH 5 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/ccNqgh6b/Screenshot-20260109-151244.jpg" alt="Masuk Profil Lagi" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 5: Masuk Kembali ke Profil</h3>
+                        <p>Buka kembali aplikasi Alight Motion dan masuk lagi ke menu Profil. Jika muncul notifikasi tambahan, klik Cancel saja.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 5: Open Profile Again</h3>
+                        <p>Open Alight Motion again and go back to the Profile menu. If another notification appears, simply tap Cancel.</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- LANGKAH 6 -->
+            <article class="step-card">
+                <div class="step-image-wrapper">
+                    <img src="https://i.ibb.co.com/xKsTQqzd/Screenshot-20260109-151247.jpg" alt="Premium Aktif" class="step-image">
+                </div>
+                <div class="step-content">
+                    <div class="lang-id">
+                        <h3>Langkah 6: Premium Berhasil Aktif</h3>
+                        <p>Selamat! Alight Motion kamu sudah berhasil menjadi Premium. Semua fitur premium kini dapat digunakan.</p>
+                    </div>
+                    <div class="lang-en">
+                        <h3>Step 6: Premium Activated Successfully</h3>
+                        <p>Congratulations! Your Alight Motion is now Premium. Enjoy all premium features.</p>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT LOGIC
+         ========================================= -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // --- 1. DARK MODE LOGIC ---
+            const toggleSwitch = document.querySelector('#checkbox');
+            const modeLabel = document.querySelector('#mode-label');
+            const currentTheme = localStorage.getItem('theme');
+
+            // Cek LocalStorage saat load
+            if (currentTheme) {
+                document.body.classList.add(currentTheme);
+                if (currentTheme === 'dark') {
+                    toggleSwitch.checked = true;
+                    modeLabel.textContent = '🌙'; // Icon Bulan
+                }
+            }
+
+            function switchTheme(e) {
+                if (e.target.checked) {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    modeLabel.textContent = '🌙';
+                } else {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    modeLabel.textContent = '☀️';
+                }
+            }
+            toggleSwitch.addEventListener('change', switchTheme);
+
+
+            // --- 2. LANGUAGE SWITCHER LOGIC ---
+            const langBtn = document.getElementById('lang-toggle-btn');
+            const langFlag = langBtn.querySelector('.flag');
+            const langText = langBtn.querySelector('.lang-text');
+
+            langBtn.addEventListener('click', () => {
+                document.body.classList.toggle('lang-english');
+                
+                // Ubah Icon Tombol
+                if (document.body.classList.contains('lang-english')) {
+                    langFlag.textContent = '🇬🇧';
+                    langText.textContent = 'EN';
+                } else {
+                    langFlag.textContent = '🇮🇩';
+                    langText.textContent = 'ID';
+                }
+            });
+
+
+            // --- 3. ANIMASI SCROLL (EXISTING) ---
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const steps = document.querySelectorAll('.step-card');
+            steps.forEach(step => observer.observe(step));
+        });
+    </script>
+
+</body>
+</html>
+

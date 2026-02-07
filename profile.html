@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA HORIZON - Profile</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ============================
+           VARIABLES & RESET
+           ============================ */
+        :root {
+            /* Light Mode (Default) */
+            --bg-color: #f0f2f5;
+            --text-main: #1a1a1a;
+            --text-sub: #555555;
+            --card-bg: #ffffff;
+            --card-border: rgba(0, 0, 0, 0.05);
+            --primary-glow: rgba(0, 0, 0, 0.1);
+            --accent-color: #333333;
+            --toggle-bg: #e0e0e0;
+            --toggle-circle: #ffffff;
+            --shadow-soft: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            --header-blur: rgba(240, 242, 245, 0.85);
+        }
+
+        body.dark-mode {
+            /* Dark Mode */
+            --bg-color: #0b0f19; /* Deep dark blue-black */
+            --text-main: #ffffff;
+            --text-sub: #b0b8c4;
+            --card-bg: #161b28;
+            --card-border: rgba(255, 255, 255, 0.05);
+            --primary-glow: rgba(99, 102, 241, 0.4); /* Soft Purple/Blue Glow */
+            --accent-color: #6366f1;
+            --toggle-bg: #2d3748;
+            --toggle-circle: #6366f1;
+            --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+            --header-blur: rgba(11, 15, 25, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ============================
+           HEADER
+           ============================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--header-blur);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--card-border);
+            transition: background 0.5s ease;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Toggle Switch */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 26px;
+            position: relative;
+            width: 50px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: var(--toggle-bg);
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: var(--toggle-circle);
+            bottom: 3px;
+            content: "";
+            height: 20px;
+            left: 3px;
+            position: absolute;
+            transition: .4s;
+            width: 20px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--toggle-bg); 
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* ============================
+           MAIN CONTAINER
+           ============================ */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 500px; /* Mobile-focused width */
+            margin: 80px auto 40px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        /* ============================
+           PROFILE SECTION
+           ============================ */
+        .profile-section {
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .profile-img-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px auto;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--card-bg);
+            box-shadow: 0 0 25px var(--primary-glow);
+            animation: float 6s ease-in-out infinite;
+            transition: border-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-desc {
+            font-size: 0.95rem;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            white-space: pre-line; /* Respects line breaks in HTML */
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-link {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2);
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Specific Brand Colors on Hover (Optional, keeping it clean for now or enabling via class) */
+        .social-link.fa-youtube:hover { color: #FF0000; }
+        .social-link.fa-whatsapp:hover { color: #25D366; }
+        .social-link.fa-tiktok:hover { color: var(--text-main); text-shadow: 2px 2px 0px #00f2ea, -2px -2px 0px #ff0050; }
+
+        /* ============================
+           CARDS SECTION
+           ============================ */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .link-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 18px 25px;
+            border-radius: 50px; /* Pill Shape */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            
+            /* Animation Setup */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUpFade 0.6s ease forwards;
+        }
+
+        /* Staggered Delay for Cards */
+        .link-card:nth-child(1) { animation-delay: 0.1s; }
+        .link-card:nth-child(2) { animation-delay: 0.2s; }
+        .link-card:nth-child(3) { animation-delay: 0.3s; }
+        .link-card:nth-child(4) { animation-delay: 0.4s; }
+        .link-card:nth-child(5) { animation-delay: 0.5s; }
+        .link-card:nth-child(6) { animation-delay: 0.6s; }
+        .link-card:nth-child(7) { animation-delay: 0.7s; }
+
+        .link-card:hover {
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 5px 20px var(--primary-glow);
+            border-color: var(--primary-glow);
+        }
+
+        .link-text {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-main);
+            z-index: 2;
+        }
+
+        .link-icon {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover .link-icon {
+            transform: translateX(5px);
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUpFade {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================
+           FOOTER
+           ============================ */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            opacity: 0.7;
+            margin-top: auto;
+        }
+
+        /* ============================
+           MEDIA QUERIES
+           ============================ */
+        @media (max-width: 400px) {
+            .profile-name { font-size: 1.3rem; }
+            .link-card { padding: 16px 20px; }
+            .link-text { font-size: 0.95rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand-text">PROFILE</div>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider"></div>
+            </label>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Profile Info -->
+        <div class="profile-section">
+            <div class="profile-img-container">
+                <img src="https://i.ibb.co.com/Y7DScK4D/quality-restoration-20251018223600821-1.png" alt="Profile" class="profile-img">
+            </div>
+            <h1 class="profile-name">DATA HORIZON</h1>
+            <p class="profile-desc">Hanya ingin berbagi,
+            Kepada yang membutuhkan,
+            Terimakasih.</p>
+            
+            <div class="social-icons">
+                <a href="https://youtube.com/@dtzns?si=hBUF12R_uGn19Tky" target="_blank" class="social-link fa-brands fa-youtube"></a>
+                <a href="https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j" target="_blank" class="social-link fa-brands fa-whatsapp"></a>
+                <a href="https://www.tiktok.com/@datzonn?_r=1&_t=ZS-93KMShG9AdY" target="_blank" class="social-link fa-brands fa-tiktok"></a>
+            </div>
+        </div>
+
+        <!-- Links List -->
+        <div class="links-container">
+            <!-- 1. Store -->
+            <a href="https://dazon.web.app/store.html" target="_blank" class="link-card">
+                <span class="link-text">Store</span>
+                <i class="fa-solid fa-arrow-right link-icon"></i>
+            </a>
+
+            <!-- 2. Aplikasi MOD -->
+            <a href="https://datahorizonmodz.github.io/download/" target="_blank" class="link-card">
+                <span class="link-text">Aplikasi MOD</span>
+                <i class="fa-solid fa-download link-icon"></i>
+            </a>
+
+            <!-- 3. Wink MOD -->
+            <a href="https://datahorizonmodz.github.io/download/wink.html" target="_blank" class="link-card">
+                <span class="link-text">Wink MOD</span>
+                <i class="fa-solid fa-arrow-right link-icon"></i>
+            </a>
+
+            <!-- 4. Alight Motion MOD -->
+            <a href="https://datahorizonmodz.github.io/download/am.html" target="_blank" class="link-card">
+                <span class="link-text">Alight Motion MOD</span>
+                <i class="fa-solid fa-arrow-right link-icon"></i>
+            </a>
+
+            <!-- 5. Ultra Motion MOD -->
+            <a href="https://datahorizonmodz.github.io/download/um.html" target="_blank" class="link-card">
+                <span class="link-text">Ultra Motion MOD</span>
+                <i class="fa-solid fa-arrow-right link-icon"></i>
+            </a>
+
+            <!-- 6. Alight Motion Premium 2K -->
+            <a href="https://wa.link/135em6" target="_blank" class="link-card">
+                <span class="link-text">Alight Motion Premium 2K</span>
+                <i class="fa-brands fa-whatsapp link-icon"></i>
+            </a>
+
+            <!-- 7. Wink Premium 4K -->
+            <a href="https://wa.link/avgwkw" target="_blank" class="link-card">
+                <span class="link-text">Wink Premium 4K</span>
+                <i class="fa-brands fa-whatsapp link-icon"></i>
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2026 Data Horizon — All Rights Reserved
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Select toggle switch and body
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const body = document.body;
+
+        // Function to set theme
+        function switchTheme(e) {
+            if (e.target.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Event Listener
+        toggleSwitch.addEventListener('change', switchTheme);
+
+        // Check Local Storage on load
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            if (currentTheme === 'dark') {
+                body.classList.add('dark-mode');
+                toggleSwitch.checked = true;
+            }
+        }
+    </script>
+</body>
+</html>
+

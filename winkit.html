@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>DATZON WINKIT - Download</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* --- PALET WARNA MODERN --- */
+      --primary: #3b82f6;
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --success: #10b981;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning: #f59e0b;
+      
+      /* Mode Gelap (Default) */
+      --bg-dark: #0f172a;
+      --bg-gradient-dark: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+      --card-bg-dark: rgba(30, 41, 59, 0.7);
+      --card-border-dark: rgba(255, 255, 255, 0.08);
+      --text-primary-dark: #f1f5f9;
+      --text-secondary-dark: #94a3b8;
+      --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+      /* Mode Terang */
+      --bg-light: #f8fafc;
+      --bg-gradient-light: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+      --card-bg-light: rgba(255, 255, 255, 0.85);
+      --card-border-light: rgba(0, 0, 0, 0.05);
+      --text-primary-light: #1e293b;
+      --text-secondary-light: #64748b;
+      --shadow-light: 0 10px 25px rgba(148, 163, 184, 0.15);
+
+      /* Variable Aktif */
+      --bg: var(--bg-dark);
+      --bg-gradient: var(--bg-gradient-dark);
+      --card-bg: var(--card-bg-dark);
+      --card-border: var(--card-border-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --shadow: var(--shadow-dark);
+    }
+    
+    body.light-mode {
+      --bg: var(--bg-light);
+      --bg-gradient: var(--bg-gradient-light);
+      --card-bg: var(--card-bg-light);
+      --card-border: var(--card-border-light);
+      --text-primary: var(--text-primary-light);
+      --text-secondary: var(--text-secondary-light);
+      --shadow: var(--shadow-light);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      transition: background 0.4s ease, color 0.4s ease;
+      overflow-x: hidden; /* Mencegah horizontal scroll */
+    }
+
+    /* Utilitas Blur untuk konten saat popup muncul */
+    body.blurred > *:not(#password-overlay) {
+      filter: blur(5px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding-bottom: 80px; /* Tambah padding bawah agar FAB tidak menutupi konten */
+    }
+    
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding: 10px 5px;
+    }
+    
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    
+    .logo { 
+      width: 56px; 
+      height: 56px; 
+      background: var(--primary-gradient); 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff; 
+      font-size: 22px; 
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      flex-shrink: 0;
+    }
+    
+    h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
+    h1 a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+    h1 a:hover { color: var(--primary); }
+    
+    .subtitle { font-size: 13px; color: var(--text-secondary); display: block; margin-top: 4px; }
+
+    /* NOTICE BOX */
+    .notice {
+      background: rgba(245, 158, 11, 0.1);
+      padding: 16px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--text-primary);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      backdrop-filter: blur(5px);
+    }
+    .notice strong { color: var(--warning); display: block; margin-bottom: 4px; }
+
+    /* GRID VERSI - Optimized for Mobile */
+    .versions { 
+      display: grid; 
+      /* Ubah minmax 320px ke 280px agar aman di HP kecil */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+      gap: 24px; 
+      margin-top: 20px; 
+      margin-bottom: 32px;
+    }
+    
+    .version { 
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 24px; 
+      border-radius: 20px; 
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .version:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .version h3 { margin: 0 0 10px 0; font-size: 18px; color: var(--primary); }
+    .version p { margin: 0 0 20px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* TOMBOL DOWNLOAD */
+    .downloads { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 50px;
+      background: var(--primary-gradient);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Quicksand', sans-serif;
+    }
+    
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4); filter: brightness(1.1); }
+    .btn:active { transform: scale(0.98); }
+    .btn[disabled] { opacity: 0.7; cursor: wait; background: var(--text-secondary); box-shadow: none; transform: none; }
+    .btn.complete { background: var(--success-gradient); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+
+    /* LIST STYLE */
+    .app-info-list { padding-left: 20px; margin: 0; }
+    .app-info-list li { margin-bottom: 8px; color: var(--text-primary); font-size: 13px; }
+
+    /* FOOTER */
+    footer { 
+      margin-top: 40px; 
+      text-align: center;
+      color: var(--text-secondary); 
+      font-size: 13px; 
+      padding: 20px;
+      border-top: 1px solid var(--card-border);
+    }
+    footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    
+    /* SWITCH TOGGLE */
+    .switch { position: relative; display: inline-block; width: 54px; height: 30px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);
+      transition: .4s; border-radius: 34px;
+    }
+    body.light-mode .slider { background-color: #cbd5e1; border-color: #cbd5e1; }
+    .slider:before {
+      position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 3px;
+      background-color: #fff; transition: .4s; border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider { background-color: var(--primary); border-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* FAB */
+    .fab {
+      position: fixed; bottom: 25px; right: 25px; width: 60px; height: 60px;
+      background: var(--primary-gradient); color: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; text-decoration: none;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      z-index: 1000; /* Z-Index standar */
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .fab:hover { transform: scale(1.1) rotate(5deg); }
+
+    /* NOTIFIKASI */
+    .promo-notification {
+      position: fixed; bottom: 30px; right: 100px;
+      background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1); color: #fff;
+      padding: 10px 20px; border-radius: 50px; font-size: 13px; font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 999;
+      opacity: 0; transform: translateY(20px); pointer-events: none;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body.light-mode .promo-notification { background: rgba(255,255,255,0.95); color: #0f172a; border-color: rgba(0,0,0,0.05); }
+    .promo-notification.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .promo-notification.hide { opacity: 0; transform: translateY(10px); }
+
+    /* =========================================
+       SYSTEM PASSWORD POPUP STYLES
+       ========================================= */
+    #password-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.85); /* Overlay gelap */
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 9999; /* Paling atas */
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    #password-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+
+    .password-card {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 32px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body.light-mode .password-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 50px rgba(148, 163, 184, 0.25);
+    }
+
+    #password-overlay.active .password-card {
+      transform: scale(1);
+    }
+
+    .password-icon {
+      font-size: 40px; margin-bottom: 16px; display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .password-card h2 {
+      margin: 0 0 8px 0; color: var(--text-primary); font-size: 20px;
+    }
+    
+    .password-card p {
+      margin: 0 0 24px 0; color: var(--text-secondary); font-size: 14px;
+    }
+
+    .input-group { position: relative; margin-bottom: 20px; }
+    
+    .password-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+      transition: all 0.3s;
+      font-family: 'Quicksand', sans-serif;
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    
+    body.light-mode .password-input {
+      background: rgba(0, 0, 0, 0.03); border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .password-input:focus {
+      border-color: var(--primary);
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+    
+    .password-input.error {
+      border-color: #ef4444;
+      animation: shake 0.4s ease-in-out;
+    }
+
+    .btn-group { display: flex; flex-direction: column; gap: 10px; }
+    
+    .btn-submit {
+      width: 100%; padding: 14px;
+      background: var(--primary-gradient);
+      color: white; border: none; border-radius: 12px;
+      font-weight: 700; cursor: pointer; font-size: 15px;
+      transition: all 0.2s;
+    }
+    .btn-submit:active { transform: scale(0.96); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--card-border);
+      padding: 12px; width: 100%; border-radius: 12px;
+      font-size: 13px; cursor: pointer; text-decoration: none;
+      display: inline-block; transition: all 0.2s;
+    }
+    .btn-secondary:hover { color: var(--primary); border-color: var(--primary); }
+
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-on-load { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
+
+    @media (max-width: 600px) {
+      .header-left h1 { font-size: 18px; }
+      .promo-notification {
+        right: 20px; left: 20px; bottom: 100px; width: auto; text-align: center;
+      }
+    }
+  </style>
+  
+  <script>
+    (function() {
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') { document.documentElement.classList.add('light-mode'); }
+      } catch (e) {}
+    })();
+  </script>
+  <!-- Iklan Tetap Dipertahankan -->
+  <script type='text/javascript' src='//pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js'></script>
+</head>
+<body>
+
+  <!-- ===============================
+       PASSWORD POPUP OVERLAY
+       =============================== -->
+  <div id="password-overlay">
+    <div class="password-card">
+      <span class="password-icon">🔐</span>
+      <h2>Masukkan Password</h2>
+      <p>Halaman ini diproteksi. Masukkan password untuk melanjutkan akses.</p>
+      
+      <div class="input-group">
+        <input type="password" id="pass-input" class="password-input" placeholder="******" autocomplete="off">
+      </div>
+      
+      <div class="btn-group">
+        <button id="btn-enter" class="btn-submit">BUKA AKSES</button>
+        <!-- Link placeholder ke Youtube sesuai permintaan -->
+        <a href="https://youtu.be/dummy-link-password" target="_blank" class="btn-secondary">LIHAT PASSWORD</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header class="animate-on-load" style="animation-delay: 0.1s;">
+      <div class="header-left">
+        <div class="logo">DZ</div>
+        <div>
+          <h1><a id="yt-link" href="https://youtube.com/@informatifdata?si=viFmGb0ReRhSiznE" target="_blank">DATZON WINKIT</a></h1>
+          <span class="subtitle">Klik judul untuk ke channel YouTube</span>
+        </div>
+      </div>
+      
+      <label class="switch" title="Ganti tema">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider round"></span>
+      </label>
+    </header>
+    
+    <div class="card-container animate-on-load" style="animation-delay: 0.2s;">
+      
+      <div class="notice">
+        <strong>⚠️ Perhatian</strong>
+        Saat mengklik tombol download akan diarahkan ke iklan. Jika muncul iklan atau halaman lain, <b>klik kembali/Back</b> lalu klik tombol download lagi (2x tap).
+      </div>
+
+      <div class="versions">
+        <div class="version">
+            <div>
+              <h3>🔥 WINKIT MOD V2.0.1</h3>
+              <p>
+                <small>Note: Kalau muncul notif Pengguna saat ini banyak pergi ke Tugas terkini lalu Hapus semua tugasnya, Jika sudah kalian bisa HD in lagi Foto/Video nya lagi.</small>
+              </p>
+            </div>
+            <div class="downloads">
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/Ew2MWIi" onclick="handleDownload(this)">DOWNLOAD</button>
+            </div>
+        </div>
+
+        <div class="version">
+            <div>
+              <h3>💾 WINKIT MOD V1.16.1</h3>
+              <p>
+                <small>Note: Kalau muncul notif Pengguna saat ini banyak pergi ke Tugas terkini lalu Hapus semua tugasnya, Jika sudah kalian bisa HD in lagi Foto/Video nya lagi.</small>
+              </p>
+            </div>
+            <div class="downloads">
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/FZqN" onclick="handleDownload(this)">DOWNLOAD</button>
+            </div>
+        </div>
+
+        <div class="version">
+            <div>
+              <h3>INFO MOD APK VERSI TERBARU</h3>
+              <div class="app-info">
+                <ul class="app-info-list">
+                  <li>Mendukung Resolusi Ekspor hingga 4K</li>
+                  <li>Bebas Iklan</li>
+                  <li>Tanpa Watermark</li>
+                  <li>Support AI HD</li>
+                  <li>No Limit</li>
+                  <li>Tanpa Login Akun</li>
+                  <li>Versi Terbaru MOD APK Optimized</li>
+                </ul>
+              </div>
+            </div>
+            </div>
+
+      </div> 
+      
+      <footer class="animate-on-load" style="animation-delay: 0.3s;">
+        <p>Catatan: Semua link menggunakan <i>SafeLinku</i> dan <i>SafeFileku</i>. <br>
+           Jika tidak punya skill untuk melewati link tersebut tonton:
+          <a href="https://youtu.be/gTUJfiU3pb0?si=Kp79XF6D36Yy06xV" target="_blank" rel="noopener noreferrer">
+            Tutorial Youtube ya
+          </a>, Thank You.
+        </p>
+      </footer>
+    </div>
+  </div>
+
+  <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
+    🛒
+  </a>
+
+  <div class="promo-notification" id="promo-notif">
+    🔥 Alight Motion Premium Rp. 4K di sini!
+  </div>
+
+  <script>
+    /* =========================================
+       SYSTEM PASSWORD LOGIC
+       ========================================= */
+    const PASSWORD_KEY = 'KITZON'; // Password Benar
+    const STORAGE_KEY = 'winkit_auth_time';
+    const SESSION_DURATION = 3600000; // 1 Jam dalam ms
+
+    const overlay = document.getElementById('password-overlay');
+    const passInput = document.getElementById('pass-input');
+    const btnEnter = document.getElementById('btn-enter');
+
+    function checkAuth() {
+      const lastAuth = localStorage.getItem(STORAGE_KEY);
+      const now = new Date().getTime();
+
+      // Cek apakah ada timestamp & apakah masih dalam durasi 1 jam
+      if (lastAuth && (now - parseInt(lastAuth) < SESSION_DURATION)) {
+        // Auth valid, hilangkan popup
+        overlay.classList.remove('active');
+        document.body.classList.remove('blurred');
+      } else {
+        // Auth expired atau belum ada, munculkan popup
+        overlay.classList.add('active');
+        document.body.classList.add('blurred');
+        passInput.focus();
+      }
+    }
+
+    function attemptLogin() {
+      const val = passInput.value.trim();
+      
+      if (val === PASSWORD_KEY) {
+        // Password Benar
+        const now = new Date().getTime();
+        localStorage.setItem(STORAGE_KEY, now);
+        
+        // Animasi keluar
+        overlay.style.opacity = '0';
+        overlay.style.transform = 'scale(1.1)'; // Efek zoom out dikit saat hilang
+        
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          document.body.classList.remove('blurred');
+          // Reset style inline agar bersih
+          overlay.style.opacity = '';
+          overlay.style.transform = '';
+        }, 300);
+        
+      } else {
+        // Password Salah
+        passInput.classList.add('error');
+        passInput.value = '';
+        passInput.placeholder = "Password Salah!";
+        setTimeout(() => passInput.classList.remove('error'), 400);
+      }
+    }
+
+    // Event Listeners Password
+    btnEnter.addEventListener('click', attemptLogin);
+    passInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') attemptLogin();
+    });
+    
+    // Mencegah close popup dengan escape atau klik luar (Wajib login)
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        passInput.focus();
+        passInput.classList.add('error');
+        setTimeout(() => passInput.classList.remove('error'), 400);
+      }
+    });
+
+    /* =========================================
+       EXISTING LOGIC (Download, Promo, Theme)
+       ========================================= */
+    function isBusy(btn) { return btn.getAttribute('data-busy') === '1'; }
+    function setBusy(btn, val) { btn.setAttribute('data-busy', val ? '1' : '0'); }
+
+    function handleDownload(btn) {
+      if (isBusy(btn)) return;
+      const adLink = btn.getAttribute('data-ad') || '#';
+      const dlLink = btn.getAttribute('data-dl') || '#';
+
+      try { window.open(adLink, '_blank'); } catch (e) { console.log('Iklan blocked', e); }
+
+      startCountdownOnButton(btn, dlLink, 10);
+    }
+
+    function startCountdownOnButton(btn, downloadUrl, seconds) {
+      setBusy(btn, true);
+      btn.disabled = true;
+      let s = seconds;
+      
+      btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
+      btn.style.background = "var(--text-secondary)";
+
+      const id = setInterval(() => {
+        s -= 1;
+        if (s > 0) {
+          btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
+        } else {
+          clearInterval(id);
+          const a = document.createElement('a');
+          a.className = 'btn complete';
+          a.href = downloadUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.innerHTML = '⬇️ Unduh Sekarang';
+          
+          btn.parentNode.replaceChild(a, btn);
+        }
+      }, 1000);
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Jalankan cek auth password dulu
+      checkAuth();
+
+      // 2. Logic Tema
+      const themeToggle = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        if(themeToggle) themeToggle.checked = true;
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+      }
+      
+      // 3. Logic Promo
+      const promoNotif = document.getElementById('promo-notif');
+      if (promoNotif) {
+        function cyclePromo() {
+          promoNotif.classList.remove('hide');
+          promoNotif.classList.add('show');
+          
+          setTimeout(() => {
+            promoNotif.classList.remove('show');
+            promoNotif.classList.add('hide');
+          }, 5000);
+        }
+        setTimeout(cyclePromo, 2000);
+        setInterval(cyclePromo, 20000); 
+      }
+    });
+  </script>
+</body>
+</html>
+
