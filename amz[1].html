@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DATZON WINK - Download</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Variabel Warna */
+      --accent: #0b84ff;
+      --success: #22c55e;
+      --warning: #ffb86b;
+
+      /* Mode Gelap (Default) */
+      --bg-dark: linear-gradient(180deg, #071023 0%, #07183a 100%);
+      --card-bg-dark: rgba(255, 255, 255, 0.03);
+      --card-border-dark: rgba(255, 255, 255, 0.06);
+      --notice-bg-dark: rgba(255, 255, 255, 0.02);
+      --version-bg-dark: rgba(255, 255, 255, 0.02);
+      --download-btn-bg-dark: linear-gradient(180deg, #06243f, #08304a);
+      --text-primary-dark: #e6eef8;
+      --text-muted-dark: #9aa4b2;
+      --text-success-dark: #04210f;
+
+      /* Mode Terang */
+      --bg-light: #f0f4f9;
+      --card-bg-light: #ffffff;
+      --card-border-light: #e2e8f0;
+      --notice-bg-light: #fffbeb;
+      --version-bg-light: #f8fafc;
+      --download-btn-bg-light: #e2e8f0;
+      --text-primary-light: #0f1724;
+      --text-muted-light: #475569;
+      --text-success-light: #ffffff;
+      
+      /* Inisialisasi variabel dinamis */
+      --bg: var(--bg-dark);
+      --card-bg: var(--card-bg-dark);
+      --card-border: var(--card-border-dark);
+      --notice-bg: var(--notice-bg-dark);
+      --version-bg: var(--version-bg-dark);
+      --download-btn-bg: var(--download-btn-bg-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-muted: var(--text-muted-dark);
+      --text-success: var(--text-success-dark);
+    }
+    
+    body {
+      font-family: 'Quicksand', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 28px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    
+    /* Tema Mode Terang */
+    body.light-mode {
+      --bg: var(--bg-light);
+      --card-bg: var(--card-bg-light);
+      --card-border: var(--card-border-light);
+      --notice-bg: var(--notice-bg-light);
+      --version-bg: var(--version-bg-light);
+      --download-btn-bg: var(--download-btn-bg-light);
+      --text-primary: var(--text-primary-light);
+      --text-muted: var(--text-muted-light);
+      --text-success: var(--text-success-light);
+    }
+
+    .container { max-width: 980px; margin: 0 auto; }
+    
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .logo { width: 64px; height: 64px; background: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 24px; }
+    h1 { margin: 0; font-size: 20px; }
+    h1 a { color: inherit; text-decoration: none; }
+    
+    .card { background: var(--card-bg); padding: 18px; border-radius: 12px; margin-bottom: 14px; transition: background 0.3s ease; }
+    
+    .notice {
+      background: var(--notice-bg);
+      padding: 12px;
+      border-left: 4px solid var(--warning);
+      color: var(--text-muted);
+      border-radius: 8px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    
+    .versions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+    .version { background: var(--version-bg); padding: 14px; border-radius: 10px; transition: background 0.3s ease; }
+    
+    .btn {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: filter 0.2s ease, background-color 0.2s ease;
+    }
+    .btn.secondary { background: transparent; border: 1px solid var(--card-border); }
+    .btn.complete { background: var(--success); color: var(--text-success); }
+    .btn.complete:hover { filter: brightness(0.95); }
+    .btn[disabled] { opacity: 0.6; cursor: progress; }
+    
+    .downloads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+    .download-btn { padding: 12px; border-radius: 10px; background: var(--download-btn-bg); text-align: center; cursor: pointer; transition: background 0.3s ease; }
+    
+    small { color: var(--text-muted); transition: color 0.3s ease; }
+    footer { margin-top: 20px; color: var(--text-muted); font-size: 13px; transition: color 0.3s ease; }
+    
+    footer a {
+      color: var(--warning); 
+      text-decoration: none; 
+    }
+    footer a:hover {
+      text-decoration: underline; 
+    }
+
+    /* --- Switch Mode Gelap/Terang --- */
+    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #3e4c5b; 
+      transition: .4s;
+      border-radius: 28px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    body.light-mode .slider { background-color: #ccc; }
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(22px); }
+
+    /* --- Tombol Mengambang (FAB) --- */
+    .fab {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background-color: var(--accent);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+    .fab:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* --- Notifikasi Promo --- */
+    .promo-notification {
+      position: fixed;
+      bottom: 30px; 
+      right: 86px; 
+      background-color: var(--warning);
+      color: #1a1a1a; 
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+      opacity: 0;
+      transform: translateX(-30px); 
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .promo-notification.show {
+      opacity: 1;
+      transform: translateX(0); 
+    }
+    .promo-notification.hide {
+      opacity: 0;
+      transform: translateX(30px); 
+    }
+    
+    /* --- Animasi Load Halaman --- */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-on-load {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    /* --- POP-UP JOIN SALURAN (UPDATED) --- */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      display: none; 
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .popup-content {
+      background: #111827; /* Dark Theme Only for Popup */
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      transform: scale(0.85) translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative; /* Untuk posisi tombol close */
+    }
+
+    .popup-overlay.active .popup-content {
+      transform: scale(1) translateY(0);
+    }
+
+    .popup-overlay.closing {
+      opacity: 0;
+    }
+    .popup-overlay.closing .popup-content {
+      transform: scale(0.9) translateY(20px);
+    }
+
+    /* Tombol Close (X) */
+    .close-btn {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        font-size: 28px;
+        color: #9aa4b2;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.3s;
+        z-index: 10;
+    }
+    .close-btn:hover {
+        color: #ffffff;
+    }
+
+    .popup-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .popup-text {
+      color: #f3f4f6;
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 15px 0;
+      line-height: 1.5;
+    }
+
+    .popup-text-small {
+      color: #e5e7eb;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+
+    /* Garis Pembatas */
+    .popup-divider {
+        height: 1px;
+        background: rgba(255,255,255,0.15);
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    /* Tombol Umum Pop-up */
+    .popup-btn-base {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 12px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .popup-btn-base:hover { transform: scale(1.02); }
+    .popup-btn-base:active { transform: scale(0.98); }
+
+    /* Tombol Join (Hijau) */
+    .popup-btn-join {
+      background: #22c55e;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
+    }
+    .popup-btn-join:hover {
+      background: #16a34a;
+      box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
+    }
+
+    /* Tombol Beli (Biru) */
+    .popup-btn-buy {
+      background: #0b84ff;
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(11, 132, 255, 0.3);
+      margin-top: 10px;
+    }
+    .popup-btn-buy:hover {
+      background: #0070e0;
+      box-shadow: 0 0 25px rgba(11, 132, 255, 0.5);
+    }
+
+    @media (max-width: 720px) {
+      .versions { grid-template-columns: 1fr; }
+      .downloads { grid-template-columns: 1fr; }
+      .promo-notification {
+        width: calc(100% - 90px);
+        text-align: center;
+        bottom: 86px; 
+        right: 20px;
+        left: 20px;
+        margin: 0 auto;
+        transform: translateY(20px); 
+      }
+      .promo-notification.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .promo-notification.hide {
+        opacity: 0;
+        transform: translateY(20px); 
+      }
+    }
+    
+    .app-info {
+      text-align: left;
+      line-height: 1.6;
+      font-family: 'Quicksand', Arial, sans-serif; 
+      color: var(--text-muted); 
+      margin-top: 10px;
+    }
+
+    .app-info-list {
+      padding-left: 20px;
+      margin: 0;
+      list-style-position: outside;
+    }
+
+    .app-info-list li {
+      margin: 6px 0;
+      font-size: 14px; 
+      color: var(--text-primary); 
+      opacity: 0.95; 
+    }
+
+    @media (max-width: 420px) {
+      .app-info-list li { font-size: 13px; }
+    }
+    .version h3 {
+      text-align: center;
+      margin: 1px 0 10px 0;   
+    }
+  </style>
+  
+  <script>
+    (function() {
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') {
+          document.documentElement.classList.add('light-mode');
+        }
+      } catch (e) {
+        console.warn('Gagal membaca tema dari localStorage', e);
+      }
+    })();
+  </script>
+  <script type='text/javascript' src='//pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js'></script>
+</head>
+<body class="">
+
+  <div id="channelPopup" class="popup-overlay">
+    <div class="popup-content">
+      <span id="closePopupBtn" class="close-btn">&times;</span>
+
+      <div class="popup-icon">📢</div>
+      <p class="popup-text">HARAP JOIN SALURAN TERLEBIH DAHULU AGAR UPDATE YANG MAKSIMAL</p>
+      <a href="https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j" target="_blank" class="popup-btn-base popup-btn-join">
+        JOIN SALURAN
+      </a>
+
+      <div class="popup-divider"></div>
+
+      <p class="popup-text-small">
+        AFTER MOTION TIDAK SUPPORT UNTUK LINK 5MB+ YA,<br>
+        KALAU MAU BELI PREMIUM NYA HANYA RP. 2.000 SAJA,<br>
+        KLIK TOMBOL BELI YA
+      </p>
+
+      <p class="popup-text-small" style="font-size: 13px; font-weight: 400; font-style: italic; color: #cbd5e1; margin-top: 5px; margin-bottom: 15px;">
+        AFTER MOTION DOES NOT SUPPORT LINKS OVER 5MB.<br>
+        IF YOU WANT TO BUY THE PREMIUM VERSION, IT ONLY COSTS IDR 2,000.<br>
+        CLICK THE BUY BUTTON BELOW.
+      </p>
+
+      <a href="https://wa.link/h05sn0" target="_blank" class="popup-btn-base popup-btn-buy">
+        BELI / BUY
+      </a>
+
+      <div class="popup-divider"></div>
+
+    </div>
+  </div>
+  <div class="container">
+    <header class="animate-on-load" style="animation-delay: 0.1s;">
+      <div class="header-left">
+        <div class="logo">DZ</div>
+        <div>
+          <h1><a id="yt-link" href="https://youtube.com/@informatifdata?si=viFmGb0ReRhSiznE" target="_blank">DATZON AMZ</a></h1>
+          <small>Klik judul untuk ke channel YouTube</small>
+        </div>
+      </div>
+      
+      <label class="switch" title="Ganti tema">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider round"></span>
+      </label>
+    </header>
+    
+    <section class="card animate-on-load" style="animation-delay: 0.2s;">
+      <div class="notice">
+        <strong>Perhatian:</strong>
+        <p style="margin:8px 0 0">Saat mengklik tombol download akan diarahkan ke iklan. Jika muncul iklan atau halaman lain, <strong>klik kembali</strong> lalu klik tombol download lagi.</p>
+      </div>
+
+      <div style="margin-top:12px">
+        <small>Tersedia 4 jenis aplikasi AMZ dengan tingkat kompatibilitas berbeda. Jenis Light/Dark itu hanya beda thema pada apk saja, Kalau Ori/Clone itu sama seperti Ultra Motion sebelumnya, Silakan pilih versi yang paling sesuai dengan perangkat Anda. Thank You</small>
+      </div>
+
+      <div class="versions">
+        
+        <div class="version">
+          <h3>AMZ ORI THEME</h3>
+          <p style="margin:8px 0; color:var(--text-muted); font-size:12px;">
+            Note Update : Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS (Tergantung Device) No Watermark dan No Password, Support All Device
+          </p>
+          <div class="downloads">
+            <div class="download-btn" style="grid-column: span 2;">
+              <h3>ORIGINAL APK</h3>
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/f8jwSA" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            </div>
+            <div class="download-btn" style="grid-column: span 2;">
+              <h3>CLONE APK</h3>
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/TRyA" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="version">
+          <h3>AMZ DARK THEME</h3>
+          <p style="margin:8px 0; color:var(--text-muted); font-size:12px;">
+            Note Update : Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS (Tergantung Device) No Watermark dan No Password, Support All Device
+          </p>
+          <div class="downloads">
+            <div class="download-btn" style="grid-column: span 2;">
+                <h3>ORIGINAL APK</h3>
+                <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/HT79" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            </div>
+            <div class="download-btn" style="grid-column: span 2;">
+                <h3>CLONE APK</h3>
+                <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/w6OfL3YT" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="version">
+          <h3>INFO MOD APK</h3>
+          <div class="app-info">
+            <ul class="app-info-list">
+              <li>Menonaktifkan Kode Error</li>
+              <li>Tanpa Iklan & Watermark</li>
+              <li>Tema Original & Mode Gelap</li>
+              <li>Layar Paywall Dihapus</li>
+              <li>Mendukung Resolusi Hingga 4K</li>
+              <li>Support 999 Layer</li>
+              <li>Ekspor Paket Proyek Berfungsi</li>
+              <li>Semua Resolusi Premium</li>
+              <li>Opsi Ekspor Terbuka</li>
+              <li>Perbaikan Impor File XML (Harus Online)</li>
+              <li>Login Anonim Tersedia</li>
+              <li>Menu Rahasia Diaktifkan</li>
+              <li>(Tekan 3 jari secara bersamaan)</li>
+              <li>Optimasi Sumber Daya</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div> 
+
+      <footer class="animate-on-load" style="animation-delay: 0.3s;">
+        <p>Catatan: Semua link menggunakan <i>SafeLinku</i> dan <i>SafeFileku</i>, jadi jika tidak punya skil untuk melewati link tersebut tonton
+          <a href="https://youtu.be/gTUJfiU3pb0?si=Kp79XF6D36Yy06xV" target="_blank" rel="noopener noreferrer">
+            <i>Tutorial Youtube ya</i>
+          </a>, Thank You.
+        </p>
+      </footer>
+    </section>
+
+  </div>
+
+   <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
+    🛒
+  </a>
+
+  <div class="promo-notification" id="promo-notif">
+    Alight Motion Premium Rp. 4K  di sini👉
+  </div>
+
+  <script>
+    function isBusy(btn) { return btn.getAttribute('data-busy') === '1'; }
+    function setBusy(btn, val) { btn.setAttribute('data-busy', val ? '1' : '0'); }
+
+    function handleDownload(btn) {
+      if (isBusy(btn)) return;
+      const adLink = btn.getAttribute('data-ad') || 'https://example.com/ad';
+      const dlLink = btn.getAttribute('data-dl') || 'https://example.com/download.apk';
+
+      try { window.open(adLink, '_blank'); } catch (e) { console.log('Gagal membuka tab iklan', e); }
+
+      startCountdownOnButton(btn, dlLink, 10);
+    }
+
+    function startCountdownOnButton(btn, downloadUrl, seconds) {
+      setBusy(btn, true);
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      let s = seconds;
+      btn.textContent = `Menyiapkan... (${s}s)`;
+
+      const id = setInterval(() => {
+        s -= 1;
+        if (s > 0) {
+          btn.textContent = `Menyiapkan... (${s}s)`;
+        } else {
+          clearInterval(id);
+          const a = document.createElement('a');
+          a.className = 'btn complete';
+          a.href = downloadUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.textContent = 'Unduh Sekarang';
+          btn.parentNode.replaceChild(a, btn);
+        }
+      }, 1000);
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // --- LOGIKA POP-UP BARU ---
+      const popup = document.getElementById('channelPopup');
+      const closeBtn = document.getElementById('closePopupBtn');
+      
+      // 1. Tampilkan Pop-up Setiap Kali Halaman Dimuat (dengan delay sedikit utk animasi)
+      setTimeout(() => {
+        popup.classList.add('active');
+      }, 500);
+
+      // 2. Fungsi Tutup Pop-up (tanpa reload)
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            // Tambah class closing untuk animasi keluar
+            popup.classList.add('closing');
+            
+            // Tunggu animasi CSS selesai baru hide elemen
+            setTimeout(() => {
+                popup.classList.remove('active', 'closing');
+                popup.style.display = 'none';
+            }, 400); // 400ms sesuai durasi transisi css
+        });
+      }
+
+      // --- SCRIPT LAIN (Theme, Promo) ---
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        const isLight = document.body.classList.contains('light-mode') || document.documentElement.classList.contains('light-mode');
+        themeToggle.checked = !isLight; 
+        
+        themeToggle.addEventListener('change', function() {
+          if (!this.checked) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+      }
+      
+      const promoNotif = document.getElementById('promo-notif');
+      if (promoNotif) {
+        setTimeout(() => { promoNotif.classList.add('show'); }, 3000);
+        setTimeout(() => { 
+          promoNotif.classList.remove('show');
+          promoNotif.classList.add('hide');
+        }, 12000);
+      }
+    });
+  </script>
+</body>
+</html>
+
