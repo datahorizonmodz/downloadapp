@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATZON - Alight Motion Mod</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+    <script src="https://pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js"></script>
+
+    <style>
+        /* ============================
+           RESET & VARIABLES
+           ============================ */
+        :root {
+            --primary-color: #4CAF50;
+            --primary-glow: rgba(76, 175, 80, 0.4);
+            --bg-color: #f4f6f8;
+            --text-color: #333;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --border-color: #eee;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --accent-purple: #6c5ce7;
+            --transition-speed: 0.3s;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            --border-color: #333;
+            --header-bg: rgba(30, 30, 30, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
+            padding-bottom: 80px; /* Space for footer/floating btn */
+        }
+
+        /* ============================
+           HEADER
+           ============================ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .brand {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Switch Toggle Style */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--accent-purple); }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        /* Language Switcher */
+        .lang-switch {
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 2px 8px;
+            border-radius: 5px;
+            background: rgba(0,0,0,0.05);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lang-switch:hover { background: rgba(0,0,0,0.1); }
+
+        /* ============================
+           MAIN CONTENT (CARDS)
+           ============================ */
+        .container {
+            max-width: 800px;
+            margin: 100px auto 20px;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: background-color 0.5s ease;
+        }
+
+        .card:nth-child(2) { animation-delay: 0.2s; }
+
+        .card-header {
+            display: flex;
+            padding: 15px;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+            background: #ddd;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .card-divider {
+            height: 2px;
+            width: 30px;
+            background: var(--accent-purple);
+            margin: 5px 0;
+        }
+
+        .card-subtitle {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 600;
+        }
+
+        .dropdown-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            color: var(--text-color);
+        }
+
+        .card.active .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown Content */
+        .card-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .card.active .card-body {
+            max-height: 500px; /* Arbitrary large height */
+            transition: max-height 0.5s ease-in;
+        }
+
+        .mod-features {
+            padding: 0 20px 20px 20px;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mod-features li {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .mod-features li::before {
+            content: "✓";
+            color: var(--primary-color);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        /* MODIFIED: Consolidated styles for download-btn and login-btn 
+           to ensure they look exactly the same.
+        */
+        .download-btn,
+        .login-btn {
+            display: block;
+            margin: 0 20px 20px 20px;
+            padding: 12px;
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px var(--primary-glow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .download-btn:hover,
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 15px var(--primary-glow);
+        }
+
+        /* ============================
+           FLOATING BUTTON
+           ============================ */
+        .floating-store {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-purple);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            z-index: 900;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .floating-store:hover { transform: scale(1.1); }
+        .floating-store svg { width: 24px; height: 24px; fill: white; }
+
+        /* Class to hide button during morph */
+        .floating-store.hidden {
+            transform: scale(0);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ============================
+           MORPHING NOTIFICATION
+           ============================ */
+        .morph-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 950;
+        }
+
+        .morph-box {
+            position: absolute;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            /* Start state matches floating button exact position */
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            opacity: 0; 
+            pointer-events: none;
+        }
+
+        .morph-box.visible {
+            opacity: 1;
+        }
+
+        .morph-box.active {
+            opacity: 1;
+            bottom: 50%;
+            right: 50%;
+            width: 300px;
+            height: auto;
+            min-height: 180px;
+            border-radius: 20px;
+            transform: translate(50%, 50%); /* Center it */
+            padding: 20px;
+            text-align: center;
+            pointer-events: auto;
+        }
+
+        .morph-content {
+            opacity: 0;
+            transition: opacity 0.3s;
+            transition-delay: 0.2s; /* Wait for morph */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .morph-box.active .morph-content {
+            opacity: 1;
+        }
+
+        .morph-text {
+            font-size: 0.95rem;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .morph-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .store-link-btn {
+            background: white;
+            color: var(--accent-purple);
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* ============================
+           PASSWORD MODAL
+           ============================ */
+        .password-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            /* Flex handled by JS */
+            display: none; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .password-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .password-box h2 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .password-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .password-box input:focus {
+            border-color: var(--accent-purple);
+        }
+
+        .enter-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .get-pass-link {
+            color: #888;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+        
+        /* ============================
+           FOOTER STYLES (NEW)
+           ============================ */
+        .site-footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 30px;
+            /* Matches body padding-bottom approx to clear floating items */
+            margin-bottom: 20px; 
+        }
+
+        .footer-link {
+            color: var(--accent-purple);
+            font-weight: bold;
+            text-decoration: none;
+            /* Violet Glow */
+            text-shadow: 0 0 5px rgba(108, 92, 231, 0.4);
+            transition: text-shadow 0.3s;
+        }
+
+        .footer-link:hover {
+            text-shadow: 0 0 10px rgba(108, 92, 231, 0.8);
+        }
+
+        /* Animations Keyframes */
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake-anim {
+            animation: shake 0.4s ease-in-out;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="passwordModal" class="password-overlay">
+        <div class="password-box" id="passwordBox">
+            <h2 id="txt-enter-pass">Masukkan Password</h2>
+            <input type="password" id="passInput" placeholder="Password..." autocomplete="off"/>
+            <button class="enter-btn" onclick="checkPassword()">ENTER</button>
+            <a href="https://youtube.com/@informatifdata?si=PUpdjW7awWQtdS05" class="get-pass-link" target="_blank" id="txt-get-pass">Lihat Password</a>
+        </div>
+    </div>
+
+    <header>
+        <a href="https://youtube.com/@informatifdata?si=PUpdjW7awWQtdS05" target="_blank" class="brand">DATZON</a>
+        <div class="header-controls">
+            <div class="lang-switch" onclick="toggleLanguage()" title="Switch Language">
+                <span id="currentLangIcon">🇮🇩</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png" alt="Icon" class="card-img">
+                <div class="card-info">
+                    <div class="card-title">ALIGHT MOTION | RAFAEL RT</div>
+                    <div class="card-divider"></div>
+                    <div class="card-subtitle">PREMIUM UNLOCKED NO PASSWORD</div>
+                </div>
+                <div class="dropdown-icon">▼</div>
+            </div>
+            <div class="card-body">
+                <ul class="mod-features">
+                    <li>NO IKLAN</li>
+                    <li>NO ERROR</li>
+                    <li>SUPPORT 5MB+</li>
+                    <li>SUPPORT XML</li>
+                    <li>SUPPORT 2K60FPS</li>
+                    <li>NEW VERSION</li>
+                </ul>
+                <a href="https://sfl.gl/MdWa" class="download-btn">DOWNLOAD NOW</a>
+                <!-- Tombol LOGIN dengan class login-btn yang kini bergaya sama dengan download-btn -->
+                <a href="caraloginam.html" class="login-btn">CARA LOGIN</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png" alt="Icon" class="card-img">
+                <div class="card-info">
+                    <div class="card-title">ALIGHT MOTION | HANXXYMODS</div>
+                    <div class="card-divider"></div>
+                    <div class="card-subtitle">PREMIUM UNLOCKED NO PASSWORD</div>
+                </div>
+                <div class="dropdown-icon">▼</div>
+            </div>
+            <div class="card-body">
+                <ul class="mod-features">
+                    <li>NO IKLAN</li>
+                    <li>NO ERROR</li>
+                    <li>SUPPORT 5MB+</li>
+                    <li>SUPPORT XML</li>
+                    <li>SUPPORT 2K60FPS</li>
+                    <li>SUPPORT EXPORT PROYEK</li>
+                    <li>NEW VERSION</li>
+                </ul>
+                <a href="https://sfl.gl/Ctq8O13" class="download-btn">DOWNLOAD NOW</a>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <div class="site-footer">
+        <p id="footer-text">
+            Catatan: Semua link menggunakan SafeLinku dan SafeFileku, jadi jika tidak punya skil untuk melewati link tersebut tonton <a href="https://youtu.be/gTUJfiU3pb0?si=iVYFcUAgZLpL0a8l" target="_blank" class="footer-link">KLIK DISINI</a> Untuk Tutorial Youtube ya, Thank You.
+        </p>
+    </div>
+
+    <a href="javascript:void(0)" class="floating-store" id="floatingStore" onclick="manualShowNotification()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+    </a>
+
+    <div class="morph-overlay">
+        <div class="morph-box" id="morphBox">
+            <button class="morph-close" onclick="closeNotification()">✕</button>
+            <div class="morph-content">
+                <div class="morph-text" id="notif-text">
+                    MAU ALIGHT MOTION 
+PREMIUM 1 TAHUN CUMA RP. 2K?<br>
+                    YUK KLIK STORE DI BAWAH!<br>
+                    ADA BANYAK APLIKASI PREMIUM LAINNYA LOHH!!
+                </div>
+                <a href="https://dazon.web.app/store.html" class="store-link-btn" id="btn-visit-store">KLIK STORE</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // CONFIGURATION
+        // ============================
+        const PASSWORD_KEY = 'datzon_unlocked';
+        const CORRECT_PASS = 'SUBSCRIBE'; 
+        
+        const translations = {
+            id: {
+                passTitle: "Masukkan Password",
+                getPass: "Lihat Password",
+                dlBtn: "DOWNLOAD SEKARANG",
+                logBtn: "CARA LOGIN",
+                storeBtn: "KLIK STORE",
+                notif: "MAU ALIGHT MOTION PREMIUM 1 TAHUN CUMA RP. 2K?<br>YUK KLIK STORE DI BAWAH!<br>ADA BANYAK APLIKASI PREMIUM LAINNYA LOHH!!",
+                footerHtml: 'Catatan: Semua link menggunakan SafeLinku dan SafeFileku, jadi jika tidak punya skil untuk melewati link tersebut tonton <a href="https://youtu.be/gTUJfiU3pb0?si=iVYFcUAgZLpL0a8l" target="_blank" class="footer-link">KLIK DISINI</a> Untuk Tutorial Youtube ya, Thank You.'
+            },
+            en: {
+                passTitle: "Enter Password",
+                getPass: "Get Password",
+                dlBtn: "DOWNLOAD NOW",
+                logBtn: "HOW TO LOGIN",
+                storeBtn: "VISIT STORE",
+                notif: "WANT ALIGHT MOTION PREMIUM 1 YEAR FOR $1?<br>CLICK STORE BELOW!<br>MANY OTHER PREMIUM APPS AVAILABLE!!",
+                footerHtml: 'Note: All links use SafeLinku and SafeFileku. If you don’t know how to bypass these links, please watch <a href="https://youtu.be/gTUJfiU3pb0?si=iVYFcUAgZLpL0a8l" target="_blank" class="footer-link">CLICK HERE</a> for the YouTube tutorial. Thank you.'
+            }
+        };
+
+        // State
+        let currentLang = 'id';
+        let notifInterval;
+
+        // ============================
+        // INIT ON LOAD
+        // ============================
+        document.addEventListener('DOMContentLoaded', () => {
+            initPassword();
+            initTheme();
+            
+            // Set initial language text (default is ID in HTML, but let's sync)
+            toggleLanguage(); // Trigger once to ensure consistency or rely on HTML defaults.
+            // Reverting the toggle since default HTML is ID. Let's just make sure text is correct.
+            // If we run toggleLanguage it switches to EN. So reset logic:
+            
+            // Actually, best to just render initial state properly:
+            // The HTML is hardcoded for ID mixed with EN in the original file.
+            // Let's force update to currentLang 'id'
+            updateLanguageView();
+
+            // Start Notification Loop (15 seconds)
+            notifInterval = setInterval(showNotification, 15000);
+        });
+
+        // ============================
+        // 1. PASSWORD SYSTEM
+        // ============================
+        function initPassword() {
+            const isUnlocked = localStorage.getItem(PASSWORD_KEY);
+            const modal = document.getElementById('passwordModal');
+            
+            if (!isUnlocked) {
+                // Show modal flex
+                modal.style.display = 'flex';
+                document.getElementById('passInput').focus();
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function checkPassword() {
+            const input = document.getElementById('passInput');
+            const box = document.getElementById('passwordBox');
+            
+            if (input.value === CORRECT_PASS) {
+                // Correct: Save & Hide
+                localStorage.setItem(PASSWORD_KEY, 'true');
+                const modal = document.getElementById('passwordModal');
+                
+                modal.style.transition = 'opacity 0.5s ease';
+                modal.style.opacity = '0';
+                
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 500);
+            } else {
+                // Wrong: Shake
+                box.classList.remove('shake-anim');
+                void box.offsetWidth; // Trigger reflow
+                box.classList.add('shake-anim');
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        // Enter Key Listener for Password
+        document.getElementById('passInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        // ============================
+        // 2. THEME / DARK MODE
+        // ============================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                toggle.checked = true;
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // ============================
+        // 3. LANGUAGE SWITCHER
+        // ============================
+        function toggleLanguage() {
+            // Switch state
+            currentLang = currentLang === 'id' ? 'en' : 'id';
+            updateLanguageView();
+        }
+
+        function updateLanguageView() {
+            const t = translations[currentLang];
+            const icon = currentLang === 'id' ? '🇮🇩' : '🇬🇧';
+
+            // Update DOM Elements
+            document.getElementById('currentLangIcon').textContent = icon;
+            document.getElementById('txt-enter-pass').textContent = t.passTitle;
+            document.getElementById('txt-get-pass').textContent = t.getPass;
+            document.getElementById('notif-text').innerHTML = t.notif;
+            document.getElementById('btn-visit-store').textContent = t.storeBtn;
+            
+            // NEW: Update Footer
+            document.getElementById('footer-text').innerHTML = t.footerHtml;
+
+            // Update all download buttons
+            const btns = document.querySelectorAll('.download-btn');
+            btns.forEach(btn => btn.textContent = t.dlBtn);
+
+            // NEW: Update Login buttons
+            const logBtns = document.querySelectorAll('.login-btn');
+            logBtns.forEach(btn => btn.textContent = t.logBtn);
+        }
+
+        // ============================
+        // 4. CARD DROPDOWN
+        // ============================
+        function toggleCard(headerElement) {
+            const card = headerElement.parentElement;
+            
+            // Close others (optional, remove logic if you want multiple open)
+            // document.querySelectorAll('.card').forEach(c => {
+            //     if(c !== card) c.classList.remove('active');
+            // });
+
+            card.classList.toggle('active');
+        }
+
+        // ============================
+        // 5. MORPHING NOTIFICATION
+        // ============================
+        
+        function manualShowNotification() {
+            // Reset timer if manually clicked so it doesn't double pop
+            clearInterval(notifInterval);
+            notifInterval = setInterval(showNotification, 15000);
+            showNotification();
+        }
+
+        function showNotification() {
+            // If password modal is still visible, don't show notification
+            if(document.getElementById('passwordModal').style.display === 'flex') return;
+
+            const floatBtn = document.getElementById('floatingStore');
+            const morphBox = document.getElementById('morphBox');
+
+            // 1. Hide the real floating button with animation
+            floatBtn.classList.add('hidden');
+
+            // 2. Make morph box visible (state: small circle at bottom right)
+            morphBox.classList.add('visible');
+
+            // 3. Trigger expansion after short delay
+            setTimeout(() => {
+                morphBox.classList.add('active');
+            }, 50);
+        }
+
+        function closeNotification() {
+            const floatBtn = document.getElementById('floatingStore');
+            const morphBox = document.getElementById('morphBox');
+
+            // 1. Shrink box back to corner
+            morphBox.classList.remove('active');
+
+            // 2. Once shrunk, hide morph box and show real button
+            setTimeout(() => {
+                morphBox.classList.remove('visible');
+                floatBtn.classList.remove('hidden');
+            }, 600); // Matches CSS transition duration
+        }
+     
+    </script>
+  <script src="https://pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js"></script>
+</body>
+</html>
