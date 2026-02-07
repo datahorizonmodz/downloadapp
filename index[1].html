@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+      
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mnd-ver" content="gp6xf8sp47easjestdcrpa" />
+    <title>DATZON - Link Download App Premium</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+ 
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Mengaktifkan dark mode berbasis class
+            theme: {
+                extend: {
+                    fontFamily: {
+                        // Tailwind menggunakan font Inter
+                        sans: ['Inter', 'sans-serif'], 
+                    },
+                    colors: {
+                        // Warna dasar Dark Mode (biru gelap dari gambar)
+                        'datzon-bg-dark': '#131934',
+                        // Warna tombol biru tua (Dark Mode)
+                        'datzon-button-dark': '#283669',
+                        // Warna header / logo biru terang
+                        'datzon-logo-blue': '#0095ff',
+                        // Warna teks Light Mode (hitam)
+                        'datzon-text-dark': '#1a1a1a',
+                        // Warna aksen biru tua untuk teks Light Mode
+                        'datzon-accent-blue': '#283669',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* BASE STYLING & FONT */
+        body {
+            /* TUGAS 2: Terapkan font Quicksand ke seluruh halaman */
+            font-family: 'Quicksand', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* --- LIGHT MODE STYLES (Default jika tidak ada class 'dark') --- */
+        body {
+            background-color: #f0f2f5; /* datzon-bg-light */
+            color: #1a1a1a; /* datzon-text-dark */
+        }
+        .text-adaptive { color: #1a1a1a; }
+        .text-adaptive-light { color: #283669; }
+
+        /* Light Mode: Button Styling */
+        .download-button-light {
+            background-color: white;
+            color: #283669; /* Teks biru tua */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .download-button-light:hover {
+             background-color: #f8f8f8;
+             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* --- DARK MODE STYLES --- */
+        .dark {
+            background-color: #131934; /* datzon-bg-dark */
+            color: white;
+        }
+        .dark .text-adaptive { color: white; }
+        .dark .text-adaptive-light { color: white; }
+
+        /* Dark Mode: Button Styling */
+        .dark .download-button-dark {
+            background-color: #283669; /* Tombol biru tua */
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .dark .download-button-dark:hover {
+            background-color: #3b4d8f;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* --- TOGGLE SWITCH STYLING (Improved) --- */
+        /* Hidden input */
+        .toggle-checkbox {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* Switch rail */
+        .toggle-label {
+            display: block;
+            cursor: pointer;
+            width: 40px;
+            height: 20px;
+            background: #4B5563; /* Gray in Light Mode */
+            border-radius: 9999px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        /* Switch handle (bulat) */
+        .toggle-label::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 9999px;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* When checked (Dark Mode) */
+        .toggle-checkbox:checked + .toggle-label {
+            background: #0095ff; /* Blue in Dark Mode */
+        }
+        .toggle-checkbox:checked + .toggle-label::after {
+            transform: translateX(20px);
+        }
+
+        /* --- FLOATING BUTTON STYLING --- */
+        .floating-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.2s;
+            background-color: #0095ff; /* Selalu biru terang */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .floating-button:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+      <meta name="mnd-ver" content="gp6xf8sp47easjestdcrpa" />
+</head>
+<body class="min-h-screen"> 
+
+    <div id="app-container" class="max-w-md mx-auto p-4 flex flex-col min-h-screen">
+
+        <header class="flex justify-between items-center py-4 px-2 mb-8">
+            <div class="flex items-center space-x-3">
+                <div class="bg-datzon-logo-blue text-white font-extrabold text-xl w-10 h-10 flex items-center justify-center rounded-lg shadow-lg">
+                    DZ
+                </div>
+                <h1 id="header-title" class="text-2xl font-bold cursor-pointer transition-colors duration-300 text-adaptive" onclick="window.location.href='https://youtube.com/@informatifdata?si=viFmGb0ReRhSiznE'">
+                    DATZON CHANNEL
+                </h1>
+            </div>
+
+            <div class="flex items-center">
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox" checked>
+                <label for="darkModeToggle" class="toggle-label"></label>
+            </div>
+        </header>
+
+        <main class="flex-grow text-center px-2">
+            <h2 class="text-xl md:text-2xl font-extrabold mb-2 text-adaptive">
+                LINK DOWNLOAD APP PREMIUM
+            </h2>
+
+            <p id="sub-text" class="text-sm font-light mb-8 opacity-80 text-adaptive">
+                Pemberitahuan : Kalau muncul Iklan klik Back aja ya, Jangan lupa kunjungi Datzon Store, banyak Account Premium Murah dan Terpercaya, Alight Motion Rp. 4K? Check Aja, Thank You
+            </p>
+
+            <div class="space-y-4">
+                <a href="https://dazon.web.app/store.html" target="_blank" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <i class="fas fa-store text-red-400 w-6 h-6 flex items-center justify-center"></i>
+                        <span>DATZON STORE</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+
+                <a href="xdesign.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4MUmL64ZEhrDSw4BGsBkJEuU6hxPnSsyDmx1XIv7v8QO-RMGKZ70f6OBgVq6wdMd3dagIT9GcQBP7DccCAtlKNzsVcBCLSha4B0D5VD2nYxUBRn_0jmB-knnCIW_ibZpqS_bFRI6H1iHUzSIk4VxzzHaTN8m1f_Yozi2y5QHfkUuuNU2JYy3totnNZvM/s320/quality_restoration_20251113100304605.jpg" alt="X-Design Icon" class="w-6 h-6" />
+                        <span>X-DESIGN MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                
+                <a href="wink.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEis6NdUpN0ErboZRonZDJFzCudOKBawXGj_B94OKlELXYHVnuJAsfHwlTmegj3238E5ddc4DnGwq1vtZY77h8LaQyqNACEA_9sqkXqJQLiciHb3Ix5xBEu19lBcVjflOsDz4v45Wi0e2Dj_b7b2Eccej_j0BiFA6Hmv6wcvP1Akm_N69OFmhxFx9gkcWHg/s320/Proyek%20Baru%206%20%5BDC7A095%5D.png" alt="Wink Icon" class="w-6 h-6" />
+                        <span>WINK MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="amz.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://ugc.production.linktr.ee/56344362-b951-496a-84ab-9863e5b2c667_Proyek-Baru-1-5AE7C41.png?io=true&size=thumbnail-stack-v1_0" alt="AMZ Icon" class="w-6 h-6" />
+                        <span>AFTER MOTION Z</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="capcut.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh-KrBxv_9tbCB_RXZOdTPEL88iSgwaHaf9WthqFTAjXne25H-JKwkT2_m3fhuCGkpKrzwLBHsXKVgVdoJo5QYVyNcAAWu8e8njZ6q7ScdcF9eskpT3F5GM1xV7WFnMSJZbwhTw5sHzH9GCbtuEoi3GYhTeg-0vg9SjkCXD7qiUwopy0HuYjmM2-CQFjBQ/s320/Proyek%20Baru%2015%20%5B0FDD82D%5D.png" alt="CapCut Icon" class="w-6 h-6" />
+                        <span>CAPCUT MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="node.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://play-lh.googleusercontent.com/z73VYVPulymwekoB_kdLz_6gN7MGumH2j9yvBx5P1K9swuMfww3-XwuPAW9TWBpAB0o=w240-h480-rw" alt="Node Icon" class="w-6 h-6" />
+                        <span>NODE VIDEO MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="um.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgC77onVCEt6OON349Lq_hjWks4_g6oH4QkCzJEKuS8v5e-rrzVU6zDf4&s=10" alt="UM Icon" class="w-6 h-6" />
+                        <span>ULTRA MOTION MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="am.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllav5Xy-1iohHO9u1VeLzKPrpRmSBP3oGbHeLRXFS8g&s=10" alt="AM Icon" class="w-6 h-6" />
+                        <span>ALIGHT MOTION MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="winkit.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://www.winkit.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.26975e6d.png&w=1080&q=75" alt="AM Icon" class="w-6 h-6" />
+                        <span>WINKIT MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+                <a href="utool.html" class="download-button download-button-dark download-button-light flex items-center justify-between w-full p-4 rounded-xl font-bold transition-all duration-300 shadow-lg">
+                    <span class="flex items-center space-x-3">
+                        <img src="https://play-lh.googleusercontent.com/cXbGNQ25COR2vn1NOEl2fq9HfycYNUHucCLfW8YILF-RNektqV7sW5YLVlQwUGDJfXU" alt="AM Icon" class="w-6 h-6" />
+                        <span>UTOOL MOD</span>
+                    </span>
+                    <i data-lucide="download-cloud" class="w-5 h-5 opacity-70"></i>
+                </a>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-12 mb-20 px-4">
+            <p id="footer-text" class="text-xs opacity-70 leading-relaxed font-medium text-adaptive">
+                Thank You dah Support Chanel Ini ya jangan lupa kunjungi Store Datzon, banyak Product Digital Seperti Account App Premium murah dan terpercaya, Thanks All
+            </p>
+        </footer>
+
+        <a href="https://dazon.web.app/store.html" target="_blank" class="floating-button p-3 rounded-full">
+            <i data-lucide="shopping-cart" class="w-6 h-6 text-white"></i>
+        </a>
+
+    </div>
+
+    <script>
+        // Inisialisasi Lucide Icons
+        lucide.createIcons();
+
+        const body = document.body;
+        const toggle = document.getElementById('darkModeToggle');
+        const buttons = document.querySelectorAll('.download-button');
+
+        // Fungsi untuk mengaktifkan Dark Mode
+        function enableDarkMode() {
+            body.classList.add('dark');
+            toggle.checked = true;
+
+            buttons.forEach(button => {
+                button.classList.add('download-button-dark');
+                button.classList.remove('download-button-light');
+            });
+            localStorage.setItem('theme', 'dark');
+        }
+
+        // Fungsi untuk mengaktifkan Light Mode
+        function enableLightMode() {
+            body.classList.remove('dark');
+            toggle.checked = false;
+
+            buttons.forEach(button => {
+                button.classList.add('download-button-light');
+                button.classList.remove('download-button-dark');
+            });
+            localStorage.setItem('theme', 'light');
+        }
+
+        // Handle perubahan toggle
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                enableDarkMode();
+            } else {
+                enableLightMode();
+            }
+        });
+
+        // Inisialisasi: Periksa preferensi dari localStorage, default ke dark mode
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            enableLightMode();
+        } else {
+            // Default ke dark mode (sesuai permintaan)
+            enableDarkMode();
+        }
+
+    </script>
+</body>
+</html>
