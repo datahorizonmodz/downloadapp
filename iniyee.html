@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATZON – Reward 969</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: #0b0b0f;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    body.locked .main {
+      filter: blur(10px);
+      pointer-events: none;
+    }
+
+    header {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .toggle {
+      cursor: pointer;
+      font-size: 13px;
+      opacity: .7;
+    }
+
+    .main {
+      max-width: 420px;
+      margin: auto;
+      padding: 20px;
+      animation: fadeUp .6s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile {
+      text-align: center;
+    }
+
+    .profile img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile h2 {
+      margin: 12px 0 6px;
+      font-size: 18px;
+    }
+
+    .profile p {
+      font-size: 13px;
+      opacity: .8;
+      line-height: 1.5;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,.1);
+      margin: 24px 0;
+    }
+
+    .card {
+      background: #14141c;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      margin-right: 12px;
+    }
+
+    .card .info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .card .info span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 8px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn.claim {
+      background: #00e676;
+      color: #000;
+    }
+
+    .btn.habis {
+      background: #555;
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .social {
+      background: #14141c;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .social span {
+      margin-left: 12px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 11px;
+      opacity: .6;
+      margin: 30px 0 10px;
+    }
+
+    /* PASSWORD MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,.6);
+      z-index: 99;
+    }
+
+    .modal-box {
+      background: #14141c;
+      padding: 24px;
+      border-radius: 18px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      animation: pop .4s ease;
+    }
+
+    @keyframes pop {
+      from { transform: scale(.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .lock {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .lock.shake {
+      animation: shake .4s;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+
+    .modal button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      background: #00e676;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="locked">
+
+  <!-- PASSWORD -->
+  <div class="modal" id="passwordModal">
+    <div class="modal-box">
+      <div class="lock" id="lockIcon">🔒</div>
+      <p>Masukkan password untuk membuka hadiah</p>
+      <input type="password" id="passwordInput" placeholder="Password">
+      <button onclick="checkPassword()">ENTER</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>DATZON CHANNEL</h1>
+    <div class="toggle">Dark</div>
+  </header>
+
+  <div class="main">
+    <div class="profile">
+      <img src="https://i.ibb.co.com/Y7DScK4D/quality-restoration-20251018223600821-1.png">
+      <h2>DATZON GIVEAWAY</h2>
+      <p>Terima kasih untuk 969 followers tercinta.  
+      Sebagai apresiasi, aku bagikan akun Alight Motion Premium.  
+      Kuota terbatas — siapa cepat dia dapat.</p>
+    </div>
+
+    <hr>
+
+    <!-- PRIVATE -->
+    <div class="card">
+      <div class="info">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png">
+        <span>ALIGHT MOTION PRIVATE – 10 ACC</span>
+      </div>
+      <button class="btn habis">HABIS</button>
+    </div>
+
+    <!-- SHARING -->
+    <div class="card">
+      <div class="info">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png">
+        <span>ALIGHT MOTION SHARING 1 – 10 ACC</span>
+      </div>
+      <button class="btn claim" onclick="location.href='https://wa.link/woug9u'">KLAIM</button>
+    </div>
+
+    <div class="card">
+      <div class="info">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png">
+        <span>ALIGHT MOTION SHARING 2 – 10 ACC</span>
+      </div>
+      <button class="btn claim" onclick="location.href='https://wa.link/2sw8hy'">KLAIM</button>
+    </div>
+
+    <div class="card">
+      <div class="info">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh9ATilZZP5AGMxdFN3SqcNwHeY275gc2unDGdPEla9_S49qm2SolU57Na8la0E-1d8Gd9hnmuAFbGu0oa9QmBMhndeZIJYDzjmKvzdsK8Chb0I1H3KSqjryDJ1zKRO4Jy2R9CKrDHlq5-pSbsPdaXMhXSnI7jtn1s4ggwirY4vu433S3pdrp_KWA4P_ls/s320/Proyek%20Baru%2015%20%5BB8AE2FF%5D.png">
+        <span>ALIGHT MOTION SHARING 3 – 10 ACC</span>
+      </div>
+      <button class="btn claim" onclick="location.href='https://wa.link/3v41d4'">KLAIM</button>
+    </div>
+
+    <hr>
+
+    <!-- SOCIAL -->
+    <div class="social" onclick="location.href='https://youtube.com/@dtzns'">
+      📺 <span>YOUTUBE CHANNEL</span>
+    </div>
+    <div class="social" onclick="location.href='https://www.tiktok.com/@datzonn'">
+      🎵 <span>TIKTOK</span>
+    </div>
+    <div class="social" onclick="location.href='https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j'">
+      💬 <span>WHATSAPP CHANNEL</span>
+    </div>
+    <div class="social" onclick="location.href='https://dazon.web.app/store.html'">
+      🛍️ <span>STORE DATZON</span>
+    </div>
+
+    <footer>
+      © 2026 DATZON – Thank you for the support
+    </footer>
+  </div>
+
+  <script>
+    const PASSWORD = "1234";
+    const KEY = "reward969_ok";
+
+    if (localStorage.getItem(KEY) && Date.now() < localStorage.getItem(KEY)) {
+      unlock();
+    }
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      const lock = document.getElementById("lockIcon");
+
+      if (input === PASSWORD) {
+        lock.textContent = "🔓";
+        localStorage.setItem(KEY, Date.now() + 5 * 60 * 1000);
+        setTimeout(unlock, 400);
+      } else {
+        lock.classList.add("shake");
+        setTimeout(() => lock.classList.remove("shake"), 400);
+      }
+    }
+
+    function unlock() {
+      document.body.classList.remove("locked");
+      document.getElementById("passwordModal").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
