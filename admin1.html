@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datzon Admin Panel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#121212',
+                            800: '#1E1E1E',
+                            700: '#2C2C2C',
+                            600: '#3A3A3A'
+                        },
+                        brand: {
+                            green: '#10B981',
+                            red: '#EF4444',
+                            blue: '#3B82F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #121212;
+            color: #E5E7EB;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes expand {
+            from { max-height: 0; opacity: 0; }
+            to { max-height: 200px; opacity: 1; }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+        
+        /* Card Selection Styles */
+        .user-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+        }
+        .user-card.selected {
+            border-color: #10B981; /* Brand Green */
+            transform: scale(1.02);
+            background-color: #252525;
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Action Panel inside card */
+        .action-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.4s ease;
+            opacity: 0;
+        }
+        .user-card.selected .action-panel {
+            max-height: 250px; /* Adjust based on content */
+            opacity: 1;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #3A3A3A;
+        }
+
+        /* Modal Backdrop */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3A3A3A;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative overflow-x-hidden">
+
+    <!-- ================= AUTH SCREEN ================= -->
+    <div id="auth-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-dark-900 animate-fade-in">
+        <div class="bg-dark-800 p-8 rounded-2xl shadow-2xl w-full max-w-sm border border-dark-700 text-center">
+            <div class="mb-6 flex justify-center">
+                <i class="ph ph-lock-key text-4xl text-brand-green"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Admin Access</h2>
+            <p class="text-gray-400 text-sm mb-6">Enter secure PIN to continue</p>
+            
+            <input type="password" id="admin-pin" maxlength="4" placeholder="••••" 
+                class="w-full bg-dark-900 border border-dark-600 rounded-xl px-4 py-3 text-center text-2xl tracking-widest focus:outline-none focus:border-brand-green transition-colors mb-4">
+            
+            <button id="btn-login" class="w-full bg-brand-green hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-900/50">
+                UNLOCK SYSTEM
+            </button>
+            <p id="auth-error" class="text-brand-red text-sm mt-4 hidden">Access Denied: Invalid PIN</p>
+        </div>
+    </div>
+
+    <!-- ================= MAIN APP ================= -->
+    <div id="app-content" class="hidden opacity-0 transition-opacity duration-500 p-4 md:p-8 max-w-4xl mx-auto pb-24">
+        
+        <!-- Header -->
+        <header class="mb-8 flex justify-between items-center animate-slide-up">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight text-white">DATZON <span class="text-brand-green">ADMIN</span></h1>
+                <p class="text-gray-400 text-sm mt-1">Reward Control System</p>
+            </div>
+            <button onclick="logout()" class="p-2 rounded-full hover:bg-dark-700 text-gray-500 hover:text-white transition-colors" title="Logout">
+                <i class="ph ph-sign-out text-xl"></i>
+            </button>
+        </header>
+
+        <!-- Stats Overview (Optional but helpful) -->
+        <div class="grid grid-cols-2 gap-4 mb-8 animate-slide-up" style="animation-delay: 0.1s;">
+            <div class="bg-dark-800 p-4 rounded-xl border border-dark-700">
+                <span class="text-gray-400 text-xs uppercase tracking-wider">Total Claims</span>
+                <div id="total-count" class="text-2xl font-bold text-white mt-1">--</div>
+            </div>
+            <div class="bg-dark-800 p-4 rounded-xl border border-dark-700">
+                <span class="text-gray-400 text-xs uppercase tracking-wider">Active Users</span>
+                <div id="visible-count" class="text-2xl font-bold text-brand-green mt-1">--</div>
+            </div>
+        </div>
+
+        <!-- Filter / Search (Basic) -->
+        <div class="mb-6 animate-slide-up" style="animation-delay: 0.15s;">
+            <div class="relative">
+                <i class="ph ph-magnifying-glass absolute left-4 top-3.5 text-gray-500"></i>
+                <input type="text" id="search-input" placeholder="Search username or WhatsApp..." 
+                    class="w-full bg-dark-800 border border-dark-700 rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition-all">
+            </div>
+        </div>
+
+        <!-- User List Container -->
+        <div id="user-list" class="grid grid-cols-1 gap-4 animate-slide-up" style="animation-delay: 0.2s;">
+            <!-- User Cards Injected Here via JS -->
+            <div class="text-center py-12 text-gray-500">Loading claims...</div>
+        </div>
+
+    </div>
+
+    <!-- ================= STATUS MODAL ================= -->
+    <div id="status-modal" class="fixed inset-0 z-40 hidden items-center justify-center modal-backdrop opacity-0 transition-opacity duration-300">
+        <div class="bg-dark-800 w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform duration-300 m-4 border border-dark-600" id="status-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white" id="modal-title">Update Status</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <p class="text-sm text-gray-400 mb-4">Select the new status for <span id="modal-target-name" class="text-white font-semibold">User</span>:</p>
+                
+                <button class="status-option w-full p-4 rounded-xl border border-dark-600 bg-dark-900 flex justify-between items-center hover:bg-dark-700 transition-colors group" data-val="available">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 rounded-full bg-gray-400 group-hover:bg-white transition-colors"></div>
+                        <span class="font-medium">Available</span>
+                    </div>
+                    <i class="ph ph-check-circle text-2xl text-transparent group-hover:text-gray-500 selection-indicator"></i>
+                </button>
+
+                <button class="status-option w-full p-4 rounded-xl border border-dark-600 bg-dark-900 flex justify-between items-center hover:bg-dark-700 transition-colors group" data-val="claimed">
+                    <div class="flex items-center gap-3">
+                        <div class="w-3 h-3 rounded-full bg-brand-green shadow-[0_0_10px_rgba(16,185,129,0.5)]"></div>
+                        <span class="font-medium text-brand-green">Claimed</span>
+                    </div>
+                    <i class="ph ph-check-circle text-2xl text-transparent group-hover:text-brand-green selection-indicator"></i>
+                </button>
+            </div>
+
+            <button id="save-status" class="w-full mt-6 bg-brand-blue hover:bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg transition-transform active:scale-95">
+                SAVE CHANGES
+            </button>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Using 11.6.1 to ensure all Firestore functions are available and stable
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- 1. CONFIGURATION ---
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVrafc9j3ByFG7bowWTPKIdnMo1vM5ulI",
+            authDomain: "rewardwink-4ace8.firebaseapp.com",
+            projectId: "rewardwink-4ace8",
+            storageBucket: "rewardwink-4ace8.firebasestorage.app",
+            messagingSenderId: "469306888221",
+            appId: "1:469306888221:web:ebdcbf2e996e1e2ad236f4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const CLAIMS_COLLECTION = 'claims';
+
+        // --- 2. STATE MANAGEMENT ---
+        let allUsers = [];
+        let hiddenUsers = JSON.parse(localStorage.getItem('hidden_admin_users') || '[]');
+        let selectedUserId = null;
+        let currentActionType = null; // 'wink_status' or 'winkit_status'
+        
+        // --- 3. DOM ELEMENTS ---
+        const userListEl = document.getElementById('user-list');
+        const searchInput = document.getElementById('search-input');
+        const totalCountEl = document.getElementById('total-count');
+        const visibleCountEl = document.getElementById('visible-count');
+        
+        // Modal Elements
+        const modal = document.getElementById('status-modal');
+        const modalContent = document.getElementById('status-modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalTargetName = document.getElementById('modal-target-name');
+        const statusOptions = document.querySelectorAll('.status-option');
+        const saveStatusBtn = document.getElementById('save-status');
+
+        // --- 4. AUTHENTICATION (Local Only) ---
+        const authScreen = document.getElementById('auth-screen');
+        const appContent = document.getElementById('app-content');
+        const pinInput = document.getElementById('admin-pin');
+        const loginBtn = document.getElementById('btn-login');
+        const authError = document.getElementById('auth-error');
+
+        function checkAuth() {
+            if (localStorage.getItem('admin_session') === 'active') {
+                authScreen.classList.add('hidden');
+                appContent.classList.remove('hidden');
+                appContent.classList.remove('opacity-0');
+                initDataListener();
+            } else {
+                pinInput.focus();
+            }
+        }
+
+        loginBtn.addEventListener('click', () => {
+            if (pinInput.value === '1234') {
+                localStorage.setItem('admin_session', 'active');
+                authScreen.classList.add('hidden');
+                appContent.classList.remove('hidden');
+                setTimeout(() => appContent.classList.remove('opacity-0'), 50);
+                initDataListener();
+            } else {
+                authError.classList.remove('hidden');
+                pinInput.classList.add('border-brand-red');
+                pinInput.value = '';
+            }
+        });
+
+        // Add Enter key support for login
+        pinInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        window.logout = () => {
+            localStorage.removeItem('admin_session');
+            window.location.reload();
+        };
+
+        // --- 5. FIRESTORE LISTENER ---
+        function initDataListener() {
+            const q = query(collection(db, CLAIMS_COLLECTION)); // Simple query, filter in JS
+            
+            onSnapshot(q, (snapshot) => {
+                allUsers = [];
+                snapshot.forEach(doc => {
+                    allUsers.push({ id: doc.id, ...doc.data() });
+                });
+                renderUI();
+            }, (error) => {
+                console.error("Firestore Error:", error);
+                userListEl.innerHTML = `<div class="text-brand-red text-center">Error loading data. Check console.</div>`;
+            });
+        }
+
+        // --- 6. RENDERING ENGINE ---
+        function renderUI() {
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            // Filter: Search + Hidden List
+            const filteredUsers = allUsers.filter(user => {
+                const isHidden = hiddenUsers.includes(user.id);
+                if (isHidden) return false;
+
+                const matchName = (user.username || '').toLowerCase().includes(searchTerm);
+                const matchPhone = (user.whatsapp || '').includes(searchTerm);
+                return matchName || matchPhone;
+            });
+
+            // Update Stats
+            totalCountEl.innerText = allUsers.length;
+            visibleCountEl.innerText = filteredUsers.length;
+
+            userListEl.innerHTML = '';
+
+            if (filteredUsers.length === 0) {
+                userListEl.innerHTML = `<div class="text-center py-8 text-gray-500 italic">No visible users found.</div>`;
+                return;
+            }
+
+            filteredUsers.forEach(user => {
+                const card = createUserCard(user);
+                userListEl.appendChild(card);
+            });
+        }
+
+        function createUserCard(user) {
+            const isSelected = user.id === selectedUserId;
+            const el = document.createElement('div');
+            el.className = `user-card bg-dark-800 rounded-2xl p-4 md:p-5 relative overflow-hidden ${isSelected ? 'selected' : ''}`;
+            el.dataset.id = user.id;
+
+            // Status Badge Helpers
+            const getStatusBadge = (status) => {
+                const isClaimed = status === 'claimed';
+                return `<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    isClaimed ? 'bg-brand-green/10 text-brand-green border border-brand-green/20' : 'bg-gray-700 text-gray-300 border border-gray-600'
+                }">
+                ${isClaimed ? 'CLAIMED' : 'AVAILABLE'}
+                </span>`;
+            };
+
+            el.innerHTML = `
+                <div class="flex items-center justify-between cursor-pointer card-header">
+                    <div class="flex items-center gap-4">
+                        <div class="h-12 w-12 rounded-full bg-dark-700 flex items-center justify-center text-xl overflow-hidden border border-dark-600">
+                             <i class="ph ph-user text-gray-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-white text-lg leading-tight">${user.username || 'Unknown User'}</h3>
+                            <p class="text-sm text-gray-400 font-mono mt-0.5"><i class="ph ph-whatsapp-logo mr-1 align-middle"></i>${user.whatsapp || 'No Number'}</p>
+                        </div>
+                    </div>
+                    <div class="text-gray-500">
+                        <i class="ph ph-caret-down text-xl transition-transform duration-300 ${isSelected ? 'rotate-180' : ''}"></i>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex gap-2">
+                    <div class="flex-1 bg-dark-900/50 rounded-lg p-2 border border-dark-700 flex justify-between items-center">
+                        <span class="text-xs text-gray-500 uppercase font-bold">Wink</span>
+                        ${getStatusBadge(user.wink_status)}
+                    </div>
+                    <div class="flex-1 bg-dark-900/50 rounded-lg p-2 border border-dark-700 flex justify-between items-center">
+                        <span class="text-xs text-gray-500 uppercase font-bold">Winkit</span>
+                        ${getStatusBadge(user.winkit_status)}
+                    </div>
+                </div>
+
+                <!-- ACTION PANEL (Only visible when selected) -->
+                <div class="action-panel">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <button onclick="openStatusModal('${user.id}', 'wink_status', '${user.username}')" 
+                            class="flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl transition-colors border border-dark-600">
+                            <i class="ph ph-pencil-simple"></i> Edit Wink
+                        </button>
+                        
+                        <button onclick="openStatusModal('${user.id}', 'winkit_status', '${user.username}')" 
+                            class="flex items-center justify-center gap-2 bg-dark-700 hover:bg-dark-600 text-white py-3 rounded-xl transition-colors border border-dark-600">
+                            <i class="ph ph-pencil-simple"></i> Edit Winkit
+                        </button>
+                        
+                        <button onclick="hideUser('${user.id}')" 
+                            class="flex items-center justify-center gap-2 bg-brand-red/10 hover:bg-brand-red/20 text-brand-red py-3 rounded-xl transition-colors border border-brand-red/20">
+                            <i class="ph ph-eye-slash"></i> Hide User
+                        </button>
+                    </div>
+                    <p class="text-xs text-gray-600 mt-3 text-center">ID: ${user.id}</p>
+                </div>
+            `;
+
+            // Click listener for selection
+            el.querySelector('.card-header').addEventListener('click', () => {
+                toggleSelection(user.id);
+            });
+
+            return el;
+        }
+
+        // --- 7. INTERACTIONS ---
+
+        function toggleSelection(id) {
+            if (selectedUserId === id) {
+                selectedUserId = null; // Deselect
+            } else {
+                selectedUserId = id;
+            }
+            renderUI(); // Re-render to update classes
+        }
+
+        window.hideUser = (id) => {
+            if(confirm('Hide this user from the admin list? (Data remains in Firebase)')) {
+                hiddenUsers.push(id);
+                localStorage.setItem('hidden_admin_users', JSON.stringify(hiddenUsers));
+                selectedUserId = null;
+                renderUI();
+            }
+        };
+
+        // --- 8. MODAL LOGIC ---
+        let pendingUpdate = { id: null, type: null, value: null };
+
+        window.openStatusModal = (id, type, name) => {
+            pendingUpdate.id = id;
+            pendingUpdate.type = type;
+            
+            // Set UI
+            modalTargetName.innerText = name || 'User';
+            document.querySelector('#modal-title').innerText = type === 'wink_status' ? 'Set Wink Status' : 'Set Winkit Status';
+            
+            // Show Modal
+            modal.classList.remove('hidden');
+            // Small delay for animation
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+            }, 10);
+            
+            // Determine current status to highlight
+            const user = allUsers.find(u => u.id === id);
+            const currentVal = user ? user[type] : 'available';
+            
+            // Reset option styling
+            statusOptions.forEach(opt => {
+                const isSelected = opt.dataset.val === currentVal;
+                const indicator = opt.querySelector('.selection-indicator');
+                
+                if (isSelected) {
+                    opt.classList.add('border-brand-green', 'bg-dark-700');
+                    opt.classList.remove('border-dark-600', 'bg-dark-900');
+                    indicator.classList.remove('text-transparent');
+                    indicator.classList.add('text-brand-green');
+                } else {
+                    opt.classList.remove('border-brand-green', 'bg-dark-700');
+                    opt.classList.add('border-dark-600', 'bg-dark-900');
+                    indicator.classList.add('text-transparent');
+                    indicator.classList.remove('text-brand-green');
+                }
+            });
+        };
+
+        function closeModal() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                pendingUpdate = { id: null, type: null, value: null };
+            }, 300);
+        }
+
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+        
+        // Option Selection in Modal
+        statusOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                // Visual toggle
+                statusOptions.forEach(o => {
+                    o.classList.remove('border-brand-green', 'bg-dark-700');
+                    o.classList.add('border-dark-600', 'bg-dark-900');
+                    o.querySelector('.selection-indicator').classList.add('text-transparent');
+                });
+                
+                opt.classList.add('border-brand-green', 'bg-dark-700');
+                opt.classList.remove('border-dark-600', 'bg-dark-900');
+                opt.querySelector('.selection-indicator').classList.remove('text-transparent');
+                opt.querySelector('.selection-indicator').classList.add('text-brand-green');
+
+                pendingUpdate.value = opt.dataset.val;
+            });
+        });
+
+        // Save Action
+        saveStatusBtn.addEventListener('click', async () => {
+            if (!pendingUpdate.id || !pendingUpdate.value) return;
+            
+            const btnText = saveStatusBtn.innerText;
+            saveStatusBtn.innerText = 'SAVING...';
+            saveStatusBtn.disabled = true;
+            
+            try {
+                const ref = doc(db, CLAIMS_COLLECTION, pendingUpdate.id);
+                // Dynamic property key computed from variable
+                await updateDoc(ref, {
+                    [pendingUpdate.type]: pendingUpdate.value
+                });
+                closeModal();
+            } catch (err) {
+                console.error("Error updating:", err);
+                alert("Failed to update status.");
+            } finally {
+                saveStatusBtn.innerText = btnText;
+                saveStatusBtn.disabled = false;
+            }
+        });
+
+        // Search Listener
+        searchInput.addEventListener('input', renderUI);
+
+        // --- INIT ---
+        checkAuth();
+
+    </script>
+</body>
+</html>
+
+

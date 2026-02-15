@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATZON – Reward</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --card: #14141c;
+      --text: #ffffff;
+      --text-dim: rgba(255, 255, 255, 0.7);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent: #00e676;
+    }
+
+    body.light {
+      --bg: #f4f4f9;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --text-dim: rgba(0, 0, 0, 0.6);
+      --border: rgba(0, 0, 0, 0.1);
+      --accent: #00c853;
+    }
+
+    * { box-sizing: border-box; transition: background 0.3s, color 0.3s; }
+    
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    body.locked .main, body.locked header {
+      filter: blur(15px);
+      pointer-events: none;
+    }
+
+    header {
+      max-width: 420px;
+      margin: auto;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* THEME TOGGLE SWITCH */
+    .theme-switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .theme-switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #333;
+      transition: .4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px; width: 18px;
+      left: 3px; bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .main {
+      max-width: 420px;
+      margin: auto;
+      padding: 10px 20px 40px;
+      animation: fadeUp .6s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-hero { text-align: center; margin-top: 10px; }
+    .profile-hero img {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+    .profile-hero h2 { margin: 12px 0 6px; font-size: 18px; }
+    .profile-hero p { font-size: 13px; color: var(--text-dim); line-height: 1.5; padding: 0 10px; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    /* USER PROFILE CARD (NEW) */
+    .profile-user-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .profile-user-card img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 16px;
+      border: 2px solid var(--accent);
+    }
+
+    .profile-user-card .details {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .profile-user-card .uname { font-weight: 700; font-size: 15px; }
+    .profile-user-card .uphone { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+    /* CARD: HORIZONTAL LAYOUT FIX */
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* Logo Forced Circle */
+    .card .prod-logo {
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      margin-right: 14px;
+      object-fit: cover;
+      aspect-ratio: 1/1;
+      border: 2px solid var(--border);
+      background: #000;
+    }
+
+    .card .info { 
+      flex: 1; 
+      display: flex; 
+      flex-direction: column; 
+      justify-content: center; /* Center title + stock vertically */
+    }
+    
+    .card .info .name { font-size: 14px; font-weight: 700; line-height: 1.1; }
+    .card .info .stock { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 80px;
+      margin-left: 10px;
+    }
+
+    .btn.claim { background: var(--accent); color: #000; }
+    .btn.habis { background: #444; color: #888; cursor: not-allowed; }
+
+    /* SOCIAL ICON FIX: PERFECT CIRCLES */
+    .social {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .social img { 
+      width: 32px; 
+      height: 32px; 
+      border-radius: 50%; 
+      object-fit: cover;
+      aspect-ratio: 1/1;
+    }
+    
+    .social span { margin-left: 14px; font-weight: 600; font-size: 13px; }
+
+    footer { text-align: center; font-size: 11px; color: var(--text-dim); margin: 30px 0 10px; }
+
+ .store-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f5f0e6; /* cream */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  border: 2px solid #ffffff;
+  flex-shrink: 0;
+}
+
+body.light .store-icon {
+  background: #f3eadf;
+  border-color: #ffffff;
+}
+
+body:not(.light) .store-icon {
+  background: #2a2a2a;
+  border-color: rgba(255,255,255,0.6);
+}
+
+
+   /* LOGIN MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-box {
+      background: var(--card);
+      padding: 28px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 340px;
+      text-align: center;
+    }
+
+    .modal h3 { margin: 0 0 10px; font-size: 20px; }
+    .modal p { font-size: 13px; color: var(--text-dim); margin-bottom: 20px; }
+
+    .modal input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      outline: none;
+      margin-bottom: 12px;
+      font-family: inherit;
+    }
+
+    body.light .modal input { background: #f0f0f0; border-color: #ddd; color: #000; }
+
+    .modal button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .shake { animation: shake 0.4s ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+  </style>
+</head>
+<body class="locked">
+
+  <!-- LOGIN MODAL -->
+  <div class="modal" id="loginModal">
+    <div class="modal-box" id="modalContent">
+      <h3>Welcome Back!</h3>
+      <p>Silahkan login untuk mengakses hadiah eksklusif.</p>
+      <input type="text" id="loginUser" placeholder="Username">
+      <input type="number" id="loginWa" placeholder="Nomor WhatsApp (62xxx)">
+      <input type="text" id="loginCode" placeholder="Kode Verifikasi">
+      <button onclick="handleLogin()">MASUK</button>
+    </div>
+  </div>
+
+  <header>
+    <h1>DATZON CHANNEL</h1>
+    <label class="theme-switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider"></span>
+    </label>
+  </header>
+
+  <div class="main">
+    <div class="profile-hero">
+      <img src="https://i.ibb.co.com/Y7DScK4D/quality-restoration-20251018223600821-1.png" alt="Logo">
+      <h2>DATZON GIVEAWAY</h2>
+      <p><b>Pemberitahuan Reward 🎁</b><br><br>
+
+Terima kasih buat kalian semua yang masih support gua sampai sekarang.<br>
+Sebenernya reward <b>Wink / Winkit Premium</b> ini rencananya mau gua bagi pas channel WhatsApp tembus <b>2K followers</b>.<br><br>
+
+Tapi karena lagi ada <b>error di Wink MOD</b>, jadi yaudah gua <b>majuin hari ini aja</b>.<br>
+Buat yang mau, silakan klaim. <b>Kuota TERBATAS</b>, siapa cepat dia dapat.<br><br>
+
+Oh iya, jangan jadi penonton doang.<br>
+<b>Subscribe YouTube, follow TikTok, dan join WhatsApp Channel</b> gua di bawah.<br>
+Paket lengkap, biar ga nyasar.<br><br>
+
+<b>Thanks udah support.</b><br>
+Yang setia dapet rezeki. Yang ribet, skip.</p>
+    </div>
+
+    <!-- NEW USER PROFILE SECTION -->
+    <div class="profile-user-card" id="userProfileDisplay" style="display:none;">
+      <img src="https://images.detik.com/community/media/detikconnect/document/2016/6/17/b06cd7253fa6a30d094ddd6fd02c4a85.jpeg" alt="User Avatar">
+      <div class="details">
+        <span class="uname" id="displayUsername">Guest</span>
+        <span class="uphone" id="displayWhatsapp">62xxx</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- WINK 7 DAYS -->
+    <div class="card">
+      <img src="https://i.ibb.co.com/F2Zssgh/Proyek-Baru-39-4-A42-A67.png" class="prod-logo" alt="Wink">
+      <div class="info">
+        <div class="name">Wink Premium – 7 Hari</div>
+        <div class="stock" id="stock-wink">Sisa: Loading...</div>
+      </div>
+      <button class="btn claim" id="btn-wink" onclick="processClaim('wink')">KLAIM</button>
+    </div>
+
+    <!-- WINKIT 3 DAYS -->
+    <div class="card">
+      <img src="https://play-lh.googleusercontent.com/NJEPMNfdXpI5fq6gzQrBNmBKdag1XbGi6pUno7j_mmz-sm0pZPNvlQH8KpXTHz6tXkbs" class="prod-logo" alt="Winkit">
+      <div class="info">
+        <div class="name">Winkit Premium – 3 Hari</div>
+        <div class="stock" id="stock-winkit">Sisa: Loading...</div>
+      </div>
+      <button class="btn claim" id="btn-winkit" onclick="processClaim('winkit')">KLAIM</button>
+    </div>
+
+    <hr>
+
+    <!-- SOCIALS -->
+    <a href="https://youtube.com/@dtzns" class="social">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaYgczYNBtNXEixUwTcAUDLu3zg2HCZC6CV1JiYd0ZlzHkHh3_Yd8dXng&s=10" alt="YT">
+      <span>YOUTUBE CHANNEL</span>
+    </a>
+    <a href="https://www.tiktok.com/@datzonn" class="social">
+      <img src="https://i.ibb.co.com/QFbF6XC5/quality-restoration-20260203044155769.png" alt="TK">
+      <span>TIKTOK</span>
+    </a>
+    <a href="https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j" class="social">
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEieTLS3wYoRyqqXdPi-KZgxmp9-QLcpl-KQJjJ4bHS216n2MZoWzfuelWx51JlWvWqYUV92us1skBPuOwsvV9FeDNNP650_x26mNRqN2F3cRddhpGYFXOxMakEJVCIvZTNgihzuwNhg4_Nja62kEoWW0hlkwBfSHn9OEfJ-szYAgW4s7y_VMjFo1pj2OjQ/s320/Proyek%20Baru%208%20%5B8A7CA6B%5D.png" alt="WA">
+      <span>WHATSAPP CHANNEL</span>
+    </a>
+    <a href="https://dazon.web.app/store.html" class="social">
+  <div class="store-icon">🛍️</div>
+  <span>STORE DATZON</span>
+</a>
+
+    <footer>
+      © 2026 DATZON – Thank you for the support
+    </footer>
+  </div>
+
+  <!-- FIREBASE INTEGRATION -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot, collection, serverTimestamp } 
+      from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAVrafc9j3ByFG7bowWTPKIdnMo1vM5ulI",
+      authDomain: "rewardwink-4ace8.firebaseapp.com",
+      projectId: "rewardwink-4ace8",
+      storageBucket: "rewardwink-4ace8.firebasestorage.app",
+      messagingSenderId: "469306888221",
+      appId: "1:469306888221:web:ebdcbf2e996e1e2ad236f4"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Global State
+    let currentUser = JSON.parse(localStorage.getItem('datzon_user'));
+    let userClaimData = null;
+
+    // --- THEME LOGIC ---
+    const themeToggle = document.getElementById('themeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+
+    if (currentTheme === 'light') {
+      document.body.classList.add('light');
+      themeToggle.checked = true;
+    }
+
+    themeToggle.addEventListener('change', () => {
+      if (themeToggle.checked) {
+        document.body.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.body.classList.remove('light');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+
+    // --- AUTH / LOGIN LOGIC ---
+    window.handleLogin = () => {
+      const user = document.getElementById('loginUser').value.trim();
+      const wa = document.getElementById('loginWa').value.trim();
+      const code = document.getElementById('loginCode').value.trim();
+      const box = document.getElementById('modalContent');
+
+      if (!user || !wa) {
+        alert("Harap isi username dan WhatsApp.");
+        return;
+      }
+
+      if (code === "DATZON") {
+        const userData = { username: user, whatsapp: wa };
+        localStorage.setItem('datzon_user', JSON.stringify(userData));
+        currentUser = userData;
+        initApp();
+      } else {
+        box.classList.add('shake');
+        setTimeout(() => box.classList.remove('shake'), 400);
+      }
+    };
+
+    function initApp() {
+      if (!currentUser) return;
+      document.body.classList.remove('locked');
+      document.getElementById('loginModal').style.display = 'none';
+
+      // Update Profile UI
+      document.getElementById('userProfileDisplay').style.display = 'flex';
+      document.getElementById('displayUsername').textContent = currentUser.username;
+      document.getElementById('displayWhatsapp').textContent = currentUser.whatsapp;
+
+      // --- STOCK LOGIC: LISTEN TO ALL CLAIMS (ADMIN DRIVEN) ---
+      onSnapshot(collection(db, "claims"), (snapshot) => {
+        let winkClaimedCount = 0;
+        let winkitClaimedCount = 0;
+
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          
+          if (data.wink_status === 'claimed') winkClaimedCount++;
+          if (data.winkit_status === 'claimed') winkitClaimedCount++;
+
+          if (data.username === currentUser.username && data.whatsapp === currentUser.whatsapp) {
+            userClaimData = data;
+            updateUserButtonUI(data);
+          }
+        });
+
+        document.getElementById('stock-wink').textContent = `Sisa: ${10 - winkClaimedCount} / 10`;
+        document.getElementById('stock-winkit').textContent = `Sisa: ${15 - winkitClaimedCount} / 15`;
+      });
+    }
+
+    function updateUserButtonUI(data) {
+      const btnWink = document.getElementById('btn-wink');
+      const btnWinkit = document.getElementById('btn-winkit');
+
+      if (data.wink_status === 'claimed') {
+        btnWink.innerText = "LOCKED";
+        btnWink.className = "btn habis";
+      }
+
+      if (data.winkit_status === 'claimed') {
+        btnWinkit.innerText = "LOCKED";
+        btnWinkit.className = "btn habis";
+      }
+    }
+
+    // --- CLAIM FLOW (REVISED) ---
+    window.processClaim = async (type) => {
+      if (!currentUser) return;
+
+      // Lock check
+      if (userClaimData && userClaimData[`${type}_status`] === 'claimed') {
+        alert("Sorry, admin has locked this reward. You already claimed it.");
+        return;
+      }
+
+      const docId = `${currentUser.username}_${currentUser.whatsapp}`.replace(/\s/g, '_');
+      const docRef = doc(db, "claims", docId);
+
+      try {
+        // Just create doc if it doesn't exist, don't set 'claimed' status
+        if (!userClaimData) {
+          await setDoc(docRef, {
+            username: currentUser.username,
+            whatsapp: currentUser.whatsapp,
+            claimedAt: serverTimestamp(),
+            wink_status: "available",
+            winkit_status: "available"
+          });
+        }
+
+        // Redirect to WhatsApp with fixed target and dynamic message
+        const targetNumber = "6285137756114";
+        const productName = type === 'wink' ? 'wink' : 'winkit';
+        const duration = type === 'wink' ? 7 : 3;
+        
+        const message = `halo bang ini ${currentUser.username} yang mau klaim reward ${productName} premium ${duration} harinya`;
+        const encodedMsg = encodeURIComponent(message);
+        
+        window.location.href = `https://api.whatsapp.com/send?phone=${targetNumber}&text=${encodedMsg}`;
+      } catch (e) {
+        console.error("Error initiating claim:", e);
+      }
+    };
+
+    if (currentUser) {
+      initApp();
+    }
+  </script>
+
+</body>
+</html>
+
