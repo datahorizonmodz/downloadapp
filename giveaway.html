@@ -415,6 +415,10 @@ Yang setia dapet rezeki. Yang ribet, skip.</p>
     // Global State
     let currentUser = JSON.parse(localStorage.getItem('datzon_user'));
     let userClaimData = null;
+    
+    // Global Stock Variables
+    let currentWinkStock = 0;
+    let currentWinkitStock = 0;
 
     // --- THEME LOGIC ---
     const themeToggle = document.getElementById('themeToggle');
@@ -472,36 +476,73 @@ Yang setia dapet rezeki. Yang ribet, skip.</p>
       onSnapshot(collection(db, "claims"), (snapshot) => {
         let winkClaimedCount = 0;
         let winkitClaimedCount = 0;
+        let myData = null;
 
+        // Iterate through all claims to calculate global stock
         snapshot.forEach(docSnap => {
           const data = docSnap.data();
           
           if (data.wink_status === 'claimed') winkClaimedCount++;
           if (data.winkit_status === 'claimed') winkitClaimedCount++;
 
+          // Identify if this document belongs to the current logged-in user
           if (data.username === currentUser.username && data.whatsapp === currentUser.whatsapp) {
-            userClaimData = data;
-            updateUserButtonUI(data);
+            myData = data;
           }
         });
 
-        document.getElementById('stock-wink').textContent = `Sisa: ${10 - winkClaimedCount} / 10`;
-        document.getElementById('stock-winkit').textContent = `Sisa: ${15 - winkitClaimedCount} / 15`;
+        // Update Global Variables
+        userClaimData = myData;
+        currentWinkStock = 10 - winkClaimedCount;
+        currentWinkitStock = 15 - winkitClaimedCount;
+
+        // Update Stock Text
+        document.getElementById('stock-wink').textContent = `Sisa: ${Math.max(0, currentWinkStock)} / 10`;
+        document.getElementById('stock-winkit').textContent = `Sisa: ${Math.max(0, currentWinkitStock)} / 15`;
+        
+        // Update Button State (Pass global stock logic)
+        updateButtons();
       });
     }
 
-    function updateUserButtonUI(data) {
+    function updateButtons() {
       const btnWink = document.getElementById('btn-wink');
       const btnWinkit = document.getElementById('btn-winkit');
 
-      if (data.wink_status === 'claimed') {
+      // --- WINK BUTTON LOGIC ---
+      if (userClaimData && userClaimData.wink_status === 'claimed') {
+        // User has already claimed (Status: LOCKED)
         btnWink.innerText = "LOCKED";
         btnWink.className = "btn habis";
+        btnWink.disabled = true;
+      } else if (currentWinkStock <= 0) {
+        // Global stock is empty (Status: HABIS)
+        btnWink.innerText = "HABIS";
+        btnWink.className = "btn habis";
+        btnWink.disabled = true;
+      } else {
+        // Available to claim
+        btnWink.innerText = "KLAIM";
+        btnWink.className = "btn claim";
+        btnWink.disabled = false;
       }
 
-      if (data.winkit_status === 'claimed') {
+      // --- WINKIT BUTTON LOGIC ---
+      if (userClaimData && userClaimData.winkit_status === 'claimed') {
+        // User has already claimed (Status: LOCKED)
         btnWinkit.innerText = "LOCKED";
         btnWinkit.className = "btn habis";
+        btnWinkit.disabled = true;
+      } else if (currentWinkitStock <= 0) {
+        // Global stock is empty (Status: HABIS)
+        btnWinkit.innerText = "HABIS";
+        btnWinkit.className = "btn habis";
+        btnWinkit.disabled = true;
+      } else {
+        // Available to claim
+        btnWinkit.innerText = "KLAIM";
+        btnWinkit.className = "btn claim";
+        btnWinkit.disabled = false;
       }
     }
 
@@ -509,9 +550,19 @@ Yang setia dapet rezeki. Yang ribet, skip.</p>
     window.processClaim = async (type) => {
       if (!currentUser) return;
 
-      // Lock check
+      // 1. Check User Lock (Personal)
       if (userClaimData && userClaimData[`${type}_status`] === 'claimed') {
         alert("Sorry, admin has locked this reward. You already claimed it.");
+        return;
+      }
+
+      // 2. Check Global Stock Lock (Global)
+      if (type === 'wink' && currentWinkStock <= 0) {
+        alert("Maaf, stok Wink Premium sudah habis! Tidak dapat klaim lagi.");
+        return;
+      }
+      if (type === 'winkit' && currentWinkitStock <= 0) {
+        alert("Maaf, stok Winkit Premium sudah habis! Tidak dapat klaim lagi.");
         return;
       }
 
