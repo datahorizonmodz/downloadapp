@@ -191,6 +191,20 @@
     .btn[disabled] { opacity: 0.7; cursor: wait; background: var(--text-secondary); box-shadow: none; transform: none; }
     .btn.complete { background: var(--success-gradient); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
 
+    /* Tombol Khusus Panduan/Tutorial */
+    .btn-login {
+      background: transparent;
+      border: 2px solid rgba(59, 130, 246, 0.5);
+      color: var(--primary);
+      box-shadow: none;
+    }
+    body.light-mode .btn-login { color: var(--primary); border-color: var(--primary); }
+    .btn-login:hover {
+      background: rgba(59, 130, 246, 0.1);
+      box-shadow: none;
+      transform: translateY(-2px);
+    }
+
     /* LIST STYLE */
     .app-info-list { padding-left: 20px; margin: 0; }
     .app-info-list li { margin-bottom: 8px; color: var(--text-primary); font-size: 13px; }
@@ -443,6 +457,7 @@
             </div>
             <div class="downloads">
               <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/u8RgLQo7" onclick="handleDownload(this)">DOWNLOAD</button>
+              <a href="winkittutorial.html" class="btn btn-login">TUTORIAL PENGGUNA BANYAK</a>
             </div>
         </div>
         
