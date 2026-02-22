@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Winkit Datzon</title>
+    <!-- Google Fonts: Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Styles & Resets */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --island-bg: rgba(20, 20, 20, 0.65);
+            --island-border: rgba(255, 255, 255, 0.15);
+            --island-shadow: 0 15px 35px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+            font-family: 'Quicksand', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Soft Gradient Background */
+        body {
+            background: linear-gradient(-45deg, #f0f4fd, #e0ebff, #e6dcfa, #dff2fa);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease-in-out infinite;
+            color: #222;
+            min-height: 100vh;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Main Header */
+        .main-header {
+            text-align: center;
+            padding: 120px 20px 40px; /* Space for the dynamic island */
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards;
+        }
+
+        .main-header h1 {
+            font-weight: 700;
+            font-size: clamp(28px, 5vw, 46px);
+            letter-spacing: 2px;
+            margin: 0;
+            background: linear-gradient(135deg, #111 0%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dynamic Island */
+        #dynamic-island {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            z-index: 9999;
+            background: var(--island-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--island-border);
+            box-shadow: var(--island-shadow);
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: all 0.7s ease-in-out;
+        }
+
+        /* Island States */
+        .island-hidden {
+            transform: translate(-50%, -100px) scale(0.5);
+            width: 40px;
+            height: 40px;
+            opacity: 0;
+        }
+
+        .island-bubble {
+            transform: translate(-50%, 0) scale(1);
+            width: 40px;
+            height: 40px;
+            opacity: 1;
+        }
+
+        .island-expanded {
+            transform: translate(-50%, 0) scale(1);
+            width: min(360px, 92vw);
+            height: 64px;
+            opacity: 1;
+        }
+
+        /* Liquid Glass Reflection Effect */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: skewX(-25deg);
+            animation: glassShine 6s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes glassShine {
+            0% { left: -150%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* Dynamic Island Content */
+        #island-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: min(360px, 92vw); /* Match expanded width */
+            height: 100%;
+            padding: 0 12px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #island-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        #island-title {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            flex-grow: 1;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #island-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        #island-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.08);
+        }
+
+        #island-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Tutorial Section */
+        #tutorial-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto 100px auto;
+        }
+
+        /* Glassmorphism Tutorial Cards */
+        .tutorial-card {
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px; /* High radius to match iOS feel */
+            padding: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.9s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        .tutorial-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Full Size Images - No Cropping */
+        .tutorial-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 28px; /* Inner radius slightly smaller than card */
+            display: block;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .main-header { padding-top: 100px; }
+            .tutorial-card { padding: 10px; border-radius: 30px; }
+            .tutorial-card img { border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Island -->
+    <div id="dynamic-island" class="island-hidden liquid-glass">
+        <div id="island-content">
+            <img id="island-logo" src="" alt="Product Logo">
+            <span id="island-title"></span>
+            <a id="island-link" href="#">
+                <!-- Shopping Cart SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="main-header">
+        <h1>TUTORIAL WINKIT DATZON</h1>
+    </header>
+
+    <!-- Main Tutorial Section -->
+    <main id="tutorial-section">
+        <!-- Javascript will automatically generate steps here -->
+    </main>
+
+    <script>
+        // 1. Tutorial Step Images Array
+        const tutorialImages = [
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734080/Proyek_Baru_16_0985B6A_sbistv.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734089/Proyek_Baru_16_020CEA6_nz686n.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734053/Proyek_Baru_16_B0B3E6C_x5zipp.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734052/Proyek_Baru_16_C16DA19_qitawn.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734056/Proyek_Baru_16_6916EFE_ghfx4e.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734065/Proyek_Baru_16_ED11014_p146a7.png",
+            "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734083/Proyek_Baru_16_F09FD48_xwwr7l.png"
+        ];
+
+        // 2. Product Data for Dynamic Island
+        const products = [
+            { name: "AM PREMIUM 2K", logo: "https://i.ibb.co.com/Y7j9CycR/Proyek-Baru-3-A76-D87-B.png", link: "https://api.whatsapp.com/send?phone=6285137756114&text=Halo%20min%2C%20mau%20order%20alight%20motion%20Rp.%202.000%20nya%20dong%2C%20Masih%20kah%3F%3F" },
+            { name: "WINK PREMIUM 4K", logo: "https://i.ibb.co.com/1fwWDVDn/Proyek-Baru-3-57-EA387.png", link: "https://api.whatsapp.com/send?phone=6285137756114&text=Halo%20min%2C%20mau%20order%20wink%20premium%20Rp.%204.000%20nya%20dong%2C%20Masih%20kah%3F%3F" },
+            { name: "WINKIT PREMIUM 2K", logo: "https://res.cloudinary.com/dwctfnwdu/image/upload/v1771734536/Proyek_Baru_17_25594AB_oadpib.png", link: "https://api.whatsapp.com/send?phone=6285137756114&text=Halo%20min%2C%20mau%20order%20winkit%20premium%20Rp.%202.000%20nya%20dong%2C%20Masih%20kah%3F%3F" }
+        ];
+
+        // 3. Inject Tutorial Images
+        const tutorialSection = document.getElementById('tutorial-section');
+        
+        tutorialImages.forEach((src, index) => {
+            const card = document.createElement('div');
+            card.className = 'tutorial-card';
+            
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = `Tutorial Step ${index + 1}`;
+            
+            card.appendChild(img);
+            tutorialSection.appendChild(card);
+        });
+
+        // 4. Scroll Animation Observer (Smooth slide-up fade-in)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Stop observing once animated
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.tutorial-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // 5. Dynamic Island Animation Sequence Logic
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+        async function startDynamicIslandLoop() {
+            const island = document.getElementById('dynamic-island');
+            const content = document.getElementById('island-content');
+            const logo = document.getElementById('island-logo');
+            const title = document.getElementById('island-title');
+            const link = document.getElementById('island-link');
+            
+            let i = 0;
+            
+            while (true) {
+                // Setup next product
+                logo.src = products[i].logo;
+                title.textContent = products[i].name;
+                link.href = products[i].link;
+                
+                // Wait 3 seconds before the sequence starts
+                await sleep(3000);
+                
+                // Step 2 & 3: Small circular bubble slides down
+                island.className = 'island-bubble liquid-glass';
+                await sleep(700); // Wait for transition
+                
+                // Step 4: Expands horizontally into Dynamic Island
+                island.className = 'island-expanded liquid-glass';
+                await sleep(700); // Wait for transition
+                
+                // Fade in content
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
+                
+                // Step 5: Stays visible for 5 seconds
+                await sleep(5000);
+                
+                // Step 6: Shrinks back into circle (fade out content first)
+                content.style.opacity = '0';
+                content.style.pointerEvents = 'none';
+                await sleep(300); // Quick fade out for content
+                
+                island.className = 'island-bubble liquid-glass';
+                await sleep(700); // Wait for transition
+                
+                // Step 7: Moves upward and disappears
+                island.className = 'island-hidden liquid-glass';
+                await sleep(700); // Wait for transition
+                
+                // Step 8: Loop gracefully to next product
+                i = (i + 1) % products.length;
+            }
+        }
+
+        // Initialize when the DOM loads completely
+        window.addEventListener('load', () => {
+            startDynamicIslandLoop();
+        });
+    </script>
+</body>
+</html>
