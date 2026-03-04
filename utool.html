@@ -1,827 +1,469 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DATZON - Mission Download</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DATZON UTOOL - Download</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script type='text/javascript' src='//pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js'></script>
+
+  <style>
+    :root {
+      /* --- PALET WARNA MODERN --- */
+      --primary: #3b82f6; 
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --success: #10b981;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning: #f59e0b;
+      
+      /* Mode Gelap (Default) - Deep Space Blue */
+      --bg-dark: #0f172a;
+      --bg-gradient-dark: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+      --card-bg-dark: rgba(30, 41, 59, 0.7);
+      --card-border-dark: rgba(255, 255, 255, 0.08);
+      --text-primary-dark: #f1f5f9;
+      --text-secondary-dark: #94a3b8;
+      --btn-text-dark: #ffffff;
+      --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+      /* Mode Terang - Clean White/Gray */
+      --bg-light: #f8fafc;
+      --bg-gradient-light: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+      --card-bg-light: rgba(255, 255, 255, 0.85);
+      --card-border-light: rgba(0, 0, 0, 0.05);
+      --text-primary-light: #1e293b;
+      --text-secondary-light: #64748b;
+      --btn-text-light: #ffffff;
+      --shadow-light: 0 10px 25px rgba(148, 163, 184, 0.15);
+
+      /* Inisialisasi Variable */
+      --bg: var(--bg-dark);
+      --bg-gradient: var(--bg-gradient-dark);
+      --card-bg: var(--card-bg-dark);
+      --card-border: var(--card-border-dark);
+      --text-primary: var(--text-primary-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --shadow: var(--shadow-dark);
+    }
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    body.light-mode {
+      --bg: var(--bg-light);
+      --bg-gradient: var(--bg-gradient-light);
+      --card-bg: var(--card-bg-light);
+      --card-border: var(--card-border-light);
+      --text-primary: var(--text-primary-light);
+      --text-secondary: var(--text-secondary-light);
+      --shadow: var(--shadow-light);
+    }
 
-    <style>
-        /* =========================================
-           CSS VARIABLES & RESET
-           ========================================= */
-        :root {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-color: #333333;
-            --heading-color: #111111;
-            --border-color: #e0e0e0;
-            
-            --primary-red: #ff0000;
-            --primary-green: #28a745;
-            --primary-grey: #b0b0b0;
-            --whatsapp-color: #25D366;
-            --notice-bg: #d4edda;
-            --notice-text: #155724;
-            --shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+    * { box-sizing: border-box; }
 
-        /* Dark Mode Variables */
-        body.dark-mode {
-            --bg-color: #121212;
-            --card-bg: #1e1e1e;
-            --text-color: #e0e0e0;
-            --heading-color: #ffffff;
-            --border-color: #333333;
-            --notice-bg: #1e4d2b;
-            --notice-text: #d4edda;
-            --shadow: 0 4px 12px rgba(0,0,0,0.5);
-        }
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Quicksand', sans-serif !important; 
-            transition: background-color 0.3s, color 0.3s;
-        }
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding-bottom: 60px;
+    }
+    
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      padding: 10px 5px;
+    }
+    
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    
+    .logo { 
+      width: 56px; 
+      height: 56px; 
+      background: var(--primary-gradient); 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff; 
+      font-size: 22px; 
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    h1 a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+    h1 a:hover { color: var(--primary); }
+    
+    .subtitle { font-size: 13px; color: var(--text-secondary); display: block; margin-top: 4px; }
+    
+    /* NOTICE BOX */
+    .notice {
+      background: rgba(245, 158, 11, 0.1);
+      padding: 16px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--text-primary);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      backdrop-filter: blur(5px);
+    }
+    .notice strong { color: var(--warning); display: block; margin-bottom: 4px; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+    /* GRID VERSI */
+    .versions { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+      gap: 32px; 
+      margin-top: 20px; 
+      margin-bottom: 32px;
+    }
+    
+    .version { 
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 24px; 
+      border-radius: 20px; 
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        /* =========================================
-           HEADER
-           ========================================= */
-        header {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 10px 0;
-            position: relative;
-        }
+    .version:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .version h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
 
-        .brand {
-            font-size: 24px;
-            font-weight: 700;
-            text-decoration: none;
-            color: var(--heading-color);
-            cursor: pointer;
-            letter-spacing: 1px;
-        }
+    .version p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    /* TOMBOL DOWNLOAD */
+    .downloads { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-top: auto; 
+    }
+    
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 50px;
+      background: var(--primary-gradient);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      filter: brightness(1.1);
+    }
+    
+    .btn:active { transform: scale(0.98); }
+    .btn[disabled] { opacity: 0.7; cursor: wait; background: var(--text-secondary); box-shadow: none; }
 
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .btn-login {
+      background: transparent;
+      border: 2px solid rgba(59, 130, 246, 0.5);
+      color: var(--primary);
+      box-shadow: none;
+    }
+    body.light-mode .btn-login { color: var(--primary); border-color: var(--primary); }
+    .btn-login:hover {
+      background: rgba(59, 130, 246, 0.1);
+      box-shadow: none;
+      transform: translateY(-2px);
+    }
 
-        .lang-container {
-            position: relative;
-        }
+    .btn.complete { 
+      background: var(--success-gradient); 
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
 
-        .btn-translate {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--heading-color);
-            display: flex;
-            align-items: center;
-            padding: 5px;
-        }
-        
-        .btn-translate svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--heading-color);
-        }
+    /* FOOTER */
+    footer { 
+      margin-top: 40px; 
+      text-align: center;
+      color: var(--text-secondary); 
+      font-size: 13px; 
+      padding: 20px;
+      border-top: 1px solid var(--card-border);
+    }
+    footer a { color: var(--warning); text-decoration: none; font-weight: 600; }
+    footer a:hover { text-decoration: underline; }
+    
+    /* SWITCH TOGGLE */
+    .switch { position: relative; display: inline-block; width: 54px; height: 30px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: .4s;
+      border-radius: 34px;
+    }
+    body.light-mode .slider { background-color: #cbd5e1; border-color: #cbd5e1; }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 22px; width: 22px;
+      left: 4px; bottom: 3px;
+      background-color: #fff;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider { background-color: var(--primary); border-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
 
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            width: 150px;
-            display: none;
-            z-index: 100;
-            overflow: hidden;
-            margin-top: 5px;
-        }
+    /* FAB */
+    .fab {
+      position: fixed;
+      bottom: 25px; right: 25px;
+      width: 60px; height: 60px;
+      background: var(--primary-gradient);
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      text-decoration: none;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .fab:hover { transform: scale(1.1) rotate(5deg); }
 
-        .lang-dropdown.show {
-            display: block;
-        }
+    /* NOTIFIKASI PROMO */
+    .promo-notification {
+      position: fixed;
+      bottom: 30px; right: 100px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+    body.light-mode .promo-notification { background: rgba(255,255,255,0.95); color: #0f172a; border-color: rgba(0,0,0,0.05); }
+    
+    .promo-notification.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .promo-notification.hide { opacity: 0; transform: translateY(10px); }
 
-        .lang-option {
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-color);
-            transition: background 0.2s;
-        }
+    /* ANIMASI MASUK */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-on-load { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
 
-        .lang-option:hover {
-            background-color: var(--border-color);
-        }
-
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 26px;
-        }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--primary-green);
-        }
-        input:checked + .slider:before {
-            transform: translateX(24px);
-        }
-
-        /* =========================================
-           MAIN CARD & SECTIONS
-           ========================================= */
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .notice-box {
-            background-color: var(--notice-bg);
-            color: var(--notice-text);
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--primary-green);
-            text-align: left;
-        }
-        .notice-box strong {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.1s, opacity 0.3s;
-            text-decoration: none;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        .btn-icon {
-            margin-right: 10px;
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        .btn-mission {
-            background-color: var(--primary-red);
-        }
-        .btn-mission.completed {
-            background-color: var(--primary-green) !important;
-            cursor: default;
-        }
-        .btn-mission.loading {
-            background-color: #cc0000;
-            cursor: wait;
-        }
-
-        .progress-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            margin: 15px 0 30px 0;
-        }
-        .progress-bar {
-            flex: 1;
-            height: 6px;
-            background-color: var(--border-color);
-            border-radius: 3px;
-            transition: background-color 0.5s ease;
-        }
-        .progress-bar.active {
-            background-color: var(--primary-green);
-        }
-
-        .divider {
-            height: 1px;
-            background-color: var(--border-color);
-            margin: 20px 0;
-        }
-
-        .btn-complete {
-            background-color: var(--primary-grey);
-            cursor: not-allowed;
-            margin-bottom: 15px;
-        }
-        .btn-complete.ready {
-            background-color: var(--primary-red);
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
-        .btn-complete.verified {
-            background-color: var(--primary-green);
-            cursor: default;
-            animation: none;
-        }
-
-        .btn-download {
-            background-color: var(--primary-grey);
-            cursor: not-allowed;
-            font-size: 18px;
-            padding: 18px;
-        }
-        .btn-download.ready {
-            background-color: var(--primary-green);
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
-        }
-
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #ffffff;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            display: none;
-        }
-        .loading .spinner {
-            display: block;
-        }
-        .loading span {
-            display: none; 
-        }
-        .loading .btn-icon {
-            display: none; 
-        }
-
-        /* =========================================
-           PRODUCT CARD STYLES
-           ========================================= */
-        .product-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            padding: 5px;
-        }
-        .product-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--heading-color);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .product-icon {
-            width: 24px;
-            height: 24px;
-            fill: var(--primary-green);
-        }
-        .toggle-icon {
-            width: 20px;
-            height: 20px;
-            fill: var(--text-color);
-            transition: transform 0.3s;
-        }
-        .product-card.open .toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .product-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            margin-top: 0;
-            padding: 0 5px;
-        }
-        .product-card.open .product-content {
-            margin-top: 20px;
-            max-height: 300px;
-        }
-
-        .product-option {
-            background-color: var(--bg-color);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border-color);
-            text-align: left;
-        }
-        .product-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .product-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .product-price {
-            color: var(--primary-green);
-            font-weight: 700;
-            font-size: 14px;
-        }
-
-        .btn-wa {
-            background-color: var(--whatsapp-color);
-            color: white;
-            font-size: 13px;
-            padding: 10px;
-            margin-bottom: 0;
-        }
-        .btn-wa:hover {
-            opacity: 0.9;
-        }
-
-        /* =========================================
-           PASSWORD MODAL
-           ========================================= */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 9999;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            animation: slideDown 0.4s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: var(--heading-color);
-        }
-
-        .modal-desc {
-            font-size: 14px;
-            margin-bottom: 20px;
-            color: var(--text-color);
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            background-color: var(--bg-color);
-            color: var(--heading-color);
-            font-size: 16px;
-            margin-bottom: 15px;
-            outline: none;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-        .password-input:focus {
-            border-color: var(--primary-green);
-        }
-
-        .btn-unlock {
-            background-color: var(--primary-green);
-            color: white;
-        }
-        .btn-get-pass {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            font-weight: 500;
-        }
-        .error-msg {
-            color: var(--primary-red);
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-            font-weight: 600;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
-        }
-
-    </style>
+    @media (max-width: 600px) {
+      .header-left h1 { font-size: 18px; }
+      .promo-notification {
+        right: 20px; left: 20px; bottom: 100px; width: auto; text-align: center;
+      }
+    }
+  </style>
+  
+  <script>
+    (function() {
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'light') { document.documentElement.classList.add('light-mode'); }
+      } catch (e) {}
+    })();
+  </script>
 </head>
-<body>
+<body class="">
 
-    <div id="password-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h2 class="modal-title" data-key="pass_title">LOCKED CONTENT</h2>
-            <p class="modal-desc" data-key="pass_desc">Masukkan password untuk mengakses halaman ini.</p>
-            
-            <input type="text" id="pass-input" class="password-input" placeholder="PASSWORD">
-            
-            <button class="btn btn-unlock" onclick="checkPassword()">
-                <span data-key="btn_unlock">BUKA</span>
-            </button>
-            
-            <button class="btn btn-get-pass" onclick="window.open('https://youtu.be/to-dirdvj20?si=wdPHd_ZGk2YCCdZX', '_blank')">
-                <span data-key="btn_get_pass">LIHAT PASSWORD</span>
-            </button>
-            
-            <p id="error-msg" class="error-msg" data-key="pass_error">Password Salah!</p>
+  <div class="container">
+    <header class="animate-on-load" style="animation-delay: 0.1s;">
+      <div class="header-left">
+        <div class="logo">DZ</div>
+        <div>
+          <h1><a href="https://youtube.com/@informatifdata?si=qIyJ7lgDBDOCFmOt" target="_blank">DATZON UTOOL</a></h1>
+          <span class="subtitle">Official Download Page</span>
         </div>
-    </div>
-
-    <header>
-        <a href="https://youtube.com/@informatifdata?si=qIyJ7lgDBDOCFmOt" target="_blank" class="brand">DATZON</a>
-        
-        <div class="header-controls">
-            <div class="lang-container">
-                <button class="btn-translate" id="lang-btn" aria-label="Translate" onclick="toggleLangDropdown()">
-                    <svg viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
-                </button>
-                <div class="lang-dropdown" id="lang-dropdown">
-                    <div class="lang-option" onclick="changeLanguage('id')">Indonesian</div>
-                    <div class="lang-option" onclick="changeLanguage('en')">English</div>
-                </div>
-            </div>
-
-            <label class="theme-switch">
-                <input type="checkbox" id="theme-toggle" onchange="toggleTheme()">
-                <span class="slider"></span>
-            </label>
-        </div>
+      </div>
+      
+      <label class="switch" title="Ganti tema">
+        <input type="checkbox" id="theme-toggle">
+        <span class="slider round"></span>
+      </label>
     </header>
+    
+    <div class="card-container animate-on-load" style="animation-delay: 0.2s;">
+      <div class="notice">
+        <strong>⚠️ Perhatian</strong>
+        <p style="margin:8px 0 0">Saat mengklik tombol download akan diarahkan ke iklan. Jika muncul iklan atau dialihkan ke halaman lain, silakan tekan <b>Kembali/Back</b> lalu klik tombol download lagi.</p>
+      </div>
 
-    <div class="container">
-        
-        <div class="notice-box">
-            <strong data-key="notice_title">NOTICE / PERINGATAN</strong>
-            <span data-key="notice_desc">Klik tombol Complete untuk memverifikasi. Setelah verifikasi selesai, tombol download akan aktif otomatis.</span>
+      <div class="versions">
+        <div class="version">
+            <div>
+              <h3>🚀 UTOOL PRO</h3>
+              <p>Download UTOOL versi terbaru. Pastikan Anda mengikuti instruksi dengan benar saat melewati tautan untuk menghindari masalah download.</p>
+            </div>
+            <div class="downloads">
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/0TWl2" onclick="handleDownload(this)">DOWNLOAD SEKARANG</button>
+            </div>
         </div>
 
-        <button id="btn-m1" class="btn btn-mission" onclick="startMission(1, 'https://youtu.be/to-dirdvj20?si=wdPHd_ZGk2YCCdZX')">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M1.3 22l11.3-9.5-11.3-9.5v19zm20.7-9.5l-8.3 7v-14l8.3 7z" fill="none"/><path d="M4.5 12.5l7 6 7-6-7-6-7 6zm-3.2 9.5l11.3-9.5-11.3-9.5v19z" fill="white"/></svg>
-            <span data-key="m1_text">Like Video YouTube</span>
-            <div class="spinner"></div>
-        </button>
-
-        <button id="btn-m2" class="btn btn-mission" onclick="startMission(2, 'https://youtube.com/@informatifdata?si=ZAO3Y_TvdDg23bA5')">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-            <span data-key="m2_text">Subscribe Channel YouTube</span>
-            <div class="spinner"></div>
-        </button>
-
-        <button id="btn-m3" class="btn btn-mission" onclick="startMission(3, 'https://whatsapp.com/channel/0029VaLWvFyKWEKjhLtp0H3j')">
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-            <span data-key="m3_text">Join Saluran WhatsApp</span>
-            <div class="spinner"></div>
-        </button>
-
-        <div class="progress-container">
-            <div id="bar-1" class="progress-bar"></div>
-            <div id="bar-2" class="progress-bar"></div>
-            <div id="bar-3" class="progress-bar"></div>
+        <div class="version">
+            <div>
+              <h3>🛒 ALIGHT MOTION PREMIUM</h3>
+              <p>Dapatkan aplikasi premium tanpa batas dengan harga terjangkau. Bebas pilih paket yang sesuai dengan kebutuhan Anda.</p>
+            </div>
+            <div class="downloads">
+              <button class="btn btn-login" onclick="window.open('https://wa.link/xndtyx', '_blank')">AM 1 Tahun (Sharing) - Rp 2.000</button>
+              <button class="btn" style="background: var(--success-gradient);" onclick="window.open('https://wa.link/rjjbhc', '_blank')">AM 1 Tahun (Private) - Rp 4.000</button>
+            </div>
         </div>
-
-        <div class="divider"></div>
-
-        <button id="btn-complete" class="btn btn-complete" onclick="startComplete()" disabled>
-            <span data-key="btn_complete">COMPLETE</span>
-            <div class="spinner"></div>
-        </button>
-
-        <button id="btn-download" class="btn btn-download" onclick="startDownload()" disabled>
-            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-            <span data-key="btn_download">DOWNLOAD</span>
-        </button>
+      </div> 
+      
+      <footer class="animate-on-load" style="animation-delay: 0.3s;">
+        <p>Kesulitan melewati link SafeLinku/SafeFileku? <br>
+          <a href="https://youtu.be/gTUJfiU3pb0?si=Kp79XF6D36Yy06xV" target="_blank" rel="noopener noreferrer">
+            Tonton Tutorial Cara Download
+          </a>
+        </p>
+      </footer>
     </div>
+  </div>
 
-    <div class="container product-card" id="product-card">
-        <div class="product-header" onclick="toggleProduct()">
-            <div class="product-title">
-                <svg class="product-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
-                <span data-key="prod_name">Alight Motion Premium</span>
-            </div>
-            <svg class="toggle-icon" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-        </div>
-        
-                        <div class="product-content">
-            <div class="divider"></div>
-            
-            <div class="product-option">
-                <div class="product-info">
-                    <span class="product-name">AM 1 Tahun (Sharing)</span>
-                    <span class="product-price">Rp 2.000</span>
-                </div>
-                <button class="btn btn-wa" onclick="window.open('https://wa.link/xndtyx', '_blank')">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="white">
-                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.185.488 1.563.627.614.227 1.25.195 1.761.12.571-.084 1.758-.718 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
-                    </svg>
-                    <span data-key="btn_buy_share">Beli Sekarang (Sharing)</span>
-                </button>
-            </div>
+  <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
+    🛒
+  </a>
 
-            <div class="product-option">
-                <div class="product-info">
-                    <span class="product-name">AM 1 Tahun (Private)</span>
-                    <span class="product-price">Rp 4.000</span>
-                </div>
-                <button class="btn btn-wa" onclick="window.open('https://wa.link/rjjbhc', '_blank')">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="white">
-                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.185.488 1.563.627.614.227 1.25.195 1.761.12.571-.084 1.758-.718 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
-                    </svg>
-                    <span data-key="btn_buy_private">Beli Sekarang (Private)</span>
-                </button>
-            </div>
-            
-        </div>
+  <div class="promo-notification" id="promo-notif">
+    🔥 Alight Motion Premium Rp. 4K di sini!
+  </div>
 
+  <script>
+    function isBusy(btn) { return btn.getAttribute('data-busy') === '1'; }
+    function setBusy(btn, val) { btn.setAttribute('data-busy', val ? '1' : '0'); }
 
+    function handleDownload(btn) {
+      if (isBusy(btn)) return;
+      const adLink = btn.getAttribute('data-ad') || '#';
+      const dlLink = btn.getAttribute('data-dl') || '#';
 
-    <script>
-        // ============================================
-        // 1. DATA TRANSLATION
-        // ============================================
-        const translations = {
-            id: {
-                notice_title: "NOTICE / PERINGATAN",
-                notice_desc: "Klik tombol Complete untuk memverifikasi. Setelah verifikasi selesai, tombol download akan aktif otomatis.",
-                m1_text: "Like Video YouTube",
-                m2_text: "Subscribe Channel YouTube",
-                m3_text: "Join Saluran WhatsApp",
-                btn_complete: "COMPLETE",
-                btn_download: "DOWNLOAD",
-                prod_name: "Alight Motion Premium",
-                btn_buy_share: "Beli Sekarang (Sharing)",
-                btn_buy_private: "Beli Sekarang (Private)",
-                pass_title: "KONTEN TERKUNCI",
-                pass_desc: "Masukkan password untuk mengakses halaman ini.",
-                btn_unlock: "BUKA",
-                btn_get_pass: "LIHAT PASSWORD",
-                pass_error: "Password Salah! Silakan tonton video."
-            },
-            en: {
-                notice_title: "NOTICE / WARNING",
-                notice_desc: "Click the Complete button to verify. Once verified, the download button will activate automatically.",
-                m1_text: "Like YouTube Video",
-                m2_text: "Subscribe YouTube Channel",
-                m3_text: "Join WhatsApp Channel",
-                btn_complete: "COMPLETE",
-                btn_download: "DOWNLOAD",
-                prod_name: "Alight Motion Premium",
-                btn_buy_share: "Buy Now (Sharing)",
-                btn_buy_private: "Buy Now (Private)",
-                pass_title: "LOCKED CONTENT",
-                pass_desc: "Enter password to access this page.",
-                btn_unlock: "UNLOCK",
-                btn_get_pass: "GET PASSWORD",
-                pass_error: "Wrong Password! Please watch the video."
-            }
-        };
+      try { window.open(adLink, '_blank'); } catch (e) { console.log('Iklan blocked', e); }
 
-        // ============================================
-        // 2. STATE MANAGEMENT & INITIALIZATION
-        // ============================================
-        let currentLang = 'id';
-        let missionState = { 1: false, 2: false, 3: false };
-        let isVerified = false;
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check Password Logic
-            checkAccess();
-            
-            // Theme Init
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                document.getElementById('theme-toggle').checked = true;
-            }
+      startCountdownOnButton(btn, dlLink, 10);
+    }
 
-            // Language Init
-            const savedLang = localStorage.getItem('lang') || 'id';
-            changeLanguage(savedLang);
+    function startCountdownOnButton(btn, downloadUrl, seconds) {
+      setBusy(btn, true);
+      btn.disabled = true;
+      let s = seconds;
+      
+      btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
+      btn.style.background = "var(--text-secondary)"; 
+
+      const id = setInterval(() => {
+        s -= 1;
+        if (s > 0) {
+          btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
+        } else {
+          clearInterval(id);
+          const a = document.createElement('a');
+          a.className = 'btn complete';
+          a.href = downloadUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.innerHTML = '⬇️ Unduh Sekarang'; 
+          
+          btn.parentNode.replaceChild(a, btn);
+        }
+      }, 1000);
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        if(themeToggle) themeToggle.checked = true;
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            document.body.classList.add('light-mode');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.body.classList.remove('light-mode');
+            localStorage.setItem('theme', 'dark');
+          }
         });
-
-        // ============================================
-        // 3. PASSWORD SYSTEM
-        // ============================================
-        function checkAccess() {
-            const unlocked = localStorage.getItem('site_unlocked');
-            if (unlocked !== 'true') {
-                document.getElementById('password-modal').style.display = 'flex';
-                document.body.style.overflow = 'hidden'; 
-            }
+      }
+      
+      const promoNotif = document.getElementById('promo-notif');
+      if (promoNotif) {
+        function cyclePromo() {
+          promoNotif.classList.remove('hide');
+          promoNotif.classList.add('show');
+          
+          setTimeout(() => {
+            promoNotif.classList.remove('show');
+            promoNotif.classList.add('hide');
+          }, 5000);
         }
-
-        function checkPassword() {
-            const input = document.getElementById('pass-input').value.toUpperCase();
-            const errorMsg = document.getElementById('error-msg');
-            
-            if (input === 'UTOOL') {
-                localStorage.setItem('site_unlocked', 'true');
-                document.getElementById('password-modal').style.display = 'none';
-                document.body.style.overflow = 'auto';
-            } else {
-                errorMsg.style.display = 'block';
-                const inputEl = document.getElementById('pass-input');
-                inputEl.style.borderColor = 'var(--primary-red)';
-                setTimeout(() => inputEl.style.borderColor = 'var(--border-color)', 500);
-            }
-        }
-
-        // ============================================
-        // 4. THEME & LANGUAGE LOGIC
-        // ============================================
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('lang-dropdown').classList.toggle('show');
-        }
-
-        window.onclick = function(event) {
-            if (!event.target.closest('.lang-container')) {
-                document.getElementById('lang-dropdown').classList.remove('show');
-            }
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('lang', lang);
-            
-            const elements = document.querySelectorAll('[data-key]');
-            elements.forEach(el => {
-                const key = el.getAttribute('data-key');
-                if (translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
-            
-            document.getElementById('lang-dropdown').classList.remove('show');
-        }
-
-        // ============================================
-        // 5. MISSION LOGIC
-        // ============================================
-        function startMission(id, url) {
-            if (missionState[id]) return; 
-
-            const btn = document.getElementById(`btn-m${id}`);
-            
-            window.open(url, '_blank');
-
-            btn.classList.add('loading');
-            
-            // Verifikasi 5 detik per misi
-            setTimeout(() => {
-                btn.classList.remove('loading');
-                btn.classList.add('completed');
-                document.getElementById(`bar-${id}`).classList.add('active');
-                missionState[id] = true;
-                checkAllMissions();
-            }, 5000);
-        }
-
-        function checkAllMissions() {
-            if (missionState[1] && missionState[2] && missionState[3]) {
-                const completeBtn = document.getElementById('btn-complete');
-                completeBtn.disabled = false;
-                completeBtn.classList.add('ready');
-            }
-        }
-
-        // ============================================
-        // 6. COMPLETE & DOWNLOAD LOGIC (UPDATED)
-        // ============================================
-        function startComplete() {
-            const btn = document.getElementById('btn-complete');
-            if (btn.disabled) return;
-
-            // 1. BUKA LINK IKLAN VERIFIKASI (EffectiveGateCPM)
-            window.open('https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274', '_blank');
-
-            // 2. TAMPILKAN LOADING SEMENTARA
-            btn.classList.remove('ready');
-            btn.classList.add('loading');
-
-            // 3. TUNGGU SEBENTAR (3 DETIK) LALU BUKA TOMBOL DOWNLOAD
-            setTimeout(() => {
-                // Ubah status tombol complete
-                btn.classList.remove('loading');
-                btn.classList.add('verified');
-                btn.innerHTML = `<svg class="btn-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> VERIFIED ✅`;
-                
-                // Aktifkan Tombol Download
-                const downloadBtn = document.getElementById('btn-download');
-                downloadBtn.disabled = false;
-                downloadBtn.classList.add('ready');
-                
-                isVerified = true;
-            }, 3000); // Waktu jeda agar user melihat tab baru terbuka
-        }
-
-        function startDownload() {
-            if (!isVerified) return;
-            // Langsung ke link final
-            window.open('https://sfl.gl/0TWl2', '_blank');
-        }
-
-        // ============================================
-        // 7. PRODUCT DROPDOWN LOGIC
-        // ============================================
-        function toggleProduct() {
-            const card = document.getElementById('product-card');
-            card.classList.toggle('open');
-        }
-
-    </script>
+        setTimeout(cyclePromo, 2000);
+        setInterval(cyclePromo, 20000); 
+      }
+    });
+  </script>
 </body>
 </html>
+
 
