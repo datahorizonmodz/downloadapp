@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Tutorial Login Alight Motion - DATZON</title>
+    <style>
+        /* =========================================
+           GLOBAL VARIABLES & THEME
+           ========================================= */
+        :root {
+            /* Colors */
+            --bg-body-light: #f8f9fa;
+            --bg-body-dark: #121212;
+            
+            --step-bg-light: #ffffff;
+            --step-bg-dark: #1e1e1e;
+            
+            --text-main-light: #333333;
+            --text-main-dark: #f0f0f0;
+            
+            --text-desc-light: #666666;
+            --text-desc-dark: #cccccc;
+            
+            --header-bg-light: rgba(255, 255, 255, 0.95);
+            --header-bg-dark: rgba(30, 30, 30, 0.95);
+            
+            --accent-color: #00d2ff;
+            --border-light: #e0e0e0;
+            --border-dark: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body-light);
+            color: var(--text-main-light);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body.dark {
+            background-color: var(--bg-body-dark);
+            color: var(--text-main-dark);
+        }
+
+        /* =========================================
+           HEADER SECTION
+           ========================================= */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--header-bg-light);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        body.dark header {
+            background-color: var(--header-bg-dark);
+            border-bottom: 1px solid var(--border-dark);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* BRAND LOGO */
+        .brand-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-main-light);
+            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #00d2ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* CONTROLS (RIGHT SIDE) */
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* DARK MODE TOGGLE (SWITCH STYLE) */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            width: 46px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 3px;
+            content: "";
+            height: 18px;
+            left: 3px;
+            position: absolute;
+            transition: .4s;
+            width: 18px;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* LANGUAGE TOGGLE BUTTON */
+        .lang-btn {
+            background: none;
+            border: 2px solid var(--border-light);
+            border-radius: 20px;
+            padding: 5px 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main-light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark .lang-btn {
+            border-color: var(--border-dark);
+            color: var(--text-main-dark);
+        }
+
+        .lang-btn:hover {
+            background-color: rgba(0, 210, 255, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        /* =========================================
+           VIDEO & INSTRUCTION SECTION (NEW)
+           ========================================= */
+        .tutorial-section {
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        .video-layout {
+            max-width: 480px; /* Lebar maksimal terpusat untuk portrait mode */
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .step-card {
+            background: var(--step-bg-light);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            opacity: 0; /* Awal hidden untuk animasi */
+            transform: translateY(30px);
+            animation: none; 
+        }
+
+        body.dark .step-card {
+            background: var(--step-bg-dark);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Video Wrapper untuk Rasio 9:16 Portrait */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 177.77%; /* Rasio 9:16 */
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--border-light);
+        }
+
+        body.dark .video-wrapper {
+            background-color: var(--border-dark);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            object-fit: contain;
+        }
+
+        /* Teks Instruksi */
+        .step-content h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-main-light);
+            text-align: center;
+        }
+        
+        body.dark .step-content h3 {
+            color: var(--text-main-dark);
+        }
+
+        .step-content ul {
+            margin: 0 0 15px 25px;
+            color: var(--text-desc-light);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        body.dark .step-content ul {
+            color: var(--text-desc-dark);
+        }
+
+        .step-content li {
+            margin-bottom: 8px;
+        }
+
+        .note {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-light);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-style: italic;
+            color: var(--text-main-light);
+            text-align: center;
+        }
+
+        body.dark .note {
+            border-top-color: var(--border-dark);
+            color: var(--text-main-dark);
+        }
+
+        /* Language Logic (CSS Only) */
+        .lang-en {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .lang-id {
+            display: block;
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        body.lang-english .lang-id {
+            display: none;
+            opacity: 0;
+        }
+
+        body.lang-english .lang-en {
+            display: block;
+            animation: fadeInText 0.5s forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Scroll Animation */
+        .step-card.visible {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =========================================
+         HEADER
+         ========================================= -->
+    <header>
+        <!-- 1. BRAND -->
+        <a href="https://youtube.com/@informatifdata" target="_blank" class="brand-logo" title="Kunjungi Youtube">
+            DATZON
+        </a>
+
+        <div class="header-controls">
+            <!-- 2. DARK MODE TOGGLE -->
+            <div class="theme-switch-wrapper">
+                <span id="mode-label" style="font-size: 1.2rem; margin-right: 8px;">☀️</span>
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider"></div>
+                </label>
+            </div>
+
+            <!-- 3. LANGUAGE TOGGLE -->
+            <button id="lang-toggle-btn" class="lang-btn">
+                <span class="flag">🇮🇩</span>
+                <span class="lang-text">ID</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- =========================================
+         VIDEO & TUTORIAL CONTENT
+         ========================================= -->
+    <main class="tutorial-section video-layout">
+        
+        <!-- KOTAK VIDEO -->
+        <article class="step-card">
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://player.cloudinary.com/embed/?cloud_name=dwctfnwdu&public_id=VID_20260304_221536_006_y79vkl&profile=cld-default" 
+                    allow="autoplay; fullscreen; encrypted-media; picture-in-picture" 
+                    allowfullscreen 
+                    title="Video Tutorial Login Alight Motion">
+                </iframe>
+            </div>
+        </article>
+
+        <!-- KOTAK INSTRUKSI -->
+        <article class="step-card text-box">
+            <div class="step-content">
+                
+                <!-- VERSI INDONESIA -->
+                <div class="lang-id">
+                    <h3>CARA LOGIN ALIGHT MOTION MOD</h3>
+                    <ul>
+                        <li>Buka Alight Motion</li>
+                        <li>Pergi Menuju Profile</li>
+                        <li>Pilih Main Server</li>
+                        <li>Klik Connect</li>
+                        <li>Tunggu Proses Selesai</li>
+                        <li>Buka Ulang Alight Motion</li>
+                        <li>Selesai, Nikmati Premium nya</li>
+                    </ul>
+                    <p class="note">Jika belum muncul Premium nya, coba ulangi caranya namun pilih backup server 1/2 nya ya, Selamat Mencoba.</p>
+                </div>
+
+                <!-- VERSI INGGRIS -->
+                <div class="lang-en">
+                    <h3>HOW TO LOGIN ALIGHT MOTION MOD</h3>
+                    <ul>
+                        <li>Open Alight Motion</li>
+                        <li>Go to Profile</li>
+                        <li>Select Main Server</li>
+                        <li>Click Connect</li>
+                        <li>Wait for the Process to Complete</li>
+                        <li>Reopen Alight Motion</li>
+                        <li>Done, Enjoy your Premium</li>
+                    </ul>
+                    <p class="note">If Premium hasn't appeared, try repeating the steps but choose backup server 1 or 2 instead. Good luck!</p>
+                </div>
+
+            </div>
+        </article>
+
+    </main>
+
+    <!-- =========================================
+         JAVASCRIPT LOGIC
+         ========================================= -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // --- 1. DARK MODE LOGIC ---
+            const toggleSwitch = document.querySelector('#checkbox');
+            const modeLabel = document.querySelector('#mode-label');
+            const currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme) {
+                document.body.classList.add(currentTheme);
+                if (currentTheme === 'dark') {
+                    toggleSwitch.checked = true;
+                    modeLabel.textContent = '🌙'; 
+                }
+            }
+
+            function switchTheme(e) {
+                if (e.target.checked) {
+                    document.body.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    modeLabel.textContent = '🌙';
+                } else {
+                    document.body.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    modeLabel.textContent = '☀️';
+                }
+            }
+            toggleSwitch.addEventListener('change', switchTheme);
+
+
+            // --- 2. LANGUAGE SWITCHER LOGIC ---
+            const langBtn = document.getElementById('lang-toggle-btn');
+            const langFlag = langBtn.querySelector('.flag');
+            const langText = langBtn.querySelector('.lang-text');
+
+            langBtn.addEventListener('click', () => {
+                document.body.classList.toggle('lang-english');
+                
+                if (document.body.classList.contains('lang-english')) {
+                    langFlag.textContent = '🇬🇧';
+                    langText.textContent = 'EN';
+                } else {
+                    langFlag.textContent = '🇮🇩';
+                    langText.textContent = 'ID';
+                }
+            });
+
+
+            // --- 3. ANIMASI SCROLL ---
+            const observerOptions = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 150);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const steps = document.querySelectorAll('.step-card');
+            steps.forEach(step => observer.observe(step));
+        });
+    </script>
+
+</body>
+</html>
