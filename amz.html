@@ -3,232 +3,299 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DATZON WINK - Download</title>
+  <title>DATZON AMZ - Download</title>
   
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <script type='text/javascript' src='//pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js'></script>
   
   <style>
     :root {
-      /* Variabel Warna */
-      --accent: #0b84ff;
-      --success: #22c55e;
-      --warning: #ffb86b;
-
+      /* --- PALET WARNA MODERN --- */
+      --primary: #3b82f6;
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      --success: #10b981;
+      --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      --warning: #f59e0b;
+      
       /* Mode Gelap (Default) */
-      --bg-dark: linear-gradient(180deg, #071023 0%, #07183a 100%);
-      --card-bg-dark: rgba(255, 255, 255, 0.03);
-      --card-border-dark: rgba(255, 255, 255, 0.06);
-      --notice-bg-dark: rgba(255, 255, 255, 0.02);
-      --version-bg-dark: rgba(255, 255, 255, 0.02);
-      --download-btn-bg-dark: linear-gradient(180deg, #06243f, #08304a);
-      --text-primary-dark: #e6eef8;
-      --text-muted-dark: #9aa4b2;
-      --text-success-dark: #04210f;
+      --bg-dark: #0f172a;
+      --bg-gradient-dark: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+      --card-bg-dark: rgba(30, 41, 59, 0.7);
+      --card-border-dark: rgba(255, 255, 255, 0.08);
+      --text-primary-dark: #f1f5f9;
+      --text-secondary-dark: #94a3b8;
+      --btn-text-dark: #ffffff;
+      --shadow-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
 
       /* Mode Terang */
-      --bg-light: #f0f4f9;
-      --card-bg-light: #ffffff;
-      --card-border-light: #e2e8f0;
-      --notice-bg-light: #fffbeb;
-      --version-bg-light: #f8fafc;
-      --download-btn-bg-light: #e2e8f0;
-      --text-primary-light: #0f1724;
-      --text-muted-light: #475569;
-      --text-success-light: #ffffff;
-      
-      /* Inisialisasi variabel dinamis */
+      --bg-light: #f8fafc;
+      --bg-gradient-light: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
+      --card-bg-light: rgba(255, 255, 255, 0.85);
+      --card-border-light: rgba(0, 0, 0, 0.05);
+      --text-primary-light: #1e293b;
+      --text-secondary-light: #64748b;
+      --btn-text-light: #ffffff;
+      --shadow-light: 0 10px 25px rgba(148, 163, 184, 0.15);
+
+      /* Inisialisasi Variable */
       --bg: var(--bg-dark);
+      --bg-gradient: var(--bg-gradient-dark);
       --card-bg: var(--card-bg-dark);
       --card-border: var(--card-border-dark);
-      --notice-bg: var(--notice-bg-dark);
-      --version-bg: var(--version-bg-dark);
-      --download-btn-bg: var(--download-btn-bg-dark);
       --text-primary: var(--text-primary-dark);
-      --text-muted: var(--text-muted-dark);
-      --text-success: var(--text-success-dark);
+      --text-secondary: var(--text-secondary-dark);
+      --shadow: var(--shadow-dark);
     }
     
-    body {
-      font-family: 'Quicksand', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text-primary);
-      margin: 0;
-      padding: 28px;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-    
-    /* Tema Mode Terang */
     body.light-mode {
       --bg: var(--bg-light);
+      --bg-gradient: var(--bg-gradient-light);
       --card-bg: var(--card-bg-light);
       --card-border: var(--card-border-light);
-      --notice-bg: var(--notice-bg-light);
-      --version-bg: var(--version-bg-light);
-      --download-btn-bg: var(--download-btn-bg-light);
       --text-primary: var(--text-primary-light);
-      --text-muted: var(--text-muted-light);
-      --text-success: var(--text-success-light);
+      --text-secondary: var(--text-secondary-light);
+      --shadow: var(--shadow-light);
     }
 
-    .container { max-width: 980px; margin: 0 auto; }
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .container { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      padding-bottom: 60px;
+    }
     
+    /* HEADER */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
+      margin-bottom: 30px;
+      padding: 10px 5px;
     }
     
     .header-left { display: flex; align-items: center; gap: 16px; }
-    .logo { width: 64px; height: 64px; background: var(--accent); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 24px; }
-    h1 { margin: 0; font-size: 20px; }
-    h1 a { color: inherit; text-decoration: none; }
     
-    .card { background: var(--card-bg); padding: 18px; border-radius: 12px; margin-bottom: 14px; transition: background 0.3s ease; }
-    
-    .notice {
-      background: var(--notice-bg);
-      padding: 12px;
-      border-left: 4px solid var(--warning);
-      color: var(--text-muted);
-      border-radius: 8px;
-      transition: background 0.3s ease, color 0.3s ease;
+    .logo { 
+      width: 56px; 
+      height: 56px; 
+      background: var(--primary-gradient); 
+      border-radius: 16px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      font-weight: 700; 
+      color: #fff; 
+      font-size: 22px; 
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
     }
     
-    .versions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-    .version { background: var(--version-bg); padding: 14px; border-radius: 10px; transition: background 0.3s ease; }
+    h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    h1 a { color: var(--text-primary); text-decoration: none; transition: color 0.3s; }
+    h1 a:hover { color: var(--primary); }
+    
+    .subtitle { font-size: 13px; color: var(--text-secondary); display: block; margin-top: 4px; }
+
+    /* NOTICE BOX */
+    .notice {
+      background: rgba(245, 158, 11, 0.1);
+      padding: 16px;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--text-primary);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+      backdrop-filter: blur(5px);
+    }
+    .notice strong { color: var(--warning); display: block; margin-bottom: 4px; }
+
+    /* GRID VERSI */
+    .versions { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+      gap: 32px; 
+      margin-top: 20px; 
+      margin-bottom: 32px;
+    }
+    
+    .version { 
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      padding: 24px; 
+      border-radius: 20px; 
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .version:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+    
+    .version h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .version p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* TOMBOL DOWNLOAD */
+    .downloads { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 12px; 
+      margin-top: auto; 
+    }
     
     .btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      box-sizing: border-box;
-      text-align: center;
-      padding: 10px 14px;
-      border-radius: 10px;
-      background: var(--accent);
+      padding: 14px 20px;
+      border-radius: 50px;
+      background: var(--primary-gradient);
       color: #fff;
       text-decoration: none;
       font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
       border: none;
-      transition: filter 0.2s ease, background-color 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn.secondary { background: transparent; border: 1px solid var(--card-border); }
-    .btn.complete { background: var(--success); color: var(--text-success); }
-    .btn.complete:hover { filter: brightness(0.95); }
-    .btn[disabled] { opacity: 0.6; cursor: progress; }
     
-    .downloads { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-    .download-btn { padding: 12px; border-radius: 10px; background: var(--download-btn-bg); text-align: center; cursor: pointer; transition: background 0.3s ease; }
-    
-    small { color: var(--text-muted); transition: color 0.3s ease; }
-    footer { margin-top: 20px; color: var(--text-muted); font-size: 13px; transition: color 0.3s ease; }
-    
-    footer a {
-      color: var(--warning); 
-      text-decoration: none; 
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+      filter: brightness(1.1);
     }
-    footer a:hover {
-      text-decoration: underline; 
+    
+    .btn:active { transform: scale(0.98); }
+    .btn[disabled] { opacity: 0.7; cursor: wait; background: var(--text-secondary); box-shadow: none; }
+
+    .btn.complete { 
+      background: var(--success-gradient); 
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
-    /* --- Switch Mode Gelap/Terang --- */
-    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    /* FOOTER */
+    footer { 
+      margin-top: 40px; 
+      text-align: center;
+      color: var(--text-secondary); 
+      font-size: 13px; 
+      padding: 20px;
+      border-top: 1px solid var(--card-border);
+    }
+    footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    
+    /* SWITCH TOGGLE */
+    .switch { position: relative; display: inline-block; width: 54px; height: 30px; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #3e4c5b; 
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.1);
       transition: .4s;
-      border-radius: 28px;
+      border-radius: 34px;
     }
+    body.light-mode .slider { background-color: #cbd5e1; border-color: #cbd5e1; }
+    
     .slider:before {
       position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
+      height: 22px; width: 22px;
+      left: 4px; bottom: 3px;
+      background-color: #fff;
       transition: .4s;
       border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    body.light-mode .slider { background-color: #ccc; }
-    input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(22px); }
+    input:checked + .slider { background-color: var(--primary); border-color: var(--primary); }
+    input:checked + .slider:before { transform: translateX(24px); }
 
-    /* --- Tombol Mengambang (FAB) --- */
+    /* FAB */
     .fab {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 56px;
-      height: 56px;
-      background-color: var(--accent);
+      bottom: 25px; right: 25px;
+      width: 60px; height: 60px;
+      background: var(--primary-gradient);
       color: #fff;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 24px;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
       z-index: 1000;
-      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .fab:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    }
+    .fab:hover { transform: scale(1.1) rotate(5deg); }
 
-    /* --- Notifikasi Promo --- */
+    /* NOTIFIKASI PROMO */
     .promo-notification {
       position: fixed;
-      bottom: 30px; 
-      right: 86px; 
-      background-color: var(--warning);
-      color: #1a1a1a; 
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      bottom: 30px; right: 100px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
       z-index: 999;
       opacity: 0;
-      transform: translateX(-30px); 
-      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+      transform: translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
     }
-    .promo-notification.show {
-      opacity: 1;
-      transform: translateX(0); 
-    }
-    .promo-notification.hide {
-      opacity: 0;
-      transform: translateX(30px); 
-    }
+    body.light-mode .promo-notification { background: rgba(255,255,255,0.95); color: #0f172a; border-color: rgba(0,0,0,0.05); }
     
-    /* --- Animasi Load Halaman --- */
-    @keyframes fadeInUp {
+    .promo-notification.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .promo-notification.hide { opacity: 0; transform: translateY(10px); }
+
+    /* ANIMASI MASUK */
+    @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .animate-on-load {
-      opacity: 0;
-      animation: fadeInUp 0.6s ease-out forwards;
-    }
+    .animate-on-load { animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; opacity: 0; }
 
-    /* --- POP-UP JOIN SALURAN (UPDATED) --- */
+    /* POP-UP JOIN SALURAN (Dipertahankan dari AMZ Asli) */
     .popup-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       z-index: 10000;
@@ -238,182 +305,59 @@
       opacity: 0;
       transition: opacity 0.4s ease;
     }
-
-    .popup-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
-
+    .popup-overlay.active { display: flex; opacity: 1; }
     .popup-content {
-      background: #111827; /* Dark Theme Only for Popup */
+      background: #111827; 
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 30px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
+      padding: 30px; border-radius: 20px;
+      width: 90%; max-width: 420px; text-align: center;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
       transform: scale(0.85) translateY(30px);
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative; /* Untuk posisi tombol close */
+      position: relative; 
     }
+    .popup-overlay.active .popup-content { transform: scale(1) translateY(0); }
+    .popup-overlay.closing { opacity: 0; }
+    .popup-overlay.closing .popup-content { transform: scale(0.9) translateY(20px); }
 
-    .popup-overlay.active .popup-content {
-      transform: scale(1) translateY(0);
-    }
-
-    .popup-overlay.closing {
-      opacity: 0;
-    }
-    .popup-overlay.closing .popup-content {
-      transform: scale(0.9) translateY(20px);
-    }
-
-    /* Tombol Close (X) */
     .close-btn {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        font-size: 28px;
-        color: #9aa4b2;
-        cursor: pointer;
-        line-height: 1;
-        transition: color 0.3s;
-        z-index: 10;
+        position: absolute; top: 15px; right: 20px;
+        font-size: 28px; color: #9aa4b2; cursor: pointer;
+        line-height: 1; transition: color 0.3s; z-index: 10;
     }
-    .close-btn:hover {
-        color: #ffffff;
-    }
+    .close-btn:hover { color: #ffffff; }
 
     .popup-icon {
-      font-size: 48px;
-      margin-bottom: 10px;
-      display: inline-block;
+      font-size: 48px; margin-bottom: 10px; display: inline-block;
       animation: float 3s ease-in-out infinite;
     }
-
     @keyframes float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
     }
 
-    .popup-text {
-      color: #f3f4f6;
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0 0 15px 0;
-      line-height: 1.5;
-    }
+    .popup-text { color: #f3f4f6; font-size: 16px; font-weight: 700; margin: 0 0 15px 0; line-height: 1.5; }
+    .popup-text-small { color: #e5e7eb; font-size: 14px; font-weight: 600; margin: 15px 0; line-height: 1.6; }
+    .popup-divider { height: 1px; background: rgba(255,255,255,0.15); margin: 20px 0; width: 100%; }
 
-    .popup-text-small {
-      color: #e5e7eb;
-      font-size: 14px;
-      font-weight: 600;
-      margin: 15px 0;
-      line-height: 1.6;
-    }
-
-    /* Garis Pembatas */
-    .popup-divider {
-        height: 1px;
-        background: rgba(255,255,255,0.15);
-        margin: 20px 0;
-        width: 100%;
-    }
-
-    /* Tombol Umum Pop-up */
     .popup-btn-base {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 14px;
-      font-family: 'Quicksand', sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      border-radius: 12px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
+      display: block; width: 100%; box-sizing: border-box; padding: 14px;
+      font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 16px;
+      border-radius: 12px; text-decoration: none; border: none; cursor: pointer;
+      position: relative; overflow: hidden; transition: all 0.3s ease;
     }
-    
     .popup-btn-base:hover { transform: scale(1.02); }
     .popup-btn-base:active { transform: scale(0.98); }
+    .popup-btn-join { background: #22c55e; color: #ffffff; box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
+    .popup-btn-join:hover { background: #16a34a; box-shadow: 0 0 25px rgba(34, 197, 94, 0.5); }
+    .popup-btn-buy { background: #0b84ff; color: #ffffff; box-shadow: 0 0 15px rgba(11, 132, 255, 0.3); margin-top: 10px; }
+    .popup-btn-buy:hover { background: #0070e0; box-shadow: 0 0 25px rgba(11, 132, 255, 0.5); }
 
-    /* Tombol Join (Hijau) */
-    .popup-btn-join {
-      background: #22c55e;
-      color: #ffffff;
-      box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
-    }
-    .popup-btn-join:hover {
-      background: #16a34a;
-      box-shadow: 0 0 25px rgba(34, 197, 94, 0.5);
-    }
-
-    /* Tombol Beli (Biru) */
-    .popup-btn-buy {
-      background: #0b84ff;
-      color: #ffffff;
-      box-shadow: 0 0 15px rgba(11, 132, 255, 0.3);
-      margin-top: 10px;
-    }
-    .popup-btn-buy:hover {
-      background: #0070e0;
-      box-shadow: 0 0 25px rgba(11, 132, 255, 0.5);
-    }
-
-    @media (max-width: 720px) {
-      .versions { grid-template-columns: 1fr; }
-      .downloads { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      .header-left h1 { font-size: 18px; }
       .promo-notification {
-        width: calc(100% - 90px);
-        text-align: center;
-        bottom: 86px; 
-        right: 20px;
-        left: 20px;
-        margin: 0 auto;
-        transform: translateY(20px); 
+        right: 20px; left: 20px; bottom: 100px; width: auto; text-align: center;
       }
-      .promo-notification.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      .promo-notification.hide {
-        opacity: 0;
-        transform: translateY(20px); 
-      }
-    }
-    
-    .app-info {
-      text-align: left;
-      line-height: 1.6;
-      font-family: 'Quicksand', Arial, sans-serif; 
-      color: var(--text-muted); 
-      margin-top: 10px;
-    }
-
-    .app-info-list {
-      padding-left: 20px;
-      margin: 0;
-      list-style-position: outside;
-    }
-
-    .app-info-list li {
-      margin: 6px 0;
-      font-size: 14px; 
-      color: var(--text-primary); 
-      opacity: 0.95; 
-    }
-
-    @media (max-width: 420px) {
-      .app-info-list li { font-size: 13px; }
-    }
-    .version h3 {
-      text-align: center;
-      margin: 1px 0 10px 0;   
     }
   </style>
   
@@ -421,15 +365,10 @@
     (function() {
       try {
         const theme = localStorage.getItem('theme');
-        if (theme === 'light') {
-          document.documentElement.classList.add('light-mode');
-        }
-      } catch (e) {
-        console.warn('Gagal membaca tema dari localStorage', e);
-      }
+        if (theme === 'light') { document.documentElement.classList.add('light-mode'); }
+      } catch (e) {}
     })();
   </script>
-  <script type='text/javascript' src='//pl27971081.effectivegatecpm.com/75/4d/89/754d89bb0699b528a6f6b846376e68cb.js'></script>
 </head>
 <body class="">
 
@@ -465,13 +404,14 @@
 
     </div>
   </div>
+
   <div class="container">
     <header class="animate-on-load" style="animation-delay: 0.1s;">
       <div class="header-left">
         <div class="logo">DZ</div>
         <div>
           <h1><a id="yt-link" href="https://youtube.com/@informatifdata?si=viFmGb0ReRhSiznE" target="_blank">DATZON AMZ</a></h1>
-          <small>Klik judul untuk ke channel YouTube</small>
+          <span class="subtitle">Klik judul untuk ke channel YouTube</span>
         </div>
       </div>
       
@@ -481,93 +421,78 @@
       </label>
     </header>
     
-    <section class="card animate-on-load" style="animation-delay: 0.2s;">
+    <div class="card-container animate-on-load" style="animation-delay: 0.2s;">
       <div class="notice">
-        <strong>Perhatian:</strong>
-        <p style="margin:8px 0 0">Saat mengklik tombol download akan diarahkan ke iklan. Jika muncul iklan atau halaman lain, <strong>klik kembali</strong> lalu klik tombol download lagi.</p>
+        <strong>⚠️ Perhatian</strong>
+        Saat mengklik tombol download akan diarahkan ke iklan. Jika muncul iklan atau halaman lain, silakan klik <b>kembali</b> lalu klik tombol download lagi.
       </div>
 
-      <div style="margin-top:12px">
-        <small>Tersedia 4 jenis aplikasi AMZ dengan tingkat kompatibilitas berbeda. Jenis Light/Dark itu hanya beda thema pada apk saja, Kalau Ori/Clone itu sama seperti Ultra Motion sebelumnya, Silakan pilih versi yang paling sesuai dengan perangkat Anda. Thank You</small>
+      <div style="text-align: center; margin: 30px 0;">
+        <p style="color: var(--text-secondary); font-size: 14px; max-width: 600px; margin: 0 auto;">
+          Tersedia 4 jenis aplikasi AMZ dengan tingkat kompatibilitas berbeda. Jenis Light/Dark itu hanya beda thema pada apk saja, Kalau Ori/Clone itu sama seperti Ultra Motion sebelumnya.
+        </p>
       </div>
 
       <div class="versions">
-        
         <div class="version">
-          <h3>AMZ ORI THEME</h3>
-          <p style="margin:8px 0; color:var(--text-muted); font-size:12px;">
-            Note Update : Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS (Tergantung Device) No Watermark dan No Password, Support All Device
-          </p>
-          <div class="downloads">
-            <div class="download-btn" style="grid-column: span 2;">
-              <h3>ORIGINAL APK</h3>
-              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/2Yw6dc" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            <div>
+              <h3>AMZ ORI THEME</h3>
+              <p>Note Update: Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS. No Watermark, No Password.</p>
             </div>
-            <div class="download-btn" style="grid-column: span 2;">
-              <h3>CLONE APK</h3>
-              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/zhzzF" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            <div class="downloads">
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/2Yw6dc" onclick="handleDownload(this)">ORIGINAL APK</button>
+              <button class="btn btn-login" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/zhzzF" onclick="handleDownload(this)">CLONE APK</button>
             </div>
-          </div>
+        </div>
+      
+        <div class="version">
+            <div>
+              <h3>AMZ DARK THEME</h3>
+              <p>Note Update: Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS. No Watermark, No Password.</p>
+            </div>
+            <div class="downloads">
+              <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/DO1A7" onclick="handleDownload(this)">ORIGINAL APK</button>
+              <button class="btn btn-login" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/zZTYH" onclick="handleDownload(this)">CLONE APK</button>
+            </div>
         </div>
 
         <div class="version">
-          <h3>AMZ DARK THEME</h3>
-          <p style="margin:8px 0; color:var(--text-muted); font-size:12px;">
-            Note Update : Hanya Support untuk di bawah 5MB dan XML, New Efek yang melimpah dan pastinya Support 4K 60FPS (Tergantung Device) No Watermark dan No Password, Support All Device
-          </p>
-          <div class="downloads">
-            <div class="download-btn" style="grid-column: span 2;">
-                <h3>ORIGINAL APK</h3>
-                <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/DO1A7" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
+            <div>
+              <h3>INFO MOD APK</h3>
+              <p>
+                <small style="display:block; line-height:1.8;">
+                  ✓ Menonaktifkan Kode Error<br>
+                  ✓ Tanpa Iklan & Watermark<br>
+                  ✓ Tema Original & Mode Gelap<br>
+                  ✓ Layar Paywall Dihapus<br>
+                  ✓ Mendukung Resolusi Hingga 4K<br>
+                  ✓ Support 999 Layer<br>
+                  ✓ Ekspor Paket Proyek Berfungsi<br>
+                  ✓ Semua Resolusi Premium<br>
+                  ✓ Perbaikan Impor File XML (Harus Online)<br>
+                  ✓ Login Anonim Tersedia
+                </small>
+              </p>
             </div>
-            <div class="download-btn" style="grid-column: span 2;">
-                <h3>CLONE APK</h3>
-                <button class="btn" data-ad="https://www.effectivegatecpm.com/z55w4h3qx2?key=b3e81a33d4a9ac5be6d499f5f1bd6274" data-dl="https://sfl.gl/zZTYH" onclick="handleDownload(this)" style="margin-top: 8px;">Download</button>
-            </div>
-          </div>
         </div>
-
-        <div class="version">
-          <h3>INFO MOD APK</h3>
-          <div class="app-info">
-            <ul class="app-info-list">
-              <li>Menonaktifkan Kode Error</li>
-              <li>Tanpa Iklan & Watermark</li>
-              <li>Tema Original & Mode Gelap</li>
-              <li>Layar Paywall Dihapus</li>
-              <li>Mendukung Resolusi Hingga 4K</li>
-              <li>Support 999 Layer</li>
-              <li>Ekspor Paket Proyek Berfungsi</li>
-              <li>Semua Resolusi Premium</li>
-              <li>Opsi Ekspor Terbuka</li>
-              <li>Perbaikan Impor File XML (Harus Online)</li>
-              <li>Login Anonim Tersedia</li>
-              <li>Menu Rahasia Diaktifkan</li>
-              <li>(Tekan 3 jari secara bersamaan)</li>
-              <li>Optimasi Sumber Daya</li>
-            </ul>
-          </div>
-        </div>
-        
       </div> 
-
+      
       <footer class="animate-on-load" style="animation-delay: 0.3s;">
-        <p>Catatan: Semua link menggunakan <i>SafeLinku</i> dan <i>SafeFileku</i>, jadi jika tidak punya skil untuk melewati link tersebut tonton
+        <p>Catatan: Semua link menggunakan SafeLinku/SafeFileku, jadi jika kesulitan tonton <br>
           <a href="https://youtu.be/gTUJfiU3pb0?si=Kp79XF6D36Yy06xV" target="_blank" rel="noopener noreferrer">
-            <i>Tutorial Youtube ya</i>
-          </a>, Thank You.
+            Tutorial Cara Download
+          </a>
         </p>
       </footer>
-    </section>
-
+    </div>
   </div>
 
-   <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
+  <a href="https://dazon.web.app/store.html" target="_blank" rel="noopener noreferrer" class="fab" aria-label="Toko Store">
     🛒
   </a>
 
   <div class="promo-notification" id="promo-notif">
-    Alight Motion Premium Rp. 4K  di sini👉
+    🔥 Alight Motion Premium Rp. 4K di sini!
   </div>
 
   <script>
@@ -576,10 +501,12 @@
 
     function handleDownload(btn) {
       if (isBusy(btn)) return;
-      const adLink = btn.getAttribute('data-ad') || 'https://example.com/ad';
-      const dlLink = btn.getAttribute('data-dl') || 'https://example.com/download.apk';
+      const adLink = btn.getAttribute('data-ad') || '#';
+      const dlLink = btn.getAttribute('data-dl') || '#';
 
-      try { window.open(adLink, '_blank'); } catch (e) { console.log('Gagal membuka tab iklan', e); }
+      if (adLink && adLink !== '#') {
+          try { window.open(adLink, '_blank'); } catch (e) {}
+      }
 
       startCountdownOnButton(btn, dlLink, 10);
     }
@@ -587,14 +514,15 @@
     function startCountdownOnButton(btn, downloadUrl, seconds) {
       setBusy(btn, true);
       btn.disabled = true;
-      const originalText = btn.textContent;
       let s = seconds;
-      btn.textContent = `Menyiapkan... (${s}s)`;
+      
+      btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
+      btn.style.background = "var(--text-secondary)";
 
       const id = setInterval(() => {
         s -= 1;
         if (s > 0) {
-          btn.textContent = `Menyiapkan... (${s}s)`;
+          btn.innerHTML = `⏳ Menyiapkan... (${s}s)`;
         } else {
           clearInterval(id);
           const a = document.createElement('a');
@@ -602,45 +530,24 @@
           a.href = downloadUrl;
           a.target = '_blank';
           a.rel = 'noopener noreferrer';
-          a.textContent = 'Unduh Sekarang';
+          a.innerHTML = '⬇️ Unduh Sekarang';
+          
           btn.parentNode.replaceChild(a, btn);
         }
       }, 1000);
     }
     
     document.addEventListener('DOMContentLoaded', function() {
-      
-      // --- LOGIKA POP-UP BARU ---
-      const popup = document.getElementById('channelPopup');
-      const closeBtn = document.getElementById('closePopupBtn');
-      
-      // 1. Tampilkan Pop-up Setiap Kali Halaman Dimuat (dengan delay sedikit utk animasi)
-      setTimeout(() => {
-        popup.classList.add('active');
-      }, 500);
-
-      // 2. Fungsi Tutup Pop-up (tanpa reload)
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-            // Tambah class closing untuk animasi keluar
-            popup.classList.add('closing');
-            
-            // Tunggu animasi CSS selesai baru hide elemen
-            setTimeout(() => {
-                popup.classList.remove('active', 'closing');
-                popup.style.display = 'none';
-            }, 400); // 400ms sesuai durasi transisi css
-        });
+      // Logic Tema
+      const themeToggle = document.getElementById('theme-toggle');
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        if(themeToggle) themeToggle.checked = true;
       }
 
-      // --- SCRIPT LAIN (Theme, Promo) ---
-      const themeToggle = document.getElementById('theme-toggle');
       if (themeToggle) {
-        const isLight = document.body.classList.contains('light-mode') || document.documentElement.classList.contains('light-mode');
-        themeToggle.checked = !isLight; 
-        
         themeToggle.addEventListener('change', function() {
-          if (!this.checked) {
+          if (this.checked) {
             document.body.classList.add('light-mode');
             localStorage.setItem('theme', 'light');
           } else {
@@ -650,16 +557,40 @@
         });
       }
       
+      // Logic Promo
       const promoNotif = document.getElementById('promo-notif');
       if (promoNotif) {
-        setTimeout(() => { promoNotif.classList.add('show'); }, 3000);
-        setTimeout(() => { 
-          promoNotif.classList.remove('show');
-          promoNotif.classList.add('hide');
-        }, 12000);
+        function cyclePromo() {
+          promoNotif.classList.remove('hide');
+          promoNotif.classList.add('show');
+          
+          setTimeout(() => {
+            promoNotif.classList.remove('show');
+            promoNotif.classList.add('hide');
+          }, 5000);
+        }
+        setTimeout(cyclePromo, 2000);
+        setInterval(cyclePromo, 20000); 
+      }
+
+      // Logic Pop-up Channel
+      const popup = document.getElementById('channelPopup');
+      const closeBtn = document.getElementById('closePopupBtn');
+      
+      setTimeout(() => {
+        popup.classList.add('active');
+      }, 500);
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            popup.classList.add('closing');
+            setTimeout(() => {
+                popup.classList.remove('active', 'closing');
+                popup.style.display = 'none';
+            }, 400); 
+        });
       }
     });
   </script>
 </body>
 </html>
-
